@@ -8,7 +8,7 @@ factorio_factory/
 │   ├── 01_models/                  # Pydanticモデル
 │   │   ├── 01_item.py
 │   │   ├── 02_recipe.py
-│   │   └── 03_entity.py
+│   │   └── 03_entities.py
 │   ├── 02_logic/                   # 計算ロジック
 │   │   ├── 01_recipe_graph.py
 │   │   ├── 02_throughput.py
@@ -20,6 +20,11 @@ factorio_factory/
 │   ├── loader.py                   # Luaデータ -> Pythonモデル変換
 │   ├── fetcher.sh                  # wube/factorio-dataをcloneするスクリプト
 │   └── raw/                        # Luaデータのキャッシュ
+│       ├── _factorio-data_cache/   # wube/factorio-data全体のキャッシュ
+│       ├── items.lua               # 変換対象となる定義
+│       ├── recipes.lua
+│       ├── entities.lua
+│       └── ...
 ├── llm/                            # LLMとの連携機能
 │   ├── prompts/                    # プロンプトテンプレート
 │   └── tasks.py                    # LLMタスク定義と型バリデーション
