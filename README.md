@@ -1,6 +1,6 @@
 # factorio-factory
 
-** WIP **
+**WIP**
 
 ## Directory Structure
 
