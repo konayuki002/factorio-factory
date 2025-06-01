@@ -9,11 +9,16 @@ class BaseConverter:
     Enumクラスを生成するための基本的なインターフェースを提供します。
     """
 
+    dependencies: list[str] = []  # "json:item_group" のような形式で依存関係を指定
     lua_path: str = ""
     json_path: str = ""
     raw_dir: str = "data/raw"
     intermediate_dir: str = "data/intermediate"
     enum_dir: str = "core/enums"
+
+    def __init__(self):
+        # サブクラスで個別に依存を持たせたい場合の取り込み
+        self.dependencies: list[str] = self.__class__.dependencies
 
     def load(self):
         """

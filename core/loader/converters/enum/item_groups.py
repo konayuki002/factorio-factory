@@ -11,6 +11,7 @@ class ItemGroupEnumConverter(BaseConverter):
      -> enums/item_group.py, enums/item_subgroup.py
     """
 
+    dependencies = ["json:item_group"]
     json_groups_path = "item_groups.json"
     json_subgroups_path = "item_subgroups.json"
     enum_group_path = "item_group.py"

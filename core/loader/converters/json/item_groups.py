@@ -11,6 +11,7 @@ class ItemGroupJsonConverter(BaseConverter):
     raw/item-groups.lua -> intermediate/item_groups.json
     """
 
+    dependencies = []
     lua_path = "item-groups.lua"
     json_groups_path = "item_groups.json"
     json_subgroups_path = "item_subgroups.json"
