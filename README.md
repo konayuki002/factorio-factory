@@ -25,7 +25,7 @@ factorio_factory/
 │   |   │   ├── base.py             # 変換のベースクラス
 │   |   │   ├── enum/               # JSONからEnumへの変換
 │   |   │   │   └── item_groups.py  
-│   |   │   └── json/               # EnumからJSONへの変換
+│   |   │   └── json/               # LuaからJSONへの変換
 │   |   │       └── item_groups.py
 │   |   ├── enum/                   # 識別子定義
 │   |   │   ├── item_group.py       # アイテムグループの列挙型
