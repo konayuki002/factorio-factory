@@ -9,6 +9,8 @@ class BaseConverter:
     Enumクラスを生成するための基本的なインターフェースを提供します。
     """
 
+    # "json:item_group" のような形式で依存関係を指定
+    dependencies: list[str] = []
     lua_path: str = ""
     json_path: str = ""
     raw_dir: str = "data/raw"
