@@ -14,8 +14,8 @@ class ItemGroupEnumConverter(BaseConverter):
     dependencies = ["json:item_group"]
     json_groups_path = "item_groups.json"
     json_subgroups_path = "item_subgroups.json"
-    enum_group_path = "item_group.py"
-    enum_subgroup_path = "item_subgroup.py"
+    enum_group_path = "_generated_item_group.py"
+    enum_subgroup_path = "_generated_item_subgroup.py"
 
     def load(self):
         # 1) JSON load
