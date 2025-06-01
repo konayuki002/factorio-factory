@@ -6,25 +6,41 @@
 factorio_factory/
 ├── core/                           # 純粋なロジック (依存なし)
 │   ├── 01_models/                  # Pydanticモデル
-│   │   ├── 01_item.py
-│   │   ├── 02_recipe.py
-│   │   └── 03_entities.py
+│   │   ├── 01_item_groups.py
+│   │   ├── 02_item.py
+│   │   ├── 03_recipe.py
+│   │   └── 04_entities.py
 │   ├── 02_logic/                   # 計算ロジック
 │   │   ├── 01_recipe_graph.py
 │   │   ├── 02_throughput.py
 │   │   └── 03_machine_count.py
-│   └── 03_layout/                  # 配置とトポロジー
-│       ├── 01_topology.py
-│       └── 02_placer.py
+│   ├── 03_layout/                  # 配置とトポロジー
+│   |   ├── 01_topology.py
+│   |   └── 02_placer.py
+|   ├── enum/                       # 識別子定義
+│   |   ├── item_group.py           # アイテムグループの列挙型
+|   |   └── item_subgroup.py
+│   ├── loader/                     # 識別子生成
+│   |   ├── converters/             # 個別の変換ロジック
+│   |   │   ├── base.py             # 変換のベースクラス
+│   |   │   ├── item_groups_enum.py # アイテムグループのJsonへの変換
+│   |   │   └── item_gruops_json.py # アイテムグループのEnumへの変換
+│   |   ├── __init__.py             # パッケージ初期化
+│   |   ├── __main__.py             # コマンドライン実行用
+│   |   ├── config.py
+│   |   └── registry.py             # 個別の変換ロジックの登録と順序管理
+|   └── utils.py                    # ユーティリティ関数
 ├── data/                           # factorio-dataからのデータ抽出と変換
-│   ├── loader.py                   # Luaデータ -> Pythonモデル変換
 │   ├── fetcher.sh                  # wube/factorio-dataをcloneするスクリプト
-│   └── raw/                        # Luaデータのキャッシュ
-│       ├── _factorio-data_cache/   # wube/factorio-data全体のキャッシュ
-│       ├── items.lua               # 変換対象となる定義
-│       ├── recipes.lua
-│       ├── entities.lua
-│       └── ...
+│   ├── raw/                        # Luaデータのキャッシュ
+│   |   ├── _factorio-data_cache/   # wube/factorio-data全体のキャッシュ
+│   |   ├── items.lua               # 変換対象となる定義
+│   |   ├── recipes.lua
+│   |   ├── entities.lua
+│   |   └── ...
+|   └── intermediate/               # 中間変換データ
+│       ├── item_groups.json        # アイテムグループのJson
+│       └── item_subgroups.json
 ├── llm/                            # LLMとの連携機能
 │   ├── prompts/                    # プロンプトテンプレート
 │   └── tasks.py                    # LLMタスク定義と型バリデーション
@@ -74,4 +90,10 @@ factorio_factory/
 仮想環境を抜けるには以下を実行:
 ```bash
 deactivate
+```
+
+## CLIの使い方
+CLIツールを使ってwube/factorio-dateのプロトタイプ定義をEnum識別子に変換することができます
+```bash
+python -m core.loader build
 ```
