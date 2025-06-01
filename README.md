@@ -27,9 +27,6 @@ factorio_factory/
 │   |   │   │   └── item_groups.py  
 │   |   │   └── json/               # LuaからJSONへの変換
 │   |   │       └── item_groups.py
-│   |   ├── enum/                   # 識別子定義
-│   |   │   ├── item_group.py       # アイテムグループの列挙型
-│   |   │   └── item_subgroup.py
 │   |   ├── __init__.py             # パッケージ初期化
 │   |   ├── __main__.py             # コマンドライン実行用
 │   |   ├── config.py
