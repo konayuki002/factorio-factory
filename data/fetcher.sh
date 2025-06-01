@@ -11,6 +11,7 @@ CACHE_DIR="$RAW_DIR/_factorio-data_cache"
 # 取得したいLuaファイル一覧（必要に応じて追加）
 FILES=(
   "base/prototypes/categories/recipe-category.lua"
+  "base/prototypes/categories/resource-category.lua"
   "base/prototypes/entity/entities.lua"
   "base/prototypes/entity/mining-drill.lua"
   "base/prototypes/entity/resources.lua"
