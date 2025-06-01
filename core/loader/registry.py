@@ -26,14 +26,24 @@ def register(name: str):
 # -- 次に, 動的インポートの処理 --
 
 # converters パッケージのディレクトリを動的に読み取る
-module_name = "core.loader.converters"
-package = importlib.import_module(module_name)
+json_module_name = "core.loader.converters.json"
+package = importlib.import_module(json_module_name)
 package_path = pathlib.Path(package.__path__[0])
 
 # *.py モジュールをひとつずつインポート
 for file in package_path.iterdir():
     if file.suffix == ".py" and file.name != "__init__.py":
-        module_name = f"core.loader.converters.{file.stem}"
+        module_name = f"core.loader.converters.json.{file.stem}"
+        importlib.import_module(module_name)
+
+# enum モジュールも同様にインポート
+enum_module_name = "core.loader.converters.enum"
+package = importlib.import_module(enum_module_name)
+package_path = pathlib.Path(package.__path__[0])
+# *.py モジュールをひとつずつインポート
+for file in package_path.iterdir():
+    if file.suffix == ".py" and file.name != "__init__.py":
+        module_name = f"core.loader.converters.enum.{file.stem}"
         importlib.import_module(module_name)
 
 # ここまでで、converters/ 内の各モジュールが一度インポートされ、
@@ -50,11 +60,11 @@ def load_all():
     """
 
     for name, conv in CONVERTERS.items():
-        if name.endswith("_json"):
+        if name.startswith("json:"):
             print(f"[registry] Running JSON converter: {name}")
             conv.load()
 
     for name, conv in CONVERTERS.items():
-        if name.endswith("_enum"):
+        if name.startswith("enum:"):
             print(f"[registry] Running Enum converter: {name}")
             conv.load()
