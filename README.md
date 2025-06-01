@@ -24,7 +24,7 @@ factorio_factory/
 │   |   ├── converters/             # 個別の変換ロジック
 │   |   │   ├── base.py             # 変換のベースクラス
 │   |   │   ├── item_groups_enum.py # アイテムグループのJsonへの変換
-│   |   │   └── item_gruops_json.py # アイテムグループのEnumへの変換
+│   |   │   └── item_groups_json.py # アイテムグループのEnumへの変換
 │   |   ├── __init__.py             # パッケージ初期化
 │   |   ├── __main__.py             # コマンドライン実行用
 │   |   ├── config.py
