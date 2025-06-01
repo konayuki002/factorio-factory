@@ -2,7 +2,7 @@ from core.loader.converters.base import BaseConverter  # 共通ユーティリ�
 from core.loader.registry import register
 
 
-@register("item_group_enum")
+@register("enum:item_group")
 class ItemGroupEnumConverter(BaseConverter):
     """
     アイテムグループに関するJSON -> Enum クラスの生成.
