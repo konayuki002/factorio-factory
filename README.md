@@ -23,8 +23,13 @@ factorio_factory/
 │   ├── loader/                     # 識別子生成
 │   |   ├── converters/             # 個別の変換ロジック
 │   |   │   ├── base.py             # 変換のベースクラス
-│   |   │   ├── item_groups_enum.py # アイテムグループのJsonへの変換
-│   |   │   └── item_groups_json.py # アイテムグループのEnumへの変換
+│   |   │   ├── enum/               # JSONからEnumへの変換
+│   |   │   │   └── item_groups.py  
+│   |   │   └── json/               # LuaからJSONへの変換
+│   |   │       └── item_groups.py
+│   |   ├── enum/                   # 識別子定義
+│   |   │   ├── item_group.py       # アイテムグループの列挙型
+│   |   │   └── item_subgroup.py
 │   |   ├── __init__.py             # パッケージ初期化
 │   |   ├── __main__.py             # コマンドライン実行用
 │   |   ├── config.py
