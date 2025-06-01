@@ -13,14 +13,14 @@ def register(name: str):
     """
     コンバータークラスを登録するデコレータ。dependencies 属性を読み取り、DEPSにも追加する。
     使用例:
-        @register("json:item_groups")
+        @register("json:item_group")
         class ItemGroupsJsonConverter(BaseConverter):
             dependencies = []  # JSON は依存なし
             ...
 
-        @register("enum:item_groups")
+        @register("enum:item_group")
         class ItemGroupsEnumConverter(BaseConverter):
-            dependencies = ["json:item_groups"]
+            dependencies = ["json:item_group"]
             ...
     """
 
