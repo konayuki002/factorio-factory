@@ -3,7 +3,7 @@ from core.loader.registry import register
 from core.utils.lua_parser import parse_lua
 
 
-@register("item_group_json")
+@register("json:item_group")
 class ItemGroupJsonConverter(BaseConverter):
     """
     アイテムグループに関するLua -> JSONファイルの変換.
