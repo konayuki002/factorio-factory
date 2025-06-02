@@ -27,15 +27,15 @@ class ItemGroupEnumConverter(BaseConverter):
         subgroups = self.load_json(json_subgroups_path)
 
         # 2) Enum 生成用に名前一覧を返す
-        enum_group_members = [g["name"] for g in groups]
-        enum_subgroup_members = [sg["name"] for sg in subgroups]
+        enum_group_members = [g["name"].lower() for g in groups]
+        enum_subgroup_members = [sg["name"].lower() for sg in subgroups]
 
         # 2.5) 手動で追加するメンバーを統合（重複排除・順序維持）
         enum_group_members = self.merge_unique(
-            enum_group_members, MANUAL_MEMBERS["item_group"]
+            enum_group_members, [m.lower() for m in MANUAL_MEMBERS["item_group"]]
         )
         enum_subgroup_members = self.merge_unique(
-            enum_subgroup_members, MANUAL_MEMBERS["item_subgroup"]
+            enum_subgroup_members, [m.lower() for m in MANUAL_MEMBERS["item_subgroup"]]
         )
 
         # 3) Enum クラスを生成して保存
