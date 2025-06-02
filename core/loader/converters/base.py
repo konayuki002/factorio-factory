@@ -1,4 +1,5 @@
 from core.utils.utils import to_enum_member
+import logging
 
 
 class BaseConverter:
@@ -70,11 +71,12 @@ class BaseConverter:
         :param extra: 追加するリスト
         :return: 重複を排除した新しいリスト
         """
+        logger = logging.getLogger(__name__)
         seen = set(base)
         result = base[:]
         for x in extra:
             if x in seen:
-                print(f"Warning: '{x}' is a duplicate and will be ignored.")
+                logger.warning("'%s' is a duplicate and will be ignored.", x)
             else:
                 result.append(x)
                 seen.add(x)
