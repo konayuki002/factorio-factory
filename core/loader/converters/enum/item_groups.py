@@ -27,8 +27,11 @@ class ItemGroupEnumConverter(BaseConverter):
         subgroups = self.load_json(json_subgroups_path)
 
         # 2) Enum 生成用に名前一覧を返す
-        # 2.5での適切な重複排除のために小文字に変換
-        # 3のEnumクラス生成時にCamelCaseに変換される
+        # ここで小文字に変換している理由:
+        # - Lua/JSON側のnameは大文字・小文字・ハイフンなど表記揺れがあるため、まずlower()で正規化する
+        # - この後のmerge_uniqueで重複排除を正しく行うためにも、ここで正規化しておく
+        # - Enumクラス生成時（gen_enum）でCamelCaseに変換されるので、ここではlower-caseで統一しておくと
+        #   「kebab-case→lower-case→CamelCase」の一貫した変換フローになる
         enum_group_members = [g["name"].lower() for g in groups]
         enum_subgroup_members = [sg["name"].lower() for sg in subgroups]
 
