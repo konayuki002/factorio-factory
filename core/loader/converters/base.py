@@ -20,9 +20,10 @@ class BaseConverter:
     intermediate_dir: str = "data/intermediate"
     enum_dir: str = "core/enums"
 
-    def __init__(self):
+    def __init__(self, name: str = ""):
         # サブクラスで個別に依存を持たせたい場合の取り込み
         self.dependencies: list[str] = self.__class__.dependencies
+        self.name = name
 
     def load(self):
         """
