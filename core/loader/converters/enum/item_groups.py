@@ -31,19 +31,10 @@ class ItemGroupEnumConverter(BaseConverter):
         enum_subgroup_members = [sg["name"] for sg in subgroups]
 
         # 2.5) 手動で追加するメンバーを統合（重複排除・順序維持）
-        def merge_unique(base: list[str], extra: list[str]) -> list[str]:
-            seen = set(base)
-            result = base[:]
-            for x in extra:
-                if x not in seen:
-                    result.append(x)
-                    seen.add(x)
-            return result
-
-        enum_group_members = merge_unique(
+        enum_group_members = self.merge_unique(
             enum_group_members, MANUAL_MEMBERS["item_group"]
         )
-        enum_subgroup_members = merge_unique(
+        enum_subgroup_members = self.merge_unique(
             enum_subgroup_members, MANUAL_MEMBERS["item_subgroup"]
         )
 
