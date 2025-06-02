@@ -24,7 +24,7 @@ def register(name: str):
             ...
     """
 
-    def _decorator(cls):
+    def _decorator(cls, name: str = name):
         instance = cls()
         instance.name = name  # インスタンスに名前を設定
         CONVERTERS[name] = instance
