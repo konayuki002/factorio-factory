@@ -21,18 +21,20 @@ def run_converters(stage="all", log_level="INFO"):
     sorted_converters = sorted_order()
 
     # 指定されたステージに応じてコンバーターを実行
+    stage_prefixes = {
+        "json": ["json:"],
+        "enum": ["json:", "enum:"],
+        "model": ["json:", "model:"],
+    }
+
     for conv in sorted_converters:
-        if stage == "json" and conv.name.startswith("json:"):
+        if stage == "all":
+            # 全てのステージを実行
             conv.load()
-        elif stage == "enum" and (
-            conv.name.startswith("json:") or conv.name.startswith("enum:")
+        elif any(
+            conv.name.startswith(prefix) for prefix in stage_prefixes.get(stage, [])
         ):
-            conv.load()
-        elif stage == "model" and (
-            conv.name.startswith("json:") or conv.name.startswith("model:")
-        ):
-            conv.load()
-        elif stage == "all":
+            # 指定されたステージに該当するコンバーターのみ実行
             conv.load()
 
 
@@ -58,7 +60,7 @@ def clean_artifacts():
     # for file in models_dir.glob("0*_*.py"):
     #     file.unlink(missing_ok=True)
 
-    print("Cleaned up intermediate files and models.")
+    logging.info("Cleaned up intermediate files and models.")
 
 
 def main():
