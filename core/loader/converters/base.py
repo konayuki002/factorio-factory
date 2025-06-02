@@ -2,6 +2,9 @@ from core.utils.utils import to_enum_member
 import logging
 
 
+logger = logging.getLogger(__name__)
+
+
 class BaseConverter:
     """
     全コンバーターのためのベースクラス.
@@ -75,7 +78,6 @@ class BaseConverter:
         :param enum_name: Enumの名前（デバッグ用, 例: "ItemGroup"）
         :return: 重複を排除した新しいリスト
         """
-        logger = logging.getLogger(__name__)
         seen = set(base)
         result = base[:]
         for x in extra:
