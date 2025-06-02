@@ -62,6 +62,21 @@ class BaseConverter:
         print(f"Data loaded from {json_path}")
         return data
 
+    def merge_unique(self, base: list[str], extra: list[str]) -> list[str]:
+        """
+        2つのリストを結合し、重複を排除して順序を維持します。
+        :param base: 基本のリスト
+        :param extra: 追加するリスト
+        :return: 重複を排除した新しいリスト
+        """
+        seen = set(base)
+        result = base[:]
+        for x in extra:
+            if x not in seen:
+                result.append(x)
+                seen.add(x)
+        return result
+
     def gen_enum(self, enum_name: str, members: list, enum_path: str):
         """
         Enumクラスを動的に生成し、指定されたパスに保存します。
