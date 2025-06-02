@@ -1,4 +1,8 @@
 from core.utils.utils import to_enum_member
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class BaseConverter:
@@ -61,6 +65,34 @@ class BaseConverter:
             data = json.load(f)
         print(f"Data loaded from {json_path}")
         return data
+
+    def merge_unique(
+        self, base: list[str], extra: list[str], enum_name: str = "UnknownEnum"
+    ) -> list[str]:
+        """
+        2つのリストを結合し、重複を排除して順序を維持します。
+        重複する場合, 警告を出して基本のリストの順序を優先します。
+        大文字と小文字は区別されるため, 渡す前に適切に処理してください。
+        :param base: 基本のリスト
+        :param extra: 追加するリスト
+        :param enum_name: Enumの名前（デバッグ用, 例: "ItemGroup"）
+        :return: 重複を排除した新しいリスト
+        """
+        seen = set(base)
+        result = base[:]
+        for x in extra:
+            if x in seen:
+                logger.warning(
+                    "[%s] '%s' is a duplicate and will be ignored when merging Enum members (base: %s, extra: %s)",
+                    enum_name,
+                    x,
+                    base,
+                    extra,
+                )
+            else:
+                result.append(x)
+                seen.add(x)
+        return result
 
     def gen_enum(self, enum_name: str, members: list, enum_path: str):
         """
