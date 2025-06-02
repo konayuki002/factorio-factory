@@ -13,3 +13,5 @@ class ItemGroup(Enum):
     Tiles = 'tiles'
     Effects = 'effects'
     Other = 'other'
+    UnminedResource = 'unmined-resource'
+    Technology = 'technology'
