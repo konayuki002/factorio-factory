@@ -102,7 +102,7 @@ python -m core.loader build
 ```
 
 ## 編集上の注意
-`core/enum/`以下のファイルで, manual_*.py以外のファイルは自動生成されるため, 手動で編集しないでください.
+`core/enums/`以下のファイルで, manual_*.py以外のファイルは自動生成されるため, 手動で編集しないでください.
 * 編集NG: `item_group.py`           # アイテムグループの列挙型
 * 編集NG: `item_subgroup.py`
 * 編集OK: `manual_item_group.py`    # 追加用ハードコード識別子の定義
