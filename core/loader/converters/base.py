@@ -65,6 +65,7 @@ class BaseConverter:
     def merge_unique(self, base: list[str], extra: list[str]) -> list[str]:
         """
         2つのリストを結合し、重複を排除して順序を維持します。
+        重複する場合, 警告を出して基本のリストの順序を優先します。
         :param base: 基本のリスト
         :param extra: 追加するリスト
         :return: 重複を排除した新しいリスト
@@ -72,7 +73,9 @@ class BaseConverter:
         seen = set(base)
         result = base[:]
         for x in extra:
-            if x not in seen:
+            if x in seen:
+                print(f"Warning: '{x}' is a duplicate and will be ignored.")
+            else:
                 result.append(x)
                 seen.add(x)
         return result
