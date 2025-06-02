@@ -115,3 +115,6 @@ class ItemSubgroup(Enum):
     Qualities = 'qualities'
     Spawnables = 'spawnables'
     Other = 'other'
+    UnminedResourceBasicSolid = 'unmined-resource-basic-solid'
+    UnminedResourceBasicFluid = 'unmined-resource-basic-fluid'
+    Technology = 'technology'
