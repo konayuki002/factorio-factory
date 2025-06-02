@@ -1,6 +1,4 @@
 # factorio_factory/core/loader/__main__.py
-from . import app
-
 import argparse
 from pathlib import Path
 import logging
