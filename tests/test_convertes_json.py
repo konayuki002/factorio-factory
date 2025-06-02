@@ -22,7 +22,7 @@ def json_converter(tmp_path):
     shutil.copyfile(
         os.path.join(fixtures_dir, "lua-sample-item-groups.lua"),
         input_base
-        / "item-groups.lua",  # Converter が 'item_groups.lua' を読みに行く想定
+        / "item-groups.lua",  # Converter が 'item-groups.lua' を読みに行く想定
     )
 
     converter = ItemGroupJsonConverter()
@@ -33,7 +33,7 @@ def json_converter(tmp_path):
 
 def test_item_groups_json_generation(json_converter):
     """
-    - json_converter.load() で JSON が出力される（item-groups.json）
+    - json_converter.load() で JSON が出力される（item_groups.json, item_subgroups.json）
     - 生成された JSON をロードして内容を比較
     """
     converter = json_converter
@@ -65,6 +65,8 @@ def test_item_groups_json_generation(json_converter):
     assert sorted(item_groups_data, key=lambda x: x["name"]) == sorted(
         expected_item_groups_data, key=lambda x: x["name"]
     )
+    assert isinstance(item_groups_data[0]["name"], str)
+    assert isinstance(item_groups_data[0]["icon_size"], int)
 
     # item_subgroups
     out_json_item_subgroups_path = os.path.join(

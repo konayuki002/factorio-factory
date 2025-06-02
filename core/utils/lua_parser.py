@@ -36,6 +36,14 @@ class LuaTableTransformer(Transformer):
     def pair(self, items):
         return (items[0].strip('"'), items[1])
 
+    def SIGNED_NUMBER(self, s):
+        # 整数か小数かで型を分ける
+        s = str(s)
+        if "." in s or "e" in s or "E" in s:
+            return float(s)
+        else:
+            return int(s)
+
     def ESCAPED_STRING(self, s):
         return s[1:-1]
 
