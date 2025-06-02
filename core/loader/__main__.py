@@ -1,6 +1,104 @@
 # factorio_factory/core/loader/__main__.py
-
 from . import app
 
+import argparse
+from pathlib import Path
+import logging
+
+
+def run_converters(stage="all", log_level="INFO"):
+    """
+    コンバーターを実行する関数。
+    stage引数に応じて、Lua -> JSON変換、JSON -> Enumクラス生成を行う。
+    """
+    from .registry import CONVERTERS, DEPS, sorted_order
+
+    logging.basicConfig(
+        level=getattr(logging, log_level, logging.INFO),
+    )
+
+    # トポロジカルソートで依存関係を解決
+    sorted_converters = sorted_order()
+
+    # 指定されたステージに応じてコンバーターを実行
+    for conv in sorted_converters:
+        if stage == "json" and conv.name.startswith("json:"):
+            conv.load()
+        elif stage == "enum" and (
+            conv.name.startswith("json:") or conv.name.startswith("enum:")
+        ):
+            conv.load()
+        elif stage == "model" and (
+            conv.name.startswith("json:") or conv.name.startswith("model:")
+        ):
+            conv.load()
+        elif stage == "all":
+            conv.load()
+
+
+def clean_artifacts():
+    """
+    data/intermediate 以下の JSON ファイルや
+    core/enum/*.py, core/01_models/*.py などを一括削除する。
+    """
+    # 例: data/intermediate/*.json をすべて削除
+    intermediate_dir = Path(__file__).parents[2] / "data" / "intermediate"
+    for file in intermediate_dir.glob("*.json"):
+        file.unlink(missing_ok=True)
+
+    # core/enum/*.py を削除（__init__.py は残す、あるいは判定ロジックを入れてもよい）
+    enum_dir = Path(__file__).parents[2] / "core" / "enum"
+    for file in enum_dir.glob("*.py"):
+        if file.name != "__init__.py":
+            file.unlink(missing_ok=True)
+
+    # 以下はmodelの自動生成の実装前なのでコメントアウト
+    # core/01_models/*.py を同様に削除する
+    # models_dir = Path(__file__).parents[2] / "core" / "01_models"
+    # for file in models_dir.glob("0*_*.py"):
+    #     file.unlink(missing_ok=True)
+
+    print("Cleaned up intermediate files and models.")
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Factorio Factory Loader", prog="core.loader"
+    )
+    # ログレベルと出力ディレクトリのオプション
+    parser.add_argument(
+        "-v", "--verbose", action="store_true", help="Enable verbose output"
+    )
+    parser.add_argument(
+        "--log-level",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR"],
+        default="INFO",
+        help="Set log level (DEBUG, INFO, WARNING, ERROR)",
+    )
+
+    sub = parser.add_subparsers(dest="cmd")
+
+    sub.add_parser("build-json", help="Build JSON files from Lua data")
+    sub.add_parser("build-enum", help="Build Enum classes from JSON data")
+    sub.add_parser("build-model", help="Build Pydantic models from JSON data")
+    sub.add_parser("build-all", help="Build all stages (JSON, Enum, Model)")
+    sub.add_parser("clean", help="Clean up intermediates")
+
+    args = parser.parse_args()
+
+    if args.cmd == "build-json":
+        run_converters(stage="json", log_level=args.log_level)
+    elif args.cmd == "build-enum":
+        run_converters(stage="enum", log_level=args.log_level)
+    elif args.cmd == "build-model":
+        run_converters(stage="model", log_level=args.log_level)
+    elif args.cmd == "build-all":
+        run_converters(stage="all", log_level=args.log_level)
+    elif args.cmd == "clean":
+        clean_artifacts()
+    else:
+        parser.print_help()
+
+
 if __name__ == "__main__":
-    app()
+    main()

@@ -26,6 +26,7 @@ def register(name: str):
 
     def _decorator(cls):
         instance = cls()
+        instance.name = name  # インスタンスに名前を設定
         CONVERTERS[name] = instance
         # そのクラスが持つ dependencies 属性を DEPS に保存
         # （もし dependencies が定義されていなければ空リストとみなす）
