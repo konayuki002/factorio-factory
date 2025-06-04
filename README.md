@@ -101,6 +101,12 @@ CLIツールを使ってwube/factorio-dataのプロトタイプ定義をEnum識�
 python -m core.loader build
 ```
 
+## テストの実行
+pytest を使ってユニットテストを実行できます。
+```bash
+pytest -q
+```
+
 ## 編集上の注意
 `core/enums/`以下のファイルで, manual_*.py以外のファイルは自動生成されるため, 手動で編集しないでください.
 * 編集NG: `item_group.py`           # アイテムグループの列挙型

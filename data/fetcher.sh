@@ -48,7 +48,7 @@ fi
 
 for FILE in "${FILES[@]}"; do
   SRC="$CACHE_DIR/$FILE"
-  DST="$RAW_DIR/$(basename $FILE)"
+  DST="$RAW_DIR/$(basename "$FILE")"
   if [ -f "$SRC" ]; then
     if [ -f "$DST" ] && cmp -s "$SRC" "$DST"; then
       echo "Unchanged: $DST (skip)"
