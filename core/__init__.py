@@ -1,1 +1,2 @@
-# Package for core modules
+"""Core package"""
+
