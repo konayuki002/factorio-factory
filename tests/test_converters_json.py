@@ -1,6 +1,11 @@
 import os
 import shutil
 import json
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 import pytest
 from core.loader.converters.json.item_groups import ItemGroupJsonConverter
 
@@ -21,8 +26,7 @@ def json_converter(tmp_path):
     # テスト用 Lua スニペットをコピーし、Converter が期待するファイル名にリネーム
     shutil.copyfile(
         os.path.join(fixtures_dir, "lua-sample-item-groups.lua"),
-        input_base
-        / "item-groups.lua",  # Converter が 'item-groups.lua' を読みに行く想定
+        input_base / "item-groups.lua",  # Converter が 'item-groups.lua' を読みに行く想定
     )
 
     converter = ItemGroupJsonConverter()
