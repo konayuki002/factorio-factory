@@ -3,7 +3,7 @@ antlr4-python3-runtime==4.13.2
 click==8.2.1
 iniconfig==2.1.0
 lark==1.2.2
-luaparser==3.3.0
+luaparser @ git+https://github.com/boolangery/py-lua-parser.git@3.3.1
 markdown-it-py==3.0.0
 mdurl==0.1.2
 multimethod==2.0

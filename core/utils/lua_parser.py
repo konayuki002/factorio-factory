@@ -1,129 +1,97 @@
-import re
-from lark import Lark, Transformer
+# core/utils/lua_parser.py（Lark を削除して luaparser ベースに差し替え）
+from pathlib import Path
+from luaparser import ast as lua_ast
+from luaparser import astnodes
 
 
-def extract_data_extend_tables(lua_code: str) -> list[str]:
-    # コメント行を除去
-    code = re.sub(r"--.*", "", lua_code)
-    tables = []
-    pos = 0
-    while True:
-        start = code.find("data:extend", pos)
-        if start == -1:
-            break
-        paren = code.find("(", start)
-        if paren == -1:
-            break
-        brace = code.find("{", paren)
-        if brace == -1:
-            break
-        count = 0
-        for i in range(brace, len(code)):
-            if code[i] == "{":
-                count += 1
-            elif code[i] == "}":
-                count -= 1
-                if count == 0:
-                    tables.append(code[brace : i + 1])
-                    pos = i + 1
-                    break
-        else:
-            break
-    return tables
-
-
-class LuaTableTransformer(Transformer):
-    def table(self, items):
-        # テーブルが { ... } のみの場合はリスト、{key=val,...} ならdict
-        if all(isinstance(i, tuple) and len(i) == 2 for i in items):
-            return dict(items)
-        return list(items)
-
-    def pair(self, items):
-        return (items[0].strip('"'), items[1])
-
-    def SIGNED_NUMBER(self, s):
-        # 整数か小数かで型を分ける
-        s = str(s)
-        if "." in s or "e" in s or "E" in s:
-            return float(s)
-        else:
-            return int(s)
-
-    def ESCAPED_STRING(self, s):
-        return s[1:-1]
-
-    def NAME(self, s):
-        # Luaの識別子はそのまま文字列として扱う
-        return str(s)
-
-    def true(self, _):
-        return True
-
-    def false(self, _):
-        return False
-
-    def binop(self, items):
-        left, op_token, right = items  # items[1] が演算子トークン
-        op = str(op_token)
-        # ここでは「とりあえず文字列に連結して返す」例
-        return f"{left} {op} {right}"
-
-    def dotted_name(self, items):
-        # 例: ['item_sounds', 'brick_inventory_move'] → 'item_sounds.brick_inventory_move'
-        return ".".join(str(i) for i in items)
-
-    def FUNC_CALL(self, items):
-        # 例: ['foo', 'bar'] → 'foo(bar)'
-        # items[0] = 関数名, items[1:] = 引数
-        return f"{items[0]}({', '.join(map(str, items[1:]))})"
-
-
-def parse_lua(lua_filepath: str) -> list:
-    with open(lua_filepath, encoding="utf-8") as f:
-        lua_code = f.read()
-
-    table_texts = extract_data_extend_tables(lua_code)
-
-    # LarkでLuaテーブルをパース（末尾カンマ許容）
-    lua_table_grammar = r"""
-        ?start: table
-        ?table: "{" [item ("," item)* [","]] "}"
-        ?item: pair | value
-        pair: (NAME | ESCAPED_STRING) "=" value
-        ?value: expr
-        ?expr: term
-             | expr OP term    -> binop
-        ?term: factor
-             | term OP factor  -> binop
-        ?factor: concat
-        ?concat: atom (".." atom)*
-        ?atom: ESCAPED_STRING
-                | SIGNED_NUMBER
-                | table
-                | FUNC_CALL
-                | dotted_name
-                | NAME
-                | "(" expr ")"
-                | "true"    -> true
-                | "false"   -> false
-
-        OP: "+" | "-" | "*" | "/"
-        dotted_name: NAME ("." NAME)+
-        FUNC_CALL: /[a-zA-Z_][a-zA-Z0-9_]*\([^)]*\)/
-        %import common.ESCAPED_STRING
-        %import common.SIGNED_NUMBER
-        %import common.CNAME -> NAME
-        %import common.WS
-        %ignore WS
+def parse_lua(lua_filepath: str) -> list[dict]:
     """
+    luaparser を使って .lua ファイルを AST 化し、
+    data:extend({...}) の中身を Python の dict に変換して返す最小実装。
+    """
+    lua_path = Path(lua_filepath)
+    code = lua_path.read_text(encoding="utf-8")
+    print("x")
+    tree = lua_ast.parse(code)
+    print("z")
+    result: list[dict] = []
 
-    parser = Lark(lua_table_grammar, start="start")
-    all_data = []
-    for table_text in table_texts:
-        data = LuaTableTransformer().transform(parser.parse(table_text))
-        if isinstance(data, list):
-            all_data.extend(data)
+    class ExtendVisitor(lua_ast.ASTVisitor):
+        def visit_Call(self, node):
+            # data:extend({...}) のパターンをざっくり検出
+            # （完全網羅はあとで直すとして、とりあえず「data:extend」が来たら Table を dict にする）
+            if (
+                isinstance(node.func, astnodes.Index)
+                and getattr(node.func.idx, "id", None) == "extend"
+                and getattr(node.func.value, "id", None) == "data"
+            ):
+                # 引数が複数あってもすべて処理
+                for arg in node.args:
+                    if isinstance(arg, astnodes.Table):
+                        # テーブル部分を dict に変換して result に足す
+                        result.append(_table_to_dict(arg))
+            # 子ノードも巡回
+            # self.visit_children(node)
+
+    print("a")
+    ExtendVisitor().visit(tree)
+    print("b")
+    return result
+
+
+def _table_to_dict(table_node: astnodes.Table) -> dict:
+    """
+    luaparser の Table ノードを Python dict/list に落とし込む最小例。
+    面倒であれば「{ key = value, ... }」だけ拾って返す実装でもOKです。
+    """
+    obj: dict[str, any] = {}
+    arr: list[any] = []
+
+    for field in table_node.fields:
+        # field は astnodes.Field など
+        key_node = field.key  # 省略：key が None の場合は配列要素として扱う
+        val_node = field.value
+
+        # 「key = value」の場合
+        if key_node is not None:
+            k = _lit_or_name(key_node)
+            v = (
+                _lit_or_name(val_node)
+                if not isinstance(val_node, astnodes.Table)
+                else _table_to_dict(val_node)
+            )
+            obj[k] = v
         else:
-            all_data.append(data)
-    return all_data
+            # 配列要素（{123, "hoge", {...} }みたいな場合）
+            if isinstance(val_node, astnodes.Table):
+                arr.append(_table_to_dict(val_node))
+            else:
+                arr.append(_lit_or_name(val_node))
+
+    # Lua の混在テーブル対応（key付きと配列要素の併存）
+    if obj and not arr:
+        return obj
+    elif arr and not obj:
+        return arr  # 純配列として返す
+    else:
+        # key 付きと配列要素が混ざっていたら、両方いっしょの dict に突っ込む
+        obj["_arr"] = arr
+        return obj
+
+
+def _lit_or_name(node):
+    """
+    リテラル or 識別子ならそのまま Python の基本型に変換するヘルパー。
+    たとえば astnodes.String → str, astnodes.Number → int/float, astnodes.Name → 変数名文字列など。
+    簡易実装例：
+    """
+    if isinstance(node, astnodes.String):
+        return node.s
+    if isinstance(node, astnodes.Number):
+        return node.n
+    if isinstance(node, astnodes.Nil):
+        return None
+    if isinstance(node, astnodes.Name):
+        return node.id
+    # そのほかのノードは文字列化して返すだけ（とりあえず）
+    return str(node)

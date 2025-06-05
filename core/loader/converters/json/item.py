@@ -33,5 +33,4 @@ class ItemJsonConverter(BaseConverter):
 
         # 3) dict -> JSON
         json_items_path = f"{self.intermediate_dir}/{self.json_items_path}"
-        print(items[0])
         self.dump_json(items, json_items_path)
