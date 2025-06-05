@@ -1,0 +1,5 @@
+# EnumConverter
+
+## 目的
+各モジュールはLua prototypeから生成されたJSON形式の各ファイルをPythonのEnumクラスを定義したモジュールに変換するためのコンバータを提供します。
+このコンバータは、JSONのデータ構造をEnum識別子に変換し、Factorio Factoryの他の部分で利用できるようにします。
