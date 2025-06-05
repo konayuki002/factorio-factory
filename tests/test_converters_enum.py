@@ -62,7 +62,7 @@ def _assert_enum_equal(enum1: type[Enum], enum2: type[Enum]) -> None:
 
 def test_item_groups_enum_generation(enum_converter):
     """
-    - json_converter.load() で Enum が出力される（item_group.py, item_subgroup.py）
+    - enum_converter.load() で Enum が出力される（item_group.py, item_subgroup.py）
     - 生成された Enum を fixtures の期待値と比較
     """
     converter = enum_converter
