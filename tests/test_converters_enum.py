@@ -2,6 +2,7 @@ import os
 import shutil
 import importlib.util
 import pytest
+from enum import Enum
 from core.loader.converters.enum.item_groups import ItemGroupEnumConverter
 
 
@@ -37,24 +38,26 @@ def enum_converter(tmp_path):
     return converter
 
 
-def _import_enum(path: str, class_name: str):
+def _import_enum(path: str, class_name: str) -> type[Enum]:
     spec = importlib.util.spec_from_file_location(class_name, path)
+    assert spec is not None
     module = importlib.util.module_from_spec(spec)
-    assert spec.loader
+    assert spec.loader is not None
     spec.loader.exec_module(module)
     return getattr(module, class_name)
 
 
-def _assert_enum_equal(enum1, enum2):
+def _assert_enum_equal(enum1: type[Enum], enum2: type[Enum]) -> None:
     """Enumクラス同士のメンバー名・値を比較"""
-
-    assert len(enum1) == len(enum2)
-
-    # 順序は保証されないので、名前でソートして比較
-    # キーの比較
-    assert sorted(enum1.__members__.keys()) == sorted(enum2.__members__.keys())
-    # 値の比較
-    assert sorted({m.value for m in enum1}) == sorted({m.value for m in enum2})
+    assert len(enum1) == len(
+        enum2
+    ), f"Enum length mismatch: {len(enum1)} vs {len(enum2)}"
+    assert sorted(enum1.__members__.keys()) == sorted(
+        enum2.__members__.keys()
+    ), f"Enum keys differ: {enum1.__members__.keys()} vs {enum2.__members__.keys()}"
+    assert sorted({m.value for m in enum1}) == sorted(
+        {m.value for m in enum2}
+    ), f"Enum values differ: {[m.value for m in enum1]} vs {[m.value for m in enum2]}"
 
 
 def test_item_groups_enum_generation(enum_converter):
@@ -66,9 +69,7 @@ def test_item_groups_enum_generation(enum_converter):
     converter.load()
 
     # ItemGroup Enum の比較
-    out_enum_item_groups_path = os.path.join(
-        converter.enum_dir, "item_group.py"
-    )
+    out_enum_item_groups_path = os.path.join(converter.enum_dir, "item_group.py")
     assert os.path.isfile(
         out_enum_item_groups_path
     ), f"Enum モジュールのファイルが生成されていません: {out_enum_item_groups_path}"
@@ -81,11 +82,8 @@ def test_item_groups_enum_generation(enum_converter):
     TargetItemGroup = _import_enum(target_enum_item_groups_path, "ItemGroup")
     _assert_enum_equal(ItemGroup, TargetItemGroup)
 
-
     # ItemSubGroup Enum の比較
-    out_enum_item_subgroups_path = os.path.join(
-        converter.enum_dir, "item_subgroup.py"
-    )
+    out_enum_item_subgroups_path = os.path.join(converter.enum_dir, "item_subgroup.py")
     assert os.path.isfile(
         out_enum_item_subgroups_path
     ), f"Enum モジュールのファイルが生成されていません: {out_enum_item_subgroups_path}"
