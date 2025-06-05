@@ -5,10 +5,10 @@ from core.enums.manual_item_group import MANUAL_MEMBERS
 
 @register("enum:item_group")
 class ItemGroupEnumConverter(BaseConverter):
-    """
+    """ 
     アイテムグループに関するJSON -> Enum クラスの生成.
     具体的には、以下のファイルを処理します:
-    intermediate/item-groups.json, intermediate/item-subgroups.json
+    intermediate/item_groups.json, intermediate/item_subgroups.json
      -> enums/item_group.py, enums/item_subgroup.py
     """
 

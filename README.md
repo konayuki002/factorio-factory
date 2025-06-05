@@ -98,7 +98,7 @@ deactivate
 ## CLIの使い方
 CLIツールを使ってwube/factorio-dateのプロトタイプ定義をEnum識別子に変換することができます
 ```bash
-python -m core.loader build
+python -m core.loader build-all
 ```
 
 ## 編集上の注意
@@ -106,3 +106,9 @@ python -m core.loader build
 * 編集NG: `item_group.py`           # アイテムグループの列挙型
 * 編集NG: `item_subgroup.py`
 * 編集OK: `manual_item_group.py`    # 追加用ハードコード識別子の定義
+
+## テストの実行方法
+テストはpytestを使って実行できます. 仮想環境を有効化した状態で以下を実行:
+```bash
+python -m pytest
+```
