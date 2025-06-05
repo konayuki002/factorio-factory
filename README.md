@@ -60,7 +60,7 @@ factorio_factory/
 │   └── test_layout.py
 ├── .gitignore                      # Git無視設定
 ├── requirements.txt                # 依存パッケージ
-├── python-version.txt              # Pythonバージョン指定
+├── .python-version              # Pythonバージョン指定
 ├── README.md
 └── mkdocs.yml                      # ドキュメント構成
 ```
@@ -68,12 +68,12 @@ factorio_factory/
 ## 前提
 以下がインストール済みであることを前提とします.
 1. **pyenv**
-  - Pytnon 3.13.3 (あるいはそれ以降の3.13系) がインストールされていること.
+  - Python 3.13.3 (あるいはそれ以降の3.13系) がインストールされていること.
   ```sh
   pyenv install 3.13.3 # もしまだインストールしていない場合
   pyenv local 3.13.3 # このプロジェクトのルートディレクトリで実行
   ```
-  - `pyenv which python` で表示されるパスが `home/<username>/.pyenv/versions/3.13.3/bin/python` であることを確認してください.
+  - `pyenv which python` で表示されるパスが `~/.pyenv/versions/3.13.3/bin/python` であることを確認してください.
 
 ## セットアップ手順
 1. 仮想環境を作成し, 有効化する
@@ -96,7 +96,7 @@ deactivate
 ```
 
 ## CLIの使い方
-CLIツールを使ってwube/factorio-dateのプロトタイプ定義をEnum識別子に変換することができます
+CLIツールを使ってwube/factorio-dataのプロトタイプ定義をEnum識別子に変換することができます
 ```bash
 python -m core.loader build-all
 ```
