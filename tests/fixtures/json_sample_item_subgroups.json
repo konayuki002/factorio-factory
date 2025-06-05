@@ -1,0 +1,26 @@
+[
+    {
+        "type": "item-subgroup",
+        "name": "subgroup1-1",
+        "group": "group1",
+        "order": "a"
+    },
+    {
+        "type": "item-subgroup",
+        "name": "subgroup1-2",
+        "group": "group1",
+        "order": "b"
+    },
+    {
+        "type": "item-subgroup",
+        "name": "subgroup2-1",
+        "group": "group2",
+        "order": "a"
+    },
+    {
+        "type": "item-subgroup",
+        "name": "subgroup2-2",
+        "group": "group2",
+        "order": "b"
+    }
+]
