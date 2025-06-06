@@ -13,18 +13,19 @@ def parse_lua(lua_filepath: str) -> list[dict]:
     code = lua_path.read_text(encoding="utf-8")
     print("x")
     tree = lua_ast.parse(code)
+    # print(tree)
     print("z")
     result: list[dict] = []
 
     class ExtendVisitor(lua_ast.ASTVisitor):
-        def visit_Call(self, node):
+        def visit_Invoke(self, node):
             # data:extend({...}) のパターンをざっくり検出
             # （完全網羅はあとで直すとして、とりあえず「data:extend」が来たら Table を dict にする）
             if (
-                isinstance(node.func, astnodes.Index)
-                and getattr(node.func.idx, "id", None) == "extend"
-                and getattr(node.func.value, "id", None) == "data"
+                getattr(node.source, "id", None) == "data"
+                and getattr(node.func, "id", None) == "extend"
             ):
+                print (node.args)
                 # 引数が複数あってもすべて処理
                 for arg in node.args:
                     if isinstance(arg, astnodes.Table):
