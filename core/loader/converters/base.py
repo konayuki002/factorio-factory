@@ -115,6 +115,8 @@ class BaseConverter:
 
         enum_dir = os.path.dirname(enum_path)
         if not os.path.isdir(enum_dir):
+            # 本プロジェクトではenums/.gitkeepでディレクトリを確保しており、
+            # 誤った場所へのファイル生成を防ぐため明示的なエラー通知を優先しています
             raise FileNotFoundError(f"Enum出力先ディレクトリが存在しません: {enum_dir}")
         with open(enum_path, "w", encoding="utf-8") as f:
             f.write(f"from enum import Enum\n\n\nclass {enum_name}(Enum):\n")
