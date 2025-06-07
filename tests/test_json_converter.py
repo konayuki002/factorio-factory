@@ -20,6 +20,13 @@ TEST_CASES = [
             ("item.json", "json_sample_item.json"),
         ],
     ),
+    (
+        "core.loader.converters.json.fluid.FluidJsonConverter",
+        "lua-sample-fluid.lua",
+        [
+            ("fluid.json", "json_sample_fluid.json"),
+        ],
+    ),
     # 他のConverterも追加
 ]
 
