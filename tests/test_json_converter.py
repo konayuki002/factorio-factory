@@ -48,6 +48,13 @@ TEST_CASES = [
             ("technology.json", "json_sample_technology.json"),
         ],
     ),
+    (
+        "core.loader.converters.json.recipe.RecipeJsonConverter",
+        "lua-sample-recipe.lua",
+        [
+            ("recipe.json", "json_sample_recipe.json"),
+        ],
+    ),
     # 他のConverterも追加
 ]
 
