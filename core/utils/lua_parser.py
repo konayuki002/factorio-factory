@@ -179,6 +179,20 @@ class LuaTableExtractor(lua_ast.ASTVisitor):
             self.data_extend_tables.append(merged)
             return
 
+        if (
+            isinstance(val, astnodes.Call)
+            and getattr(val.func, "id", None) == "create_follower_upgrade"
+        ):
+            # create_follower_upgrade の場合は無視
+            # 複数レベルの似たテクノロジーを関数で定義するためのもので、
+            # 今後対応する可能性があるが、
+            # とりあえずはプレイ初期のテクノロジーであるため無視
+            logging.info(
+                "Ignoring create_follower_upgrade in data:extend: %s",
+                getattr(val, "func", getattr(val, "id", type(val).__name__)),
+            )
+            return
+
         logging.warning(
             "Unsupported expression in data:extend: %s",
             getattr(val, "func", getattr(val, "id", type(val).__name__)),

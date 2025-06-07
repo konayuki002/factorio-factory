@@ -41,6 +41,13 @@ TEST_CASES = [
             ("resource_category.json", "json_sample_resource_category.json"),
         ],
     ),
+    (
+        "core.loader.converters.json.technology.TechnologyJsonConverter",
+        "lua-sample-technology.lua",
+        [
+            ("technology.json", "json_sample_technology.json"),
+        ],
+    ),
     # 他のConverterも追加
 ]
 
