@@ -69,6 +69,13 @@ TEST_CASES = [
             ("entities.json", "json_sample_entities.json"),
         ],
     ),
+    (
+        "core.loader.converters.json.recipe_category.RecipeCategoryJsonConverter",
+        "lua-sample-recipe-category.lua",
+        [
+            ("recipe_category.json", "json_sample_recipe_category.json"),
+        ],
+    ),
     # 他のConverterも追加
 ]
 

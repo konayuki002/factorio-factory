@@ -27,6 +27,12 @@ TEST_CASES = [
         "Material",
         "material.py",
     ),
+    (
+        "core.loader.converters.enum.process_category.ProcessCategoryEnumConverter",
+        "json_sample_recipe_category.json",
+        "ProcessCategory",
+        "process_category.py",
+    ),
     # 他のenum converterもここに追加可能
 ]
 
