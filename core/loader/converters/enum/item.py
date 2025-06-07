@@ -1,6 +1,5 @@
 from core.loader.converters.base import BaseConverter
 from core.loader.registry import register
-from core.enums.manual_item_group import MANUAL_MEMBERS
 
 
 @register("enum:item")
@@ -22,14 +21,6 @@ class ItemEnumConverter(BaseConverter):
 
         # 2) Enum 生成用に名前一覧を返す
         enum_item_members = [item["name"].lower() for item in items]
-
-        # 2.5) 手動で追加するメンバーを統合（重複排除・順序維持）
-        manual = MANUAL_MEMBERS.get("item", [])
-        enum_item_members = self.merge_unique(
-            enum_item_members,
-            [m.lower() for m in manual],
-            "Item",
-        )
 
         # 3) Enum クラスを生成して保存
         enum_item_path = f"{self.enum_dir}/{self.enum_item_path}"
