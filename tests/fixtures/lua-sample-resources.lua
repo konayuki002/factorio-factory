@@ -1,0 +1,30 @@
+data:extend({
+  resource(
+    {
+      name = "test-ore",
+      order = "a",
+      map_color = {0.1, 0.2, 0.3},
+      mining_time = 1,
+    },
+    {
+      base_density = 5,
+      regular_rq_factor_multiplier = 1.0,
+    }
+  ),
+  {
+    type = "resource",
+    name = "test-expensive-ore",
+    icon = "__base__/graphics/icons/expensive-ore.png",
+    order = "b",
+    minable = {
+      mining_time = 2,
+      result = "test-expensive-ore"
+    },
+    autoplace = {
+      name = "test-expensive-ore",
+      order = "c",
+      base_density = 0.5,
+      has_starting_area_placement = false
+    },
+  },
+})
