@@ -13,13 +13,13 @@ TEST_CASES = [
             ("item_subgroups.json", "json_sample_item_subgroups.json"),
         ],
     ),
-    # (
-    #    "core.loader.converters.json.item.ItemJsonConverter",
-    #    "lua-sample-item.lua",
-    #    [
-    #        ("item.json", "json_sample_item.json"),
-    #    ],
-    # ),
+    (
+        "core.loader.converters.json.item.ItemJsonConverter",
+        "lua-sample-item.lua",
+        [
+            ("item.json", "json_sample_item.json"),
+        ],
+    ),
     # 他のConverterも追加
 ]
 
