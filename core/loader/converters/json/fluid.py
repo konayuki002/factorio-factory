@@ -1,6 +1,6 @@
 from core.loader.converters.base import BaseConverter
 from core.loader.registry import register
-from core.utils.lua_parser import parse_lua
+from core.utils.lua_parser import parse_lua_file
 
 
 @register("json:fluid")
@@ -18,11 +18,16 @@ class FluidJsonConverter(BaseConverter):
     def load(self):
         # 1) Lua -> dict
         lua_file = f"{self.raw_dir}/{self.lua_path}"
-        data = parse_lua(lua_file)
+        data_tables = parse_lua_file(lua_file)
+
+        print("data_extend_tables: ", type(data_tables["data_extend"]), len(data_tables["data_extend"]))
+        print("resource_tables: ", type(data_tables["resources"]), len(data_tables["resources"]))
+
+        print(data_tables["data_extend"][1])
 
         # 2) 必要なら前処理
         fluids = []
-        for entry in data:
+        for entry in data_tables["data_extend"][1]:
 
             if entry.get("subgroup") == "parameters":
                 # パラメータシグナル用アイテムは除外
