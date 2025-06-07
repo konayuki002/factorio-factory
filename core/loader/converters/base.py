@@ -14,7 +14,7 @@ class BaseConverter:
     """
 
     dependencies: list[str] = []  # "json:item_group" のような形式で依存関係を指定
-    lua_path: str = ""
+    lua_filename: str = ""
     json_path: str = ""
     raw_dir: str = "data/raw"
     intermediate_dir: str = "data/intermediate"

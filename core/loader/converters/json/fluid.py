@@ -12,12 +12,12 @@ class FluidJsonConverter(BaseConverter):
     """
 
     dependencies = []
-    lua_path = "fluid.lua"
+    lua_filename = "fluid.lua"
     json_fluids_path = "fluid.json"
 
     def load(self):
         # 1) Lua -> dict
-        lua_file = f"{self.raw_dir}/{self.lua_path}"
+        lua_file = f"{self.raw_dir}/{self.lua_filename}"
         data = parse_lua_file(lua_file)
 
         # 2) 必要なら前処理

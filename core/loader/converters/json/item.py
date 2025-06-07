@@ -13,7 +13,7 @@ class ItemJsonConverter(BaseConverter):
     """
 
     dependencies = []
-    lua_path = "item.lua"
+    lua_filename = "item.lua"
     json_items_path = "item.json"
 
     capable_subgroups = [
@@ -31,7 +31,7 @@ class ItemJsonConverter(BaseConverter):
 
     def load(self):
         # 1) Lua -> dict
-        lua_file = f"{self.raw_dir}/{self.lua_path}"
+        lua_file = f"{self.raw_dir}/{self.lua_filename}"
         data = parse_lua_file(lua_file)
 
         # 2) 必要なら前処理

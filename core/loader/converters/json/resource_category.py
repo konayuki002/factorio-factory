@@ -12,12 +12,12 @@ class ResourceCategoryJsonConverter(BaseConverter):
     """
 
     dependencies = []
-    lua_path = "resource-category.lua"
+    lua_filename = "resource-category.lua"
     json_categories_path = "resource_category.json"
 
     def load(self):
         # 1) Lua -> dict
-        lua_file = f"{self.raw_dir}/{self.lua_path}"
+        lua_file = f"{self.raw_dir}/{self.lua_filename}"
         data = parse_lua_file(lua_file)
 
         # 2) 必要なら前処理
