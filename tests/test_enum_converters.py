@@ -16,6 +16,17 @@ TEST_CASES = [
         "ItemSubgroup",
         "item_subgroup.py",
     ),
+    (
+        "core.loader.converters.enum.material.MaterialEnumConverter",
+        [
+            "json_sample_item.json",
+            "json_sample_fluid.json",
+            "json_sample_resources.json",
+            "json_sample_technology.json",
+        ],
+        "Material",
+        "material.py",
+    ),
     # 他のenum converterもここに追加可能
 ]
 
@@ -45,10 +56,19 @@ def test_enum_converter(tmp_path, converter_path, json_fixture, enum_name, enum_
     fixtures_dir = os.path.join(os.path.dirname(__file__), "fixtures")
 
     # JSONファイルをコピー
-    shutil.copyfile(
-        os.path.join(fixtures_dir, json_fixture),
-        input_base / ConverterClass.json_filename,  # Converterが期待するJSONファイル名
-    )
+    if isinstance(json_fixture, list):
+        json_filenames = sorted(ConverterClass.json_filenames)
+        for fixture, json_filename in zip(sorted(json_fixture), json_filenames):
+            shutil.copyfile(
+                os.path.join(fixtures_dir, fixture),
+                input_base / json_filename,  # Converterが期待するJSONファイル名
+            )
+    else:
+        shutil.copyfile(
+            os.path.join(fixtures_dir, json_fixture),
+            input_base
+            / ConverterClass.json_filename,  # Converterが期待するJSONファイル名
+        )
 
     # Converterインスタンス生成
     converter = ConverterClass()
