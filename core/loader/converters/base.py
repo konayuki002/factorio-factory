@@ -109,9 +109,7 @@ class BaseConverter:
         # 変換: kebab-case -> UpperCamelCase
         member_map = {to_enum_member(member): member for member in members}
         enum_class = Enum(enum_name, member_map)
-        # Enumクラスをモジュールの属性として追加
-        module = __import__(__name__)
-        setattr(module, enum_name, enum_class)
+
         # Enumをファイルに保存
         import os
 
