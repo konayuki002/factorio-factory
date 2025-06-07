@@ -47,7 +47,7 @@ def clean_artifacts():
         file.unlink(missing_ok=True)
 
     # core/enum/*.py を削除（__init__.py は残す、あるいは判定ロジックを入れてもよい）
-    enum_dir = Path(__file__).parents[2] / "core" / "enum"
+    enum_dir = Path(__file__).parents[2] / "core" / "enums"
     for file in enum_dir.glob("*.py"):
         if file.name != "__init__.py":
             file.unlink(missing_ok=True)
