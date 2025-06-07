@@ -1,5 +1,6 @@
 from core.loader.converters.base import BaseConverter
 from core.loader.registry import register
+
 from core.utils.lua_parser import parse_lua_file
 
 
@@ -31,12 +32,14 @@ class ItemJsonConverter(BaseConverter):
     def load(self):
         # 1) Lua -> dict
         lua_file = f"{self.raw_dir}/{self.lua_path}"
-        data_tables = parse_lua_file(lua_file)
+        data = parse_lua_file(lua_file)
 
         # 2) 必要なら前処理
         items = []
-        # テーブルの0番目はparameterなので1番目から処理
-        for entry in data_tables["data_extend"][1]:
+        for entry in data:
+            if entry.get("subgroup") == "parameters":
+                continue
+
             if entry.get("type") in self.capable_subgroups:
                 items.append(entry)
 

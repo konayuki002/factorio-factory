@@ -19,13 +19,13 @@ class ItemGroupJsonConverter(BaseConverter):
     def load(self):
         # 1) Lua -> dict
         lua_file = f"{self.raw_dir}/{self.lua_path}"
-        data_tables = parse_lua_file(lua_file)
+        data = parse_lua_file(lua_file)
 
         # 2) 必要なら前処理
         groups = []
         subgroups = []
 
-        for entry in data_tables["data_extend"][0]:
+        for entry in data:
             if entry["type"] == "item-group":
                 groups.append(entry)
             elif entry["type"] == "item-subgroup":
