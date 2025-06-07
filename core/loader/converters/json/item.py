@@ -1,6 +1,6 @@
 from core.loader.converters.base import BaseConverter
 from core.loader.registry import register
-from core.utils.lua_parser import parse_lua
+from core.utils.lua_parser import parse_lua_file
 
 
 @register("json:item")
@@ -15,20 +15,29 @@ class ItemJsonConverter(BaseConverter):
     lua_path = "item.lua"
     json_items_path = "item.json"
 
+    capable_subgrpoups = [
+        "capsule",
+        "item",
+        "repair-tool",
+        "tool",
+        "item-with-entity-data",
+        "rail-planner",
+        "module",
+        "ammo",
+        "gun",
+        "armor",
+    ]
+
     def load(self):
         # 1) Lua -> dict
         lua_file = f"{self.raw_dir}/{self.lua_path}"
-        data = parse_lua(lua_file)
+        data_tables = parse_lua_file(lua_file)
 
         # 2) 必要なら前処理
         items = []
-        for entry in data:
-
-            if entry.get("subgroup") == "parameters":
-                # パラメータシグナル用アイテムは除外
-                continue
-
-            if entry.get("type") == "item":
+        # テーブルの0番目はparameterなので1番目から処理
+        for entry in data_tables["data_extend"][1]:
+            if entry.get("type") in self.capable_subgrpoups:
                 items.append(entry)
 
         # 3) dict -> JSON

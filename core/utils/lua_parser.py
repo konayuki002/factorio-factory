@@ -4,6 +4,8 @@ from luaparser import ast as lua_ast
 from luaparser import astnodes
 from typing import Any
 
+import logging
+
 
 def parse_lua(lua_filepath: str) -> list[dict]:
     """
@@ -37,37 +39,35 @@ def parse_lua(lua_filepath: str) -> list[dict]:
 
 def _table_to_dict(table_node: astnodes.Table) -> dict | list:
     """
-    luaparser の Table ノードを Python dict/list に落とし込む最小例。
-    面倒であれば「{ key = value, ... }」だけ拾って返す実装でもOKです。
+    luaparser の Table ノードを Python dict/list に落とし込む。
     """
     obj: dict[str, any] = {}
     arr: list[any] = []
 
     for field in table_node.fields:
         # field は astnodes.Field など
-        print("key", field.key)
-        key_node = field.key  # 省略：key が 1始まりで連番 の場合は配列要素として扱う
+        key_node = field.key
+        if key_node is None:
+            raise ValueError("Lua テーブルのキーが None です。")
+
         val_node = field.value
 
-        # 「key = value」の場合
-        if key_node is not None:
-            k = _lit_or_name(key_node)
-            v = (
-                _lit_or_name(val_node)
-                if not isinstance(val_node, astnodes.Table)
-                else _table_to_dict(val_node)
-            )
-            obj[k] = v
+        k = _lit_or_name(key_node)
+        v = (
+            _lit_or_name(val_node)
+            if not isinstance(val_node, astnodes.Table)
+            else _table_to_dict(val_node)
+        )
+        obj[k] = v
 
-
-    # Lua の混在テーブル対応（key付きと配列要素の併存）
-    if obj and not arr:
-        return obj
-    elif arr and not obj:
-        return arr  # 純配列として返す
+    if all(
+        isinstance(key, int) and key == i + 1 for i, (key, _) in enumerate(obj.items())
+    ):
+        # key が 1始まりで連番 の場合は配列要素として扱う
+        arr = list(obj.values())
+        return arr
     else:
-        # key 付きと配列要素が混ざっていたら、両方いっしょの dict に突っ込む
-        obj["_arr"] = arr
+        # それ以外は key 付きの dict として返す
         return obj
 
 
@@ -85,16 +85,61 @@ def _lit_or_name(node):
         return None
     if isinstance(node, astnodes.Name):
         return node.id
-    # そのほかのノードは文字列化して返すだけ（とりあえず）
+    if isinstance(node, astnodes.FalseExpr):
+        return False
+    if isinstance(node, astnodes.TrueExpr):
+        return True
+    if isinstance(node, astnodes.MultOp):
+        return {
+            "node_type": "expr",
+            "op": "mult",
+            "left": _lit_or_name(node.left),
+            "right": _lit_or_name(node.right),
+        }
+    if isinstance(node, astnodes.FloatDivOp):
+        # astnodes.FloatDiv は除算演算子
+        # 後段で厳密な有理数のSympy式に変換するために, まだ計算しない
+        return {
+            "node_type": "expr",
+            "op": "float_div",
+            "left": _lit_or_name(node.left),
+            "right": _lit_or_name(node.right),
+        }
+    if isinstance(node, astnodes.UMinusOp):
+        return -_lit_or_name(node.operand)
+    if isinstance(node, astnodes.Concat):
+        # astnodes.Concat は文字列連結
+        return {
+            "node_type": "concat",
+            "left": _lit_or_name(node.left),
+            "right": _lit_or_name(node.right),
+        }
+    if isinstance(node, astnodes.Index):
+        return {
+            "node_type": "field_chain",
+            "index": _lit_or_name(node.idx),
+            "value": _lit_or_name(node.value),
+        }
+    if isinstance(node, astnodes.Call):
+        return {
+            "node_type": "call",
+            "func": _lit_or_name(node.func),
+            "args": [_lit_or_name(arg) for arg in node.args],
+        }
+
+    # そのほかのノードはあれば文字列化して返すだけ
+    logging.warning("Unsupported node type: %s", type(node).__name__)
     return str(node)
 
+
 class LuaTableExtractor(lua_ast.ASTVisitor):
-    data_extend_tables = []
-    resources_tables = []
+    def __init__(self):
+        super().__init__()
+        self.data_extend_tables = []
+        self.resources_tables = []
 
     def visit_Invoke(self, node):
-        # data:extend({...}) のパターンをざっくり検出
-        # （完全網羅はあとで直すとして、とりあえず「data:extend」が来たら Table を dict にする）
+        # data:extend({...}) のパターンを検出してテーブルに変換
         if (
             getattr(node.source, "id", None) == "data"
             and getattr(node.func, "id", None) == "extend"
@@ -104,8 +149,15 @@ class LuaTableExtractor(lua_ast.ASTVisitor):
                 if isinstance(arg, astnodes.Table):
                     # テーブル部分を dict に変換して result に足す
                     self.data_extend_tables.append(_table_to_dict(arg))
-        # 子ノードも巡回
-        # self.visit_children(node)
+
+    def visit_Call(self, node):
+        # resources(...) のパターンを検出
+        if getattr(node.func, "id", None) == "resources":
+            for arg in node.args:
+                if isinstance(arg, astnodes.Table):
+                    # テーブル部分を dict に変換して result に足す
+                    self.resources_tables.append(_table_to_dict(arg))
+
 
 def parse_lua_file(path: str) -> dict[str, list[Any]]:
     """
@@ -118,13 +170,12 @@ def parse_lua_file(path: str) -> dict[str, list[Any]]:
       }
     """
     # 1) ファイル読み込み
-    with open(path, 'r', encoding='utf-8') as f:
+    with open(path, "r", encoding="utf-8") as f:
         lua_code = f.read()
 
     # 2) AST を構築
     try:
         tree = lua_ast.parse(lua_code)
-        print(tree)
     except Exception as e:
         # 失敗時はログを吐いて空の結果を返す、または例外を再送出
         raise RuntimeError(f"Lua のパースに失敗: {e}")
@@ -135,6 +186,6 @@ def parse_lua_file(path: str) -> dict[str, list[Any]]:
 
     # 4) 抽出されたリストをまとめて返す
     return {
-        'data_extend': extractor.data_extend_tables,
-        'resources':   extractor.resources_tables
+        "data_extend": extractor.data_extend_tables,
+        "resources": extractor.resources_tables,
     }

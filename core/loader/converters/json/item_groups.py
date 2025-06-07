@@ -1,6 +1,6 @@
 from core.loader.converters.base import BaseConverter  # 共通ユーティリティ
 from core.loader.registry import register
-from core.utils.lua_parser import parse_lua
+from core.utils.lua_parser import parse_lua_file
 
 
 @register("json:item_group")
@@ -19,14 +19,13 @@ class ItemGroupJsonConverter(BaseConverter):
     def load(self):
         # 1) Lua -> dict
         lua_file = f"{self.raw_dir}/{self.lua_path}"
-        # 下記の extract_data_extend_tableとLuaTableTransformerの処理を外部化して呼び出す
-        data = parse_lua(lua_file)
+        data_tables = parse_lua_file(lua_file)
 
         # 2) 必要なら前処理
         groups = []
         subgroups = []
 
-        for entry in data:
+        for entry in data_tables["data_extend"][0]:
             if entry["type"] == "item-group":
                 groups.append(entry)
             elif entry["type"] == "item-subgroup":

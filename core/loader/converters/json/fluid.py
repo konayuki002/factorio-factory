@@ -20,23 +20,13 @@ class FluidJsonConverter(BaseConverter):
         lua_file = f"{self.raw_dir}/{self.lua_path}"
         data_tables = parse_lua_file(lua_file)
 
-        print("data_extend_tables: ", type(data_tables["data_extend"]), len(data_tables["data_extend"]))
-        print("resource_tables: ", type(data_tables["resources"]), len(data_tables["resources"]))
-
-        print(data_tables["data_extend"][1])
-
         # 2) 必要なら前処理
         fluids = []
+        # テーブルの0番目はparameterなので1番目から処理
         for entry in data_tables["data_extend"][1]:
-
-            if entry.get("subgroup") == "parameters":
-                # パラメータシグナル用アイテムは除外
-                continue
-
             if entry.get("type") == "fluid":
                 fluids.append(entry)
 
         # 3) dict -> JSON
         json_fluids_path = f"{self.intermediate_dir}/{self.json_fluids_path}"
-
         self.dump_json(fluids, json_fluids_path)
