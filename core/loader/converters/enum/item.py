@@ -11,12 +11,12 @@ class ItemEnumConverter(BaseConverter):
     """
 
     dependencies = ["json:item"]
-    json_items_path = "item.json"
+    json_filename = "item.json"
     enum_item_path = "item.py"
 
     def load(self):
         # 1) JSON load
-        json_items_path = f"{self.intermediate_dir}/{self.json_items_path}"
+        json_items_path = f"{self.intermediate_dir}/{self.json_filename}"
         items = self.load_json(json_items_path)
 
         # 2) Enum 生成用に名前一覧を返す
