@@ -72,6 +72,11 @@ def _(node: astnodes.FloatDivOp) -> Dict[str, Any]:
 
 
 @_convert_node.register
+def _(node: astnodes.AddOp) -> Dict[str, Any]:
+    return _binary_expr("add", node.left, node.right)
+
+
+@_convert_node.register
 def _(node: astnodes.SubOp) -> Dict[str, Any]:
     return _binary_expr("sub", node.left, node.right)
 
@@ -87,6 +92,11 @@ def _(node: astnodes.Concat) -> Dict[str, Any]:
 
 @_convert_node.register
 def _(node: astnodes.UMinusOp) -> Any:
+    if not isinstance(node.operand, astnodes.Number):
+        return {
+            "node_type": "unary_minus",
+            "operand": _convert_node(node.operand),
+        }
     return -_convert_node(node.operand)
 
 
@@ -191,6 +201,11 @@ class LuaTableExtractor(lua_ast.ASTVisitor):
                 "Ignoring create_follower_upgrade in data:extend: %s",
                 getattr(val, "func", getattr(val, "id", type(val).__name__)),
             )
+            return
+
+        if isinstance(val, astnodes.Name):
+            # 名前だけのフィールドは無視
+            # entities.luaの特殊オブジェクトにのみ存在する。
             return
 
         logging.warning(

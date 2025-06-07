@@ -62,6 +62,13 @@ TEST_CASES = [
             ("mining_drill.json", "json_sample_mining_drill.json"),
         ],
     ),
+    (
+        "core.loader.converters.json.entities.EntitiesJsonConverter",
+        "lua-sample-entities.lua",
+        [
+            ("entities.json", "json_sample_entities.json"),
+        ],
+    ),
     # 他のConverterも追加
 ]
 
