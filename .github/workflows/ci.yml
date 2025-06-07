@@ -30,4 +30,4 @@ jobs:
         run: python -m core.loader build-all
 
       - name: Run pytest
-        run: python -m pytest
+        run: pytest

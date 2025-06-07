@@ -110,5 +110,5 @@ python -m core.loader build-all
 ## テストの実行方法
 テストはpytestを使って実行できます. 仮想環境を有効化した状態で以下を実行:
 ```bash
-python -m pytest
+pytest
 ```
