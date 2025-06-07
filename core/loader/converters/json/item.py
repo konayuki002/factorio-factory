@@ -15,7 +15,7 @@ class ItemJsonConverter(BaseConverter):
     lua_path = "item.lua"
     json_items_path = "item.json"
 
-    capable_subgrpoups = [
+    capable_subgroups = [
         "capsule",
         "item",
         "repair-tool",
@@ -37,7 +37,7 @@ class ItemJsonConverter(BaseConverter):
         items = []
         # テーブルの0番目はparameterなので1番目から処理
         for entry in data_tables["data_extend"][1]:
-            if entry.get("type") in self.capable_subgrpoups:
+            if entry.get("type") in self.capable_subgroups:
                 items.append(entry)
 
         # 3) dict -> JSON
