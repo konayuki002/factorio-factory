@@ -55,6 +55,13 @@ TEST_CASES = [
             ("recipe.json", "json_sample_recipe.json"),
         ],
     ),
+    (
+        "core.loader.converters.json.mining_drill.MiningDrillJsonConverter",
+        "lua-sample-mining-drill.lua",
+        [
+            ("mining_drill.json", "json_sample_mining_drill.json"),
+        ],
+    ),
     # 他のConverterも追加
 ]
 

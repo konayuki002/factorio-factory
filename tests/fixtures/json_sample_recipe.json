@@ -5,10 +5,18 @@
     "category": "smelting",
     "energy_required": 3.2,
     "ingredients": [
-      {"type": "item", "name": "sample-item", "amount": 1}
+      {
+        "type": "item",
+        "name": "sample-item",
+        "amount": 1
+      }
     ],
     "results": [
-      {"type": "item", "name": "sample-item-2", "amount": 1}
+      {
+        "type": "item",
+        "name": "sample-item-2",
+        "amount": 1
+      }
     ],
     "allow_productivity": true
   },
@@ -18,10 +26,18 @@
     "category": "smelting",
     "energy_required": 3.2,
     "ingredients": [
-      {"type": "item", "name": "sample-item-2", "amount": 1}
+      {
+        "type": "item",
+        "name": "sample-item-2",
+        "amount": 1
+      }
     ],
     "results": [
-      {"type": "item", "name": "sample-item", "amount": 1}
+      {
+        "type": "item",
+        "name": "sample-item",
+        "amount": 1
+      }
     ],
     "allow_productivity": true
   }
