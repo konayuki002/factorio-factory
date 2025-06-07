@@ -15,33 +15,33 @@ factorio_factory/
 │   │   ├── 02_throughput.py
 │   │   └── 03_machine_count.py
 │   ├── 03_layout/                  # 配置とトポロジー
-│   |   ├── 01_topology.py
-│   |   └── 02_placer.py
-|   ├── enum/                       # 識別子定義
-│   |   ├── item_group.py           # アイテムグループの列挙型
-|   |   ├── item_subgroup.py
-|   |   └── manual_item_group.py    # 追加用ハードコード識別子の定義
+│   │   ├── 01_topology.py
+│   │   └── 02_placer.py
+│   ├── enum/                       # 識別子定義
+│   │   ├── item_group.py           # アイテムグループの列挙型
+│   │   ├── item_subgroup.py
+│   │   └── manual_item_group.py    # 追加用ハードコード識別子の定義
 │   ├── loader/                     # 識別子生成
-│   |   ├── converters/             # 個別の変換ロジック
-│   |   │   ├── base.py             # 変換のベースクラス
-│   |   │   ├── enum/               # JSONからEnumへの変換
-│   |   │   │   └── item_groups.py  
-│   |   │   └── json/               # LuaからJSONへの変換
-│   |   │       └── item_groups.py
-│   |   ├── __init__.py             # パッケージ初期化
-│   |   ├── __main__.py             # コマンドライン実行用
-│   |   ├── config.py
-│   |   └── registry.py             # 個別の変換ロジックの登録と順序管理
-|   └── utils.py                    # ユーティリティ関数
+│   │   ├── converters/             # 個別の変換ロジック
+│   │   │   ├── base.py             # 変換のベースクラス
+│   │   │   ├── enum/               # JSONからEnumへの変換
+│   │   │   │   └── item_groups.py  
+│   │   │   └── json/               # LuaからJSONへの変換
+│   │   │       └── item_groups.py
+│   │   ├── __init__.py             # パッケージ初期化
+│   │   ├── __main__.py             # コマンドライン実行用
+│   │   ├── config.py
+│   │   └── registry.py             # 個別の変換ロジックの登録と順序管理
+│   └── utils.py                    # ユーティリティ関数
 ├── data/                           # factorio-dataからのデータ抽出と変換
 │   ├── fetcher.sh                  # wube/factorio-dataをcloneするスクリプト
 │   ├── raw/                        # Luaデータのキャッシュ
-│   |   ├── _factorio-data_cache/   # wube/factorio-data全体のキャッシュ
-│   |   ├── items.lua               # 変換対象となる定義
-│   |   ├── recipes.lua
-│   |   ├── entities.lua
-│   |   └── ...
-|   └── intermediate/               # 中間変換データ
+│   │   ├── _factorio-data_cache/   # wube/factorio-data全体のキャッシュ
+│   │   ├── items.lua               # 変換対象となる定義
+│   │   ├── recipes.lua
+│   │   ├── entities.lua
+│   │   └── ...
+│   └── intermediate/               # 中間変換データ
 │       ├── item_groups.json        # アイテムグループのJson
 │       └── item_subgroups.json
 ├── llm/                            # LLMとの連携機能
