@@ -51,7 +51,7 @@ class BaseConverter:
         os.makedirs(os.path.dirname(json_path), exist_ok=True)
         with open(json_path, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
-        print(f"Data dumped to {json_path}")
+        logger.info(f"Data dumped to {json_path}")
         return data
 
     def load_json(self, json_path: str) -> list:
@@ -64,7 +64,7 @@ class BaseConverter:
 
         with open(json_path, "r", encoding="utf-8") as f:
             data = json.load(f)
-        print(f"Data loaded from {json_path}")
+        logger.info(f"Data loaded from {json_path}")
         return data
 
     def merge_unique(
@@ -113,9 +113,14 @@ class BaseConverter:
         module = __import__(__name__)
         setattr(module, enum_name, enum_class)
         # Enumをファイルに保存
+        import os
+
+        enum_dir = os.path.dirname(enum_path)
+        if not os.path.isdir(enum_dir):
+            raise FileNotFoundError(f"Enum出力先ディレクトリが存在しません: {enum_dir}")
         with open(enum_path, "w", encoding="utf-8") as f:
             f.write(f"from enum import Enum\n\n\nclass {enum_name}(Enum):\n")
             for key, value in member_map.items():
                 f.write(f"    {key} = '{value}'\n")
-        print(f"Enum {enum_name} saved to {enum_path}")
+        logger.info(f"Enum {enum_name} saved to {enum_path}")
         return enum_class
