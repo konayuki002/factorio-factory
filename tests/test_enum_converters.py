@@ -39,10 +39,19 @@ TEST_CASES = [
         [
             "json_sample_recipe.json",
             "json_sample_technology.json",
-            "json_sample_resources.json"
+            "json_sample_resources.json",
         ],
         "Process",
         "process.py",
+    ),
+    (
+        "core.loader.converters.enum.assembling_machine.AssemblingMachineEnumConverter",
+        [
+            "json_sample_entities.json",
+            "json_sample_mining_drill.json",
+        ],
+        "AssemblingMachine",
+        "assembling_machine.py",
     ),
 ]
 
