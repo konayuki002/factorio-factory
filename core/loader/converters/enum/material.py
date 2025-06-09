@@ -23,20 +23,27 @@ class MaterialEnumConverter(BaseConverter):
     enum_material_path = "material.py"
 
     def load(self):
-        all_names = []
+        all_members = []
         seen = set()
-
+        # prefix mapping for each json file
+        prefix_map = {
+            "item.json": "",
+            "fluid.json": "",
+            "resources.json": "resource-",
+            "technology.json": "technology-",
+        }
         for fname in self.json_filenames:
             path = f"{self.intermediate_dir}/{fname}"
             data = self.load_json(path)
+            prefix = prefix_map.get(fname, "")
             for entry in data:
                 name = entry.get("name")
-                if name:
-                    lname = name.lower()
-                    if lname not in seen:
-                        all_names.append(lname)
-                        seen.add(lname)
-
+                if not name:
+                    continue
+                value = f"{prefix}{name}"
+                if value not in seen:
+                    all_members.append(value)
+                    seen.add(value)
         self.gen_enum(
-            "Material", all_names, f"{self.enum_dir}/{self.enum_material_path}"
+            "Material", all_members, f"{self.enum_dir}/{self.enum_material_path}"
         )
