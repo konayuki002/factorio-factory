@@ -22,7 +22,7 @@ class MaterialEnumConverter(BaseConverter):
     ]
     enum_material_path = "material.py"
 
-    def load(self):
+    def load(self) -> None:
         all_members = []
         seen = set()
         # prefix mapping for each json file

@@ -15,7 +15,7 @@ class TechnologyJsonConverter(BaseConverter):
     lua_filename = "technology.lua"
     json_technology_path = "technology.json"
 
-    def load(self):
+    def load(self) -> None:
         # 1) Lua -> dict
         lua_file = f"{self.raw_dir}/{self.lua_filename}"
         data = parse_lua_file(lua_file)

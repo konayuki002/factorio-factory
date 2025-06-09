@@ -13,7 +13,7 @@ class ProcessCategoryEnumConverter(BaseConverter):
     json_filename = "recipe_category.json"
     enum_process_category_path = "process_category.py"
 
-    def load(self):
+    def load(self) -> None:
         json_path = f"{self.intermediate_dir}/{self.json_filename}"
         data = self.load_json(json_path)
         names = [entry["name"] for entry in data if "name" in entry]

@@ -14,7 +14,7 @@ class ItemEnumConverter(BaseConverter):
     json_filename = "item.json"
     enum_item_path = "item.py"
 
-    def load(self):
+    def load(self) -> None:
         # 1) JSON load
         json_items_path = f"{self.intermediate_dir}/{self.json_filename}"
         items = self.load_json(json_items_path)

@@ -20,7 +20,7 @@ class ProcessEnumConverter(BaseConverter):
     ]
     enum_process_path = "process.py"
 
-    def load(self):
+    def load(self) -> None:
         all_members = []
         seen = set()
         for idx, fname in enumerate(self.json_filenames):

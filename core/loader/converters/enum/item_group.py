@@ -20,7 +20,7 @@ class ItemGroupEnumConverter(BaseConverter):
     # - この後のmerge_uniqueで重複排除を正しく行うためにも、ここで正規化しておく
     # - Enumクラス生成時（gen_enum）でCamelCaseに変換されるので、ここではlower-caseで統一しておくと
     #   「kebab-case→lower-case→CamelCase」の一貫した変換フローになる
-    def load(self):
+    def load(self) -> None:
         groups = self.load_json(f"{self.intermediate_dir}/{self.json_filename}")
         enum_group_members = [g["name"].lower() for g in groups]
         enum_group_members = self.merge_unique(
