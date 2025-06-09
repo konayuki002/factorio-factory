@@ -81,7 +81,7 @@ TEST_CASES = [
 
 
 @pytest.mark.parametrize("converter_path,lua_fixture,outputs", TEST_CASES)
-def test_json_converter(tmp_path, converter_path, lua_fixture, outputs):
+def test_json_converter(tmp_path, converter_path, lua_fixture, outputs) -> None:
     # Converterクラスをimport
     module_path, class_name = converter_path.rsplit(".", 1)
     ConverterClass = getattr(__import__(module_path, fromlist=[class_name]), class_name)

@@ -14,7 +14,7 @@ class MiningDrillJsonConverter(BaseConverter):
     lua_filename = "mining-drill.lua"
     json_items_path = "mining_drill.json"
 
-    def load(self):
+    def load(self) -> None:
         lua_file = f"{self.raw_dir}/{self.lua_filename}"
         data = parse_lua_file(lua_file)
         drills = [entry for entry in data if entry.get("type") == "mining-drill"]

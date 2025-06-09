@@ -13,7 +13,7 @@ class RecipeCategoryJsonConverter(BaseConverter):
     lua_filename = "recipe-category.lua"
     json_path = "recipe_category.json"
 
-    def load(self):
+    def load(self) -> None:
         lua_file = f"{self.raw_dir}/{self.lua_filename}"
         data = parse_lua_file(lua_file)
         # type=="recipe-category"のみ抽出

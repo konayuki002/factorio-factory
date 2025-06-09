@@ -14,7 +14,7 @@ class EntitiesJsonConverter(BaseConverter):
     lua_filename = "entities.lua"
     json_entities_path = "entities.json"
 
-    def load(self):
+    def load(self) -> None:
         lua_file = f"{self.raw_dir}/{self.lua_filename}"
         data = parse_lua_file(lua_file)
         # まずは全て抽出

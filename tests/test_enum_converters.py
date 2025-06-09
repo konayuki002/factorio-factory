@@ -67,7 +67,9 @@ def _import_enum(enum_py_path, enum_name):
 @pytest.mark.parametrize(
     "converter_path,json_fixture,enum_name,enum_pyfile", TEST_CASES
 )
-def test_enum_converter(tmp_path, converter_path, json_fixture, enum_name, enum_pyfile):
+def test_enum_converter(
+    tmp_path, converter_path, json_fixture, enum_name, enum_pyfile
+) -> None:
     # Converterクラスをimport
     module_path, class_name = converter_path.rsplit(".", 1)
     ConverterClass = getattr(__import__(module_path, fromlist=[class_name]), class_name)

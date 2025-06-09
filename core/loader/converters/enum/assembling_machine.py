@@ -18,7 +18,7 @@ class AssemblingMachineEnumConverter(BaseConverter):
     enum_path = "assembling_machine.py"
     json_filenames = ["entities.json", "mining_drill.json"]
 
-    def load(self):
+    def load(self) -> None:
         # entities.json
         entities = self.load_json(
             f"{self.intermediate_dir}/{self.json_entities_filename}"

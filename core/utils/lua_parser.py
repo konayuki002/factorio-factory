@@ -26,6 +26,7 @@ def _(node: astnodes.String) -> str:
 
 @_convert_node.register
 def _(node: astnodes.Number) -> Union[int, float]:
+    assert isinstance(node.n, (int, float)), "Number node must be int or float"
     return node.n
 
 

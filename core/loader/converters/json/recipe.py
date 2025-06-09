@@ -15,7 +15,7 @@ class RecipeJsonConverter(BaseConverter):
     lua_filename = "recipe.lua"
     json_recipe_path = "recipe.json"
 
-    def load(self):
+    def load(self) -> None:
         # 1) Lua -> dict
         lua_file = f"{self.raw_dir}/{self.lua_filename}"
         data = parse_lua_file(lua_file)

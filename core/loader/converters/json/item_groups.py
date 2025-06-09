@@ -16,7 +16,7 @@ class ItemGroupJsonConverter(BaseConverter):
     json_groups_path = "item_groups.json"
     json_subgroups_path = "item_subgroups.json"
 
-    def load(self):
+    def load(self) -> None:
         # 1) Lua -> dict
         lua_file = f"{self.raw_dir}/{self.lua_filename}"
         data = parse_lua_file(lua_file)
