@@ -9,71 +9,71 @@ TEST_CASES = [
         "core.loader.converters.json.item_groups.ItemGroupJsonConverter",
         "lua-sample-item-groups.lua",
         [
-            ("item_groups.json", "json_sample_item_groups.json"),
-            ("item_subgroups.json", "json_sample_item_subgroups.json"),
+            ("item_groups.json", "sample_item_groups.json"),
+            ("item_subgroups.json", "sample_item_subgroups.json"),
         ],
     ),
     (
         "core.loader.converters.json.item.ItemJsonConverter",
         "lua-sample-item.lua",
         [
-            ("item.json", "json_sample_item.json"),
+            ("item.json", "sample_item.json"),
         ],
     ),
     (
         "core.loader.converters.json.fluid.FluidJsonConverter",
         "lua-sample-fluid.lua",
         [
-            ("fluid.json", "json_sample_fluid.json"),
+            ("fluid.json", "sample_fluid.json"),
         ],
     ),
     (
         "core.loader.converters.json.resource.ResourceJsonConverter",
         "lua-sample-resources.lua",
         [
-            ("resources.json", "json_sample_resources.json"),
+            ("resources.json", "sample_resources.json"),
         ],
     ),
     (
         "core.loader.converters.json.resource_category.ResourceCategoryJsonConverter",
         "lua-sample-resource-category.lua",
         [
-            ("resource_category.json", "json_sample_resource_category.json"),
+            ("resource_category.json", "sample_resource_category.json"),
         ],
     ),
     (
         "core.loader.converters.json.technology.TechnologyJsonConverter",
         "lua-sample-technology.lua",
         [
-            ("technology.json", "json_sample_technology.json"),
+            ("technology.json", "sample_technology.json"),
         ],
     ),
     (
         "core.loader.converters.json.recipe.RecipeJsonConverter",
         "lua-sample-recipe.lua",
         [
-            ("recipe.json", "json_sample_recipe.json"),
+            ("recipe.json", "sample_recipe.json"),
         ],
     ),
     (
         "core.loader.converters.json.mining_drill.MiningDrillJsonConverter",
         "lua-sample-mining-drill.lua",
         [
-            ("mining_drill.json", "json_sample_mining_drill.json"),
+            ("mining_drill.json", "sample_mining_drill.json"),
         ],
     ),
     (
         "core.loader.converters.json.entities.EntitiesJsonConverter",
         "lua-sample-entities.lua",
         [
-            ("entities.json", "json_sample_entities.json"),
+            ("entities.json", "sample_entities.json"),
         ],
     ),
     (
         "core.loader.converters.json.recipe_category.RecipeCategoryJsonConverter",
         "lua-sample-recipe-category.lua",
         [
-            ("recipe_category.json", "json_sample_recipe_category.json"),
+            ("recipe_category.json", "sample_recipe_category.json"),
         ],
     ),
     # 他のConverterも追加
@@ -113,7 +113,7 @@ def test_json_converter(tmp_path, converter_path, lua_fixture, outputs):
         assert os.path.isfile(out_json_path), f"{out_json_path} が生成されていません"
         with open(out_json_path, encoding="utf-8") as f:
             actual = json.load(f)
-        expected_json_path = os.path.join(fixtures_dir, expected_json)
+        expected_json_path = os.path.join(fixtures_dir, f"json/{expected_json}")
         with open(expected_json_path, encoding="utf-8") as f:
             expected = json.load(f)
         # 順序非依存で比較

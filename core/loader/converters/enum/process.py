@@ -1,11 +1,13 @@
 from core.loader.converters.base import BaseConverter
 from core.loader.registry import register
 
+
 @register("enum:process")
 class ProcessEnumConverter(BaseConverter):
     """
     recipe.json, technology.json, resources.json からカテゴリごとにプレフィックスを付与し、CamelCaseの列挙子名で Process Enum を生成
     """
+
     dependencies = [
         "json:recipe",
         "json:technology",

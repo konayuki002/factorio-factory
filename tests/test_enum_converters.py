@@ -6,40 +6,39 @@ import pytest
 TEST_CASES = [
     (
         "core.loader.converters.enum.item_group.ItemGroupEnumConverter",
-        "json_sample_item_groups.json",
+        "sample_item_groups.json",
         "ItemGroup",
         "item_group.py",
     ),
     (
         "core.loader.converters.enum.item_subgroup.ItemSubgroupEnumConverter",
-        "json_sample_item_subgroups.json",
+        "sample_item_subgroups.json",
         "ItemSubgroup",
         "item_subgroup.py",
     ),
     (
         "core.loader.converters.enum.material.MaterialEnumConverter",
         [
-            "json_sample_item.json",
-            "json_sample_fluid.json",
-            "json_sample_resources.json",
-            "json_sample_technology.json",
+            "sample_item.json",
+            "sample_fluid.json",
+            "sample_resources.json",
+            "sample_technology.json",
         ],
         "Material",
         "material.py",
     ),
     (
         "core.loader.converters.enum.process_category.ProcessCategoryEnumConverter",
-        "json_sample_recipe_category.json",
+        "sample_recipe_category.json",
         "ProcessCategory",
         "process_category.py",
     ),
-    # 他のenum converterもここに追加可能
     (
         "core.loader.converters.enum.process.ProcessEnumConverter",
         [
-            "json_sample_recipe.json",
-            "json_sample_technology.json",
-            "json_sample_resources.json",
+            "sample_recipe.json",
+            "sample_technology.json",
+            "sample_resources.json",
         ],
         "Process",
         "process.py",
@@ -47,8 +46,8 @@ TEST_CASES = [
     (
         "core.loader.converters.enum.assembling_machine.AssemblingMachineEnumConverter",
         [
-            "json_sample_entities.json",
-            "json_sample_mining_drill.json",
+            "sample_entities.json",
+            "sample_mining_drill.json",
         ],
         "AssemblingMachine",
         "assembling_machine.py",
@@ -85,12 +84,12 @@ def test_enum_converter(tmp_path, converter_path, json_fixture, enum_name, enum_
         json_filenames = sorted(ConverterClass.json_filenames)
         for fixture, json_filename in zip(sorted(json_fixture), json_filenames):
             shutil.copyfile(
-                os.path.join(fixtures_dir, fixture),
+                os.path.join(fixtures_dir, f"json/{fixture}"),
                 input_base / json_filename,  # Converterが期待するJSONファイル名
             )
     else:
         shutil.copyfile(
-            os.path.join(fixtures_dir, json_fixture),
+            os.path.join(fixtures_dir, f"json/{json_fixture}"),
             input_base
             / ConverterClass.json_filename,  # Converterが期待するJSONファイル名
         )
@@ -109,7 +108,7 @@ def test_enum_converter(tmp_path, converter_path, json_fixture, enum_name, enum_
     EnumClass = _import_enum(enum_py_path, enum_name)
 
     # 期待されるEnumをfixturesからimport
-    expected_enum_py = os.path.join(fixtures_dir, f"enum_sample_{enum_pyfile}")
+    expected_enum_py = os.path.join(fixtures_dir, f"enum/sample_{enum_pyfile}")
     assert os.path.isfile(expected_enum_py), f"{expected_enum_py} が存在しません"
     ExpectedEnumClass = _import_enum(expected_enum_py, enum_name)
 
