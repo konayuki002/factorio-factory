@@ -7,7 +7,11 @@ luaparser @ git+https://github.com/boolangery/py-lua-parser.git@3.3.1
 markdown-it-py==3.0.0
 mdurl==0.1.2
 multimethod==2.0
+mypy==1.16.0
+mypy_extensions==1.1.0
+nodeenv==1.9.1
 packaging==25.0
+pathspec==0.12.1
 pluggy==1.6.0
 pydantic==2.11.5
 pydantic_core==2.33.2
