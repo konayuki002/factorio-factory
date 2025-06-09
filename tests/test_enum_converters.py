@@ -34,6 +34,16 @@ TEST_CASES = [
         "process_category.py",
     ),
     # 他のenum converterもここに追加可能
+    (
+        "core.loader.converters.enum.process.ProcessEnumConverter",
+        [
+            "json_sample_recipe.json",
+            "json_sample_technology.json",
+            "json_sample_resources.json"
+        ],
+        "Process",
+        "process.py",
+    ),
 ]
 
 
