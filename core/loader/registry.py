@@ -3,13 +3,14 @@ import importlib
 import pathlib
 from collections import defaultdict, deque
 from core.loader.converters.base import BaseConverter
+from typing import Callable
 
 # -- まず, register & CONVERTERS を定義 --
 CONVERTERS: dict[str, BaseConverter] = {}
 DEPS: dict[str, list[str]] = {}  # name -> 依存フェーズキー名リスト
 
 
-def register(name: str):
+def register(name: str) -> Callable[[type], type]:
     """
     コンバータークラスを登録するデコレータ。dependencies 属性を読み取り、DEPSにも追加する。
     使用例:
@@ -24,7 +25,7 @@ def register(name: str):
             ...
     """
 
-    def _decorator(cls):
+    def _decorator(cls: type) -> type:
         instance = cls(name=name)
         CONVERTERS[name] = instance
         # そのクラスが持つ dependencies 属性を DEPS に保存
@@ -36,7 +37,7 @@ def register(name: str):
 
 
 # -- 次に, 動的インポートの処理 --
-def dynamic_import_one_by_one(module_name: str):
+def dynamic_import_one_by_one(module_name: str) -> None:
     """
     指定されたモジュール以下のモジュールを動的にインポートする。
     モジュール名は 'core.loader.converters.json' のような形式で指定。
@@ -118,7 +119,7 @@ def sorted_order() -> list[BaseConverter]:
 
 
 # -- 順序付き load_all --
-def load_all():
+def load_all() -> None:
     """
     トポロジカルソート済みの順番で、登録された各 Converter の load() を実行する。
     """
