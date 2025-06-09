@@ -4,7 +4,7 @@ from pathlib import Path
 import logging
 
 
-def run_converters(stage="all", log_level="INFO"):
+def run_converters(stage: str = "all", log_level: str = "INFO") -> None:
     """
     コンバーターを実行する関数。
     stage引数に応じて、Lua -> JSON変換、JSON -> Enumクラス生成を行う。
@@ -36,7 +36,7 @@ def run_converters(stage="all", log_level="INFO"):
             conv.load()
 
 
-def clean_artifacts():
+def clean_artifacts() -> None:
     """
     data/intermediate 以下の JSON ファイルや
     core/enum/*.py, core/01_models/*.py などを一括削除する。
@@ -61,7 +61,7 @@ def clean_artifacts():
     logging.info("Cleaned up intermediate files and models.")
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(
         description="Factorio Factory Loader", prog="core.loader"
     )
