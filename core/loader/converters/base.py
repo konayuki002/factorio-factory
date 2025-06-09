@@ -1,4 +1,6 @@
+from enum import Enum
 from core.utils.utils import to_enum_member
+from typing import Any, cast
 import logging
 
 
@@ -25,19 +27,15 @@ class BaseConverter:
         self.dependencies: list[str] = self.__class__.dependencies
         self.name = name
 
-    def load(self):
+    def load(self) -> None:
         """
         Luaファイルを読み込み、JSON形式に変換するための基本的なインターフェースを提供します。
         """
         raise NotImplementedError("Subclasses must implement this method.")
 
-    def parse_lua(self, lua_code: str) -> dict:
-        """
-        Luaコードをパースして辞書形式に変換します。
-        """
-        raise NotImplementedError("Subclasses must implement this method.")
-
-    def dump_json(self, data: list, json_path: str):
+    def dump_json(
+        self, data: list[dict[str, Any]], json_path: str
+    ) -> list[dict[str, Any]]:
         """
         JSON形式でデータをファイルに保存します。
         :param data: 保存するデータ（リスト形式）
@@ -54,7 +52,7 @@ class BaseConverter:
         logger.info(f"Data dumped to {json_path}")
         return data
 
-    def load_json(self, json_path: str) -> list:
+    def load_json(self, json_path: str) -> list[dict[str, Any]]:
         """
         JSONファイルからデータを読み込みます。
         :param json_path: JSONファイルのパス（例: "data/intermediate/item_groups.json"）
@@ -65,7 +63,7 @@ class BaseConverter:
         with open(json_path, "r", encoding="utf-8") as f:
             data = json.load(f)
         logger.info(f"Data loaded from {json_path}")
-        return data
+        return cast(list[dict[str, Any]], data)
 
     def merge_unique(
         self, base: list[str], extra: list[str], enum_name: str = "UnknownEnum"
@@ -95,7 +93,9 @@ class BaseConverter:
                 seen.add(x)
         return result
 
-    def gen_enum(self, enum_name: str, members: list, enum_path: str):
+    def gen_enum(
+        self, enum_name: str, members: list[str], enum_path: str
+    ) -> type[Enum]:
         """
         Enumクラスを動的に生成し、指定されたパスに保存します。
         :param enum_name: Enumクラスの名前（例: "ItemGroup"）
@@ -108,7 +108,7 @@ class BaseConverter:
 
         # 変換: kebab-case -> UpperCamelCase
         member_map = {to_enum_member(member): member for member in members}
-        enum_class = Enum(enum_name, member_map)
+        enum_class = Enum(enum_name, member_map)  # type: ignore[misc]
 
         # Enumをファイルに保存
         import os
