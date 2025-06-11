@@ -1,7 +1,5 @@
 # core/loader/AGENTS.md
 
-# Loaderパッケージ全体ガイド (core/loader/)
-
 ## 目的
 * Factorioデータ変換パイプラインの中核。Lua→JSON→Enum等の変換や、各種ロジック・設定・登録管理を担います。
 
