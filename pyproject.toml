@@ -1,0 +1,11 @@
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"
+
+[tool.ruff]
+# チェックしたいルールをお好みで（例として E:エラー, F:フォーマット, I:インポート）
+select = ["E", "F", "I"]
+# 自動修正を有効に
+fix = true
