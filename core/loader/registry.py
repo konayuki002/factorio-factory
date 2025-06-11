@@ -2,8 +2,9 @@
 import importlib
 import pathlib
 from collections import defaultdict, deque
-from core.loader.converters.base import BaseConverter
 from typing import Callable
+
+from core.loader.converters.base import BaseConverter
 
 # -- まず, register & CONVERTERS を定義 --
 CONVERTERS: dict[str, BaseConverter] = {}

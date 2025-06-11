@@ -1,7 +1,7 @@
 # factorio_factory/core/loader/__main__.py
 import argparse
-from pathlib import Path
 import logging
+from pathlib import Path
 
 
 def run_converters(stage: str = "all", log_level: str = "INFO") -> None:
@@ -9,7 +9,7 @@ def run_converters(stage: str = "all", log_level: str = "INFO") -> None:
     コンバーターを実行する関数。
     stage引数に応じて、Lua -> JSON変換、JSON -> Enumクラス生成を行う。
     """
-    from .registry import CONVERTERS, DEPS, sorted_order
+    from .registry import sorted_order
 
     logging.basicConfig(
         level=getattr(logging, log_level, logging.INFO),

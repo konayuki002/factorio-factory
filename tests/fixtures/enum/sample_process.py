@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class Process(Enum):
     # recipe.json
     SampleRecipe1 = "sample-recipe-1"

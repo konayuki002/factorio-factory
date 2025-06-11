@@ -1,6 +1,6 @@
+from core.enums.manual_item_subgroup import ITEM_SUBGROUP_MANUAL
 from core.loader.converters.base import BaseConverter
 from core.loader.registry import register
-from core.enums.manual_item_subgroup import ITEM_SUBGROUP_MANUAL
 
 
 @register("enum:item_subgroup")

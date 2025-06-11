@@ -1,8 +1,8 @@
-from enum import Enum
-from core.utils.utils import to_enum_member
-from typing import Any, cast
 import logging
+from enum import Enum
+from typing import Any, cast
 
+from core.utils.utils import to_enum_member
 
 logger = logging.getLogger(__name__)
 
@@ -105,7 +105,6 @@ class BaseConverter:
         from enum import Enum
 
         # Enumクラスを動的に生成
-
         # 変換: kebab-case -> UpperCamelCase
         member_map = {to_enum_member(member): member for member in members}
         enum_class = Enum(enum_name, member_map)  # type: ignore[misc]

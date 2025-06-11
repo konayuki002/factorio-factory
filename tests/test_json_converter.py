@@ -1,8 +1,9 @@
+import json
 import os
 import shutil
-import json
+from pathlib import Path
+
 import pytest
-from pathlib import Path 
 
 # テストケース定義: (ConverterClass, lua_fixture, [(出力json, 期待json), ...])
 TEST_CASES = [
@@ -82,7 +83,12 @@ TEST_CASES = [
 
 
 @pytest.mark.parametrize("converter_path,lua_fixture,outputs", TEST_CASES)
-def test_json_converter(tmp_path: Path, converter_path: str, lua_fixture: str, outputs: list[tuple[str, str]]) -> None:
+def test_json_converter(
+    tmp_path: Path,
+    converter_path: str,
+    lua_fixture: str,
+    outputs: list[tuple[str, str]],
+) -> None:
     # Converterクラスをimport
     module_path, class_name = converter_path.rsplit(".", 1)
     ConverterClass = getattr(__import__(module_path, fromlist=[class_name]), class_name)

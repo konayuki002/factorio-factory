@@ -1,8 +1,9 @@
 import os
 import shutil
-import pytest
 from enum import Enum
 from pathlib import Path
+
+import pytest
 
 # テストケース定義: (ConverterClass, json_fixture, enum_name, enum_pyfile)
 TEST_CASES = [
@@ -79,7 +80,11 @@ def _import_enum(enum_py_path: str, enum_name: str) -> type[Enum]:
     "converter_path,json_fixture,enum_name,enum_pyfile", TEST_CASES
 )
 def test_enum_converter(
-    tmp_path: Path, converter_path: str, json_fixture: str | list[str], enum_name: str, enum_pyfile: str
+    tmp_path: Path,
+    converter_path: str,
+    json_fixture: str | list[str],
+    enum_name: str,
+    enum_pyfile: str,
 ) -> None:
     # Converterクラスをimport
     module_path, class_name = converter_path.rsplit(".", 1)

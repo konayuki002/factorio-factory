@@ -1,6 +1,6 @@
+from core.enums.manual_process_category import PROCESS_CATEGORY_MANUAL
 from core.loader.converters.base import BaseConverter
 from core.loader.registry import register
-from core.enums.manual_process_category import PROCESS_CATEGORY_MANUAL
 
 
 @register("enum:process_category")

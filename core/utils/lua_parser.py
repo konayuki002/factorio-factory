@@ -1,8 +1,8 @@
 # core/utils/lua_parser.py
-from pathlib import Path
-from typing import Any, Union, List, Dict
 import logging
 from functools import singledispatch
+from pathlib import Path
+from typing import Any, Dict, List, Union
 
 from luaparser import ast as lua_ast
 from luaparser import astnodes
@@ -180,7 +180,10 @@ class LuaTableExtractor(lua_ast.ASTVisitor):
             if isinstance(py_val, dict):
                 self.data_extend_tables.append(py_val)
             else:
-                logging.warning("data:extend テーブルのトップレベルが dict ではありません: %s", type(py_val).__name__)
+                logging.warning(
+                    "data:extend テーブルのトップレベルが dict ではありません: %s",
+                    type(py_val).__name__,
+                )
             return
 
         if (
