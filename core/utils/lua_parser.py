@@ -176,7 +176,11 @@ class LuaTableExtractor(lua_ast.ASTVisitor):
 
     def _handle_field_value(self, val: astnodes.Node) -> None:
         if isinstance(val, astnodes.Table):
-            self.data_extend_tables.append(_table_to_py(val))
+            py_val = _table_to_py(val)
+            if isinstance(py_val, dict):
+                self.data_extend_tables.append(py_val)
+            else:
+                logging.warning("data:extend テーブルのトップレベルが dict ではありません: %s", type(py_val).__name__)
             return
 
         if (

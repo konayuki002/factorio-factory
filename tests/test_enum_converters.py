@@ -1,6 +1,8 @@
 import os
 import shutil
 import pytest
+from enum import Enum
+from pathlib import Path
 
 # テストケース定義: (ConverterClass, json_fixture, enum_name, enum_pyfile)
 TEST_CASES = [
@@ -55,20 +57,29 @@ TEST_CASES = [
 ]
 
 
-def _import_enum(enum_py_path, enum_name):
+def _import_enum(enum_py_path: str, enum_name: str) -> type[Enum]:
     import importlib.util
 
     spec = importlib.util.spec_from_file_location(enum_name, enum_py_path)
+    if spec is None:
+        raise ImportError(f"spec_from_file_location failed for {enum_py_path}")
+    if spec.loader is None:
+        raise ImportError(f"spec.loader is None for {enum_py_path}")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    return getattr(module, enum_name)
+    enum_type = getattr(module, enum_name)
+    if not isinstance(enum_type, type):
+        raise TypeError(f"{enum_name} is not an Enum class in {enum_py_path}")
+    if not issubclass(enum_type, Enum):
+        raise TypeError(f"{enum_name} is not a subclass of Enum in {enum_py_path}")
+    return enum_type
 
 
 @pytest.mark.parametrize(
     "converter_path,json_fixture,enum_name,enum_pyfile", TEST_CASES
 )
 def test_enum_converter(
-    tmp_path, converter_path, json_fixture, enum_name, enum_pyfile
+    tmp_path: Path, converter_path: str, json_fixture: str | list[str], enum_name: str, enum_pyfile: str
 ) -> None:
     # Converterクラスをimport
     module_path, class_name = converter_path.rsplit(".", 1)
