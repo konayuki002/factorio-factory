@@ -182,3 +182,5 @@ pyrightconfig.json
 !/data/raw/.gitkeep
 /data/intermediate/*
 !/data/intermediate/.gitkeep
+
+.vscode
