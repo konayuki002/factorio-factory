@@ -1,8 +1,16 @@
 [tool.black]
 line-length = 88
+exclude = '''
+(
+    /stubs/
+  | /data/
+  | /.venv/
+)
+'''
 
 [tool.isort]
 profile = "black"
+skip = ["stubs/", "data/", ".venv/"]
 
 [tool.ruff]
 # チェックしたいルールをお好みで（例として E:エラー, F:フォーマット, I:インポート）
@@ -12,4 +20,4 @@ fix = true
 
 # ルールの除外設定
 include = ["core/", "tests/", "llm/", "plugins/", "tools/"]
-exclude = ["stubs/", "data/"]
+exclude = ["stubs/", "data/", ".venv/"]
