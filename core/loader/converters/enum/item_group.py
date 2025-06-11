@@ -1,6 +1,6 @@
 from core.loader.converters.base import BaseConverter
 from core.loader.registry import register
-from core.enums.manual_item_group import MANUAL_MEMBERS
+from core.enums.manual_item_group import ITEM_GROUP_MANUAL
 
 
 @register("enum:item_group")
@@ -25,7 +25,7 @@ class ItemGroupEnumConverter(BaseConverter):
         enum_group_members = [g["name"].lower() for g in groups]
         enum_group_members = self.merge_unique(
             enum_group_members,
-            [m.lower() for m in MANUAL_MEMBERS["item_group"]],
+            [m.lower() for m in ITEM_GROUP_MANUAL],
             "ItemGroup",
         )
         self.gen_enum(

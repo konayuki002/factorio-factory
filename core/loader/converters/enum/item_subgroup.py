@@ -1,6 +1,6 @@
 from core.loader.converters.base import BaseConverter
 from core.loader.registry import register
-from core.enums.manual_item_group import MANUAL_MEMBERS
+from core.enums.manual_item_subgroup import ITEM_SUBGROUP_MANUAL
 
 
 @register("enum:item_subgroup")
@@ -19,7 +19,7 @@ class ItemSubgroupEnumConverter(BaseConverter):
         enum_subgroup_members = [sg["name"].lower() for sg in subgroups]
         enum_subgroup_members = self.merge_unique(
             enum_subgroup_members,
-            [m.lower() for m in MANUAL_MEMBERS["item_subgroup"]],
+            [m.lower() for m in ITEM_SUBGROUP_MANUAL],
             "ItemSubgroup",
         )
         self.gen_enum(
