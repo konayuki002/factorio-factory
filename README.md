@@ -6,7 +6,7 @@
 factorio_factory/
 ├── core/                           # 純粋なロジック (依存なし)
 │   ├── 01_models/                  # Pydanticモデル
-│   │   ├── 01_item_groups.py
+│   │   ├── 01_item_group.py
 │   │   ├── 02_item.py
 │   │   ├── 03_recipe.py
 │   │   └── 04_entities.py
@@ -25,9 +25,9 @@ factorio_factory/
 │   │   ├── converters/             # 個別の変換ロジック
 │   │   │   ├── base.py             # 変換のベースクラス
 │   │   │   ├── enum/               # JSONからEnumへの変換
-│   │   │   │   └── item_groups.py  
+│   │   │   │   └── item_group.py  
 │   │   │   └── json/               # LuaからJSONへの変換
-│   │   │       └── item_groups.py
+│   │   │       └── item_group.py
 │   │   ├── __init__.py             # パッケージ初期化
 │   │   ├── __main__.py             # コマンドライン実行用
 │   │   ├── config.py
