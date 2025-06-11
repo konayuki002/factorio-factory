@@ -49,7 +49,8 @@ def clean_artifacts() -> None:
     # core/enum/*.py を削除（__init__.py は残す、あるいは判定ロジックを入れてもよい）
     enum_dir = Path(__file__).parents[2] / "core" / "enums"
     for file in enum_dir.glob("*.py"):
-        if file.name != "__init__.py":
+        if file.name != "__init__.py" and not file.name.startswith("manual_"):
+            # manual_で始まるファイルは削除しない
             file.unlink(missing_ok=True)
 
     # 以下はmodelの自動生成の実装前なのでコメントアウト

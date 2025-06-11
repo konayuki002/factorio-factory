@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class Process(Enum):
+class Operation(Enum):
     SpeedModule = "speed-module"
     SpeedModule2 = "speed-module-2"
     SpeedModule3 = "speed-module-3"

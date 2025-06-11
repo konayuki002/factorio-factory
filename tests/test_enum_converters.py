@@ -31,20 +31,20 @@ TEST_CASES = [
         "material.py",
     ),
     (
-        "core.loader.converters.enum.process_category.ProcessCategoryEnumConverter",
+        "core.loader.converters.enum.operation_category.OperationCategoryEnumConverter",
         "sample_recipe_category.json",
-        "ProcessCategory",
-        "process_category.py",
+        "OperationCategory",
+        "operation_category.py",
     ),
     (
-        "core.loader.converters.enum.process.ProcessEnumConverter",
+        "core.loader.converters.enum.operation.OperationEnumConverter",
         [
             "sample_recipe.json",
             "sample_technology.json",
             "sample_resources.json",
         ],
-        "Process",
-        "process.py",
+        "Operation",
+        "operation.py",
     ),
     (
         "core.loader.converters.enum.assembling_machine.AssemblingMachineEnumConverter",

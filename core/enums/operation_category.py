@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class ProcessCategory(Enum):
+class OperationCategory(Enum):
     Crafting = "crafting"
     AdvancedCrafting = "advanced-crafting"
     Smelting = "smelting"

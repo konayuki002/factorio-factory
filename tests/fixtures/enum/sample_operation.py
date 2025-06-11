@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class Process(Enum):
+class Operation(Enum):
     # recipe.json
     SampleRecipe1 = "sample-recipe-1"
     SampleRecipe2 = "sample-recipe-2"

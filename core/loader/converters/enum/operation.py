@@ -2,10 +2,10 @@ from core.loader.converters.base import BaseConverter
 from core.loader.registry import register
 
 
-@register("enum:process")
-class ProcessEnumConverter(BaseConverter):
+@register("enum:operation")
+class OperationEnumConverter(BaseConverter):
     """
-    recipe.json, technology.json, resources.json からカテゴリごとにプレフィックスを付与し、CamelCaseの列挙子名で Process Enum を生成
+    recipe.json, technology.json, resources.json からカテゴリごとにプレフィックスを付与し、CamelCaseの列挙子名で Operation Enum を生成
     """
 
     dependencies = [
@@ -18,7 +18,7 @@ class ProcessEnumConverter(BaseConverter):
         "technology.json",
         "resources.json",
     ]
-    enum_process_path = "process.py"
+    enum_operation_path = "operation.py"
 
     def load(self) -> None:
         all_members = []
@@ -40,5 +40,5 @@ class ProcessEnumConverter(BaseConverter):
                     all_members.append(value)
                     seen.add(value)
         self.gen_enum(
-            "Process", all_members, f"{self.enum_dir}/{self.enum_process_path}"
+            "Operation", all_members, f"{self.enum_dir}/{self.enum_operation_path}"
         )

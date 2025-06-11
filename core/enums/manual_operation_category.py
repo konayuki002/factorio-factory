@@ -1,4 +1,4 @@
-PROCESS_CATEGORY_MANUAL: list[str] = [
+OPERATION_CATEGORY_MANUAL: list[str] = [
     "mining",
     "launch",
     "research",
