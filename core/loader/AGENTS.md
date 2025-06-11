@@ -1,3 +1,5 @@
+# core/loader/AGENTS.md
+
 # Loaderパッケージ全体ガイド (core/loader/)
 
 ## 目的

@@ -1,4 +1,4 @@
-# core/enums/ Enum識別子定義ファイル
+# core/enums/AGENTS.md
 
 ## 目的
 * 各種アイテムやレシピの識別子を定義し、Factorio Factoryの他の部分で利用できるようにします。

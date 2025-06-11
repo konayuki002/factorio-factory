@@ -1,3 +1,5 @@
+# core/utils/AGENTS.md
+
 # Utils
 
 ## 目的

@@ -1,4 +1,4 @@
-# Converters (core/loader/converters/)
+# core/loader/converters/AGENTS.md
 
 ## 目的
 * 各モジュールは特定のデータ形式を別の形式に変換するためのコンバータを提供します。これにより、データの互換性と再利用性が向上します。
