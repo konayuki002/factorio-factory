@@ -21,6 +21,7 @@ class BaseConverter:
     raw_dir: str = "data/raw"
     intermediate_dir: str = "data/intermediate"
     enum_dir: str = "core/enums"
+    data_dir: str = "core/models/data"
 
     def __init__(self, name: str = ""):
         # サブクラスで個別に依存を持たせたい場合の取り込み
@@ -93,6 +94,38 @@ class BaseConverter:
                 seen.add(x)
         return result
 
+    def merge_unique_dicts(
+        self,
+        base: list[dict[str, Any]],
+        extra: list[dict[str, Any]],
+        key: str = "name",
+        enum_name: str = "UnknownEnum",
+    ) -> list[dict[str, Any]]:
+        """
+        2つの辞書リストを結合し、指定されたキーで重複を排除します。
+        重複する場合, 警告を出して基本のリストの順序を優先します。
+        :param base: 基本の辞書リスト
+        :param extra: 追加する辞書リスト
+        :param key: 重複を判定するキー（例: "name"）
+        :param enum_name: Enumの名前（デバッグ用, 例: "ItemGroup"）
+        :return: 重複を排除した新しい辞書リスト
+        """
+        seen = {d[key].lower() for d in base}
+        result = base[:]
+        for x in extra:
+            if x[key].lower() in seen:
+                logger.warning(
+                    "[%s] '%s' is a duplicate and will be ignored when merging dictionaries (base: %s, extra: %s)",
+                    enum_name,
+                    x[key],
+                    base,
+                    extra,
+                )
+            else:
+                result.append(x)
+                seen.add(x[key].lower())
+        return result
+
     def gen_enum(
         self, enum_name: str, members: list[str], enum_path: str
     ) -> type[Enum]:
@@ -122,4 +155,31 @@ class BaseConverter:
             for key, value in member_map.items():
                 f.write(f"    {key} = '{value}'\n")
         logger.info(f"Enum {enum_name} saved to {enum_path}")
+        return enum_class
+
+    def load_enum(self, enum_name: str, enum_path: str) -> type[Enum]:
+        """
+        Enumクラスを指定されたパスから読み込みます。
+        :param enum_path: Enumクラスのパス（例: "core/enums/item_group.py"）
+        :return: 読み込まれたEnumクラス
+        """
+        import importlib.util
+
+        spec = importlib.util.spec_from_file_location("EnumModule", enum_path)
+        if spec is None:
+            raise ImportError(f"Enumモジュールの読み込みに失敗しました: {enum_path}")
+        if spec.loader is None:
+            raise ImportError(f"Enumモジュールのローダーが見つかりません: {enum_path}")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        if module is None:
+            raise ImportError(f"Enumモジュールの生成に失敗しました: {enum_path}")
+        enum_class = getattr(module, enum_name, None)
+        if enum_class is None:
+            raise ImportError(f"Enumクラスが見つかりません: {enum_path}")
+        if not isinstance(enum_class, type) or not issubclass(enum_class, Enum):
+            raise TypeError(
+                f"指定されたクラスはEnumではありません: {enum_name} in {enum_path}"
+            )
+        logger.info(f"Enum loaded from {enum_path}")
         return enum_class
