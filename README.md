@@ -5,11 +5,19 @@
 ```
 factorio_factory/
 ├── core/                           # 純粋なロジック (依存なし)
-│   ├── 01_models/                  # Pydanticモデル
-│   │   ├── 01_item_group.py
-│   │   ├── 02_item.py
-│   │   ├── 03_recipe.py
-│   │   └── 04_entities.py
+│   ├── models/                     # Pydanticモデル
+│   │   ├── models/                 # フィールド等の手動クラス定義
+│   │   │   ├── item_group.py
+│   │   │   ├── item_subgroup.py
+│   │   │   └── item.py     
+│   │   ├── literals/               # 構造差分がある場合の許容値
+│   │   │   ├── item.py
+│   │   │   ├── fluid.py
+│   │   │   ├── technology.py
+│   │   │   └── resources.py
+│   │   └── data/                   # モデルのデータ辞書の定義
+│   │       ├── item_subgroup.py
+│   │       └── item.py
 │   ├── 02_logic/                   # 計算ロジック
 │   │   ├── 01_recipe_graph.py
 │   │   ├── 02_throughput.py
