@@ -3,10 +3,10 @@ from typing import Union
 from pydantic import BaseModel, field_validator
 
 from core.enums.material import Material as MaterialEnum
-from core.models.literals.fluid import fluid_allowed
-from core.models.literals.item import item_allowed
-from core.models.literals.resource import resource_allowed
-from core.models.literals.technology import technology_allowed
+from core.models.allowed.fluid import fluid_allowed
+from core.models.allowed.item import item_allowed
+from core.models.allowed.resource import resource_allowed
+from core.models.allowed.technology import technology_allowed
 
 
 class MaterialBase(BaseModel):

@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from core.enums.material import Material
 from core.loader.converters.base import BaseConverter
 from core.loader.registry import register
 
@@ -14,7 +15,6 @@ class TechnologyAllowedConverter(BaseConverter):
 
     dependencies = ["json:technology", "enum:material"]
     json_filename = "technology.json"
-    enum_filename = "material.py"
     allowed_filename = "technology.py"
 
     def load(self) -> None:
@@ -22,14 +22,9 @@ class TechnologyAllowedConverter(BaseConverter):
         json_technology_path = f"{self.intermediate_dir}/{self.json_filename}"
         technologies = self.load_json(json_technology_path)
 
-        # 2) Enum load
-        enum_material_path = f"{self.enum_dir}/{self.enum_filename}"
-        EnumMaterialClass = self.load_enum("Material", enum_material_path)
-
-        # 3) submodelのEnumのallowedセット 定義を生成して保存
+        # 2) Enumをimportして直接利用
         ret = [
-            EnumMaterialClass(f"technology-{technology['name']}")
-            for technology in technologies
+            Material(f"technology-{technology['name']}") for technology in technologies
         ]
 
         out = [
