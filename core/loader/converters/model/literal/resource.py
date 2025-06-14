@@ -32,13 +32,11 @@ class ResourceLiteralConverter(BaseConverter):
         ]
 
         out = [
-            "from typing import Literal",
-            "",
             "from enums.material import Material",
             "",
-            "Resource = Literal[",
+            "resource_allowed: set[Material] = {",
             *[f"    {resource}," for resource in ret],
-            "]",
+            "}",
         ]
 
         # 2) Data 辞書を生成して保存

@@ -30,13 +30,11 @@ class FluidLiteralConverter(BaseConverter):
         ret = [EnumMaterialClass(fluid["name"]) for fluid in fluids]
 
         out = [
-            "from typing import Literal",
-            "",
             "from enums.material import Material",
             "",
-            "Fluid = Literal[",
+            "fluid_allowed: set[Material] = {",
             *[f"    {fluid}," for fluid in ret],
-            "]",
+            "}",
         ]
 
         # 2) Data 辞書を生成して保存

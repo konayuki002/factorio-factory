@@ -30,13 +30,11 @@ class ItemLiteralConverter(BaseConverter):
         ret = [EnumMaterialClass(item["name"]) for item in items]
 
         out = [
-            "from typing import Literal",
-            "",
             "from enums.material import Material",
             "",
-            "Item = Literal[",
+            "item_allowed: set[Material] = {",
             *[f"    {item}," for item in ret],
-            "]",
+            "}",
         ]
 
         # 2) Data 辞書を生成して保存

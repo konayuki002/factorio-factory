@@ -1,8 +1,6 @@
-from typing import Literal
-
 from enums.material import Material
 
-Item = Literal[
+item_allowed: set[Material] = {
     Material.StoneBrick,
     Material.Wood,
     Material.Coal,
@@ -226,4 +224,4 @@ Item = Literal[
     Material.ProgrammableSpeaker,
     Material.DisplayPanel,
     Material.Science,
-]
+}

@@ -1,12 +1,10 @@
-from typing import Literal
-
 from enums.material import Material
 
-Resource = Literal[
+resource_allowed: set[Material] = {
     Material.ResourceIronOre,
     Material.ResourceCopperOre,
     Material.ResourceCoal,
     Material.ResourceStone,
     Material.ResourceUraniumOre,
     Material.ResourceCrudeOil,
-]
+}

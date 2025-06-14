@@ -1,8 +1,6 @@
-from typing import Literal
-
 from enums.material import Material
 
-Technology = Literal[
+technology_allowed: set[Material] = {
     Material.TechnologySteamPower,
     Material.TechnologyElectronics,
     Material.TechnologyAutomationSciencePack,
@@ -195,4 +193,4 @@ Technology = Literal[
     Material.TechnologySpidertron,
     Material.TechnologyCircuitNetwork,
     Material.TechnologyAdvancedCombinators,
-]
+}

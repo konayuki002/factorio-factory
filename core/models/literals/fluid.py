@@ -1,8 +1,6 @@
-from typing import Literal
-
 from enums.material import Material
 
-Fluid = Literal[
+fluid_allowed: set[Material] = {
     Material.Water,
     Material.Steam,
     Material.SulfuricAcid,
@@ -11,4 +9,4 @@ Fluid = Literal[
     Material.LightOil,
     Material.PetroleumGas,
     Material.Lubricant,
-]
+}

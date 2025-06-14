@@ -33,13 +33,11 @@ class TechnologyLiteralConverter(BaseConverter):
         ]
 
         out = [
-            "from typing import Literal",
-            "",
             "from enums.material import Material",
             "",
-            "Technology = Literal[",
+            "technology_allowed: set[Material] = {",
             *[f"    {technology}," for technology in ret],
-            "]",
+            "}",
         ]
 
         # 2) Data 辞書を生成して保存
