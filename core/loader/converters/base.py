@@ -22,7 +22,7 @@ class BaseConverter:
     intermediate_dir: str = "data/intermediate"
     enum_dir: str = "core/enums"
     data_dir: str = "core/models/data"
-    literal_dir: str = "core/models/literals"
+    allowed_dir: str = "core/models/allowed"
 
     def __init__(self, name: str = ""):
         # サブクラスで個別に依存を持たせたい場合の取り込み

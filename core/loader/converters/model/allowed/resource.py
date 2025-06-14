@@ -4,18 +4,18 @@ from core.loader.converters.base import BaseConverter
 from core.loader.registry import register
 
 
-@register("literal:resource")
-class ResourceLiteralConverter(BaseConverter):
+@register("allowed:resource")
+class ResourceAllowedConverter(BaseConverter):
     """
-    アイテムに関するJSON -> Literal 定義の生成.
+    アイテムに関するJSON -> submodelのEnumのallowedセット 定義の生成.
     具体的には、以下のファイルを処理します:
-    intermediate/resources.json -> literal/resource.py
+    intermediate/resources.json -> allowed/resource.py
     """
 
     dependencies = ["json:resource", "enum:material"]
     json_filename = "resources.json"
     enum_filename = "material.py"
-    literal_filename = "resource.py"
+    allowed_filename = "resource.py"
 
     def load(self) -> None:
         # 1) JSON load
@@ -26,7 +26,7 @@ class ResourceLiteralConverter(BaseConverter):
         enum_material_path = f"{self.enum_dir}/{self.enum_filename}"
         EnumMaterialClass = self.load_enum("Material", enum_material_path)
 
-        # 3) Literal 定義を生成して保存
+        # 3) submodelのEnumのallowedセット 定義を生成して保存
         ret = [
             EnumMaterialClass(f"resource-{resource['name']}") for resource in resources
         ]
@@ -39,5 +39,5 @@ class ResourceLiteralConverter(BaseConverter):
             "}",
         ]
 
-        # 2) Data 辞書を生成して保存
-        (Path(self.literal_dir) / self.literal_filename).write_text("\n".join(out))
+        # 4) 出力ファイルに書き込み
+        (Path(self.allowed_dir) / self.allowed_filename).write_text("\n".join(out))

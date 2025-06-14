@@ -64,9 +64,9 @@ dynamic_import_one_by_one(enum_converters_module_name)
 data_converters_module_name = "core.loader.converters.model.data"
 dynamic_import_one_by_one(data_converters_module_name)
 
-# JSON -> Python Literal 定義変換パッケージのディレクトリを動的に読み取る
-literal_converters_module_name = "core.loader.converters.model.literal"
-dynamic_import_one_by_one(literal_converters_module_name)
+# JSON -> Python submodel用 allowed Enumメンバsets 定義変換パッケージのディレクトリを動的に読み取る
+allowed_converters_module_name = "core.loader.converters.model.allowed"
+dynamic_import_one_by_one(allowed_converters_module_name)
 
 # ここまでで、converters/ 内の各モジュールがインポートされ、
 # それぞれのクラス定義に付いた @register(...) が実行され、CONVERTERS と DEPS が埋まる。

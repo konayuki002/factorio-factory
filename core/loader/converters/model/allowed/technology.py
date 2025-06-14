@@ -4,18 +4,18 @@ from core.loader.converters.base import BaseConverter
 from core.loader.registry import register
 
 
-@register("literal:technology")
-class TechnologyLiteralConverter(BaseConverter):
+@register("allowed:technology")
+class TechnologyAllowedConverter(BaseConverter):
     """
-    アイテムに関するJSON -> Literal 定義の生成.
+    アイテムに関するJSON -> submodelのEnumのallowedセット 定義の生成.
     具体的には、以下のファイルを処理します:
-    intermediate/technology.json -> literal/technology.py
+    intermediate/technology.json -> allowed/technology.py
     """
 
     dependencies = ["json:technology", "enum:material"]
     json_filename = "technology.json"
     enum_filename = "material.py"
-    literal_filename = "technology.py"
+    allowed_filename = "technology.py"
 
     def load(self) -> None:
         # 1) JSON load
@@ -26,7 +26,7 @@ class TechnologyLiteralConverter(BaseConverter):
         enum_material_path = f"{self.enum_dir}/{self.enum_filename}"
         EnumMaterialClass = self.load_enum("Material", enum_material_path)
 
-        # 3) Literal 定義を生成して保存
+        # 3) submodelのEnumのallowedセット 定義を生成して保存
         ret = [
             EnumMaterialClass(f"technology-{technology['name']}")
             for technology in technologies
@@ -40,5 +40,5 @@ class TechnologyLiteralConverter(BaseConverter):
             "}",
         ]
 
-        # 2) Data 辞書を生成して保存
-        (Path(self.literal_dir) / self.literal_filename).write_text("\n".join(out))
+        # 4) 出力ファイルに書き込み
+        (Path(self.allowed_dir) / self.allowed_filename).write_text("\n".join(out))
