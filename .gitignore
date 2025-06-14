@@ -178,5 +178,9 @@ pyrightconfig.json
 # Local configuration files
 
 # Raw data files but not the directory itself
-/data/raw
+/data/raw/*
 !/data/raw/.gitkeep
+/data/intermediate/*
+!/data/intermediate/.gitkeep
+
+.vscode
