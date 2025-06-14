@@ -1,6 +1,5 @@
 from pathlib import Path
 
-from core.enums.operation import Operation
 from core.loader.converters.base import BaseConverter
 from core.loader.registry import register
 
@@ -18,6 +17,8 @@ class MiningAllowedConverter(BaseConverter):
     allowed_filename = "mining.py"
 
     def load(self) -> None:
+        from core.enums.operation import Operation
+
         # 1) JSON load
         json_resource_path = f"{self.intermediate_dir}/{self.json_filename}"
         resources = self.load_json(json_resource_path)

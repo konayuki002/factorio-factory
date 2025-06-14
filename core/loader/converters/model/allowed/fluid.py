@@ -1,6 +1,5 @@
 from pathlib import Path
 
-from core.enums.material import Material
 from core.loader.converters.base import BaseConverter
 from core.loader.registry import register
 
@@ -18,6 +17,8 @@ class FluidAllowedConverter(BaseConverter):
     allowed_filename = "fluid.py"
 
     def load(self) -> None:
+        from core.enums.material import Material
+
         # 1) JSON load
         json_fluid_path = f"{self.intermediate_dir}/{self.json_filename}"
         fluids = self.load_json(json_fluid_path)

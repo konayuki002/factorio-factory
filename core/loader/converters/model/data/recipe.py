@@ -2,9 +2,6 @@ from pathlib import Path
 
 from sympy import Rational, srepr
 
-from core.enums.material import Material
-from core.enums.operation import Operation
-from core.enums.operation_category import OperationCategory
 from core.loader.converters.base import BaseConverter
 from core.loader.registry import register
 
@@ -26,6 +23,10 @@ class RecipeDataConverter(BaseConverter):
     data_path = "recipe.py"
 
     def load(self) -> None:
+        from core.enums.material import Material
+        from core.enums.operation import Operation
+        from core.enums.operation_category import OperationCategory
+
         json_recipe_path = f"{self.intermediate_dir}/{self.json_filename}"
         recipes = self.load_json(json_recipe_path)
 
