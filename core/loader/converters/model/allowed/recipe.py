@@ -29,7 +29,7 @@ class RecipeAllowedConverter(BaseConverter):
             "from enums.operation import Operation",
             "",
             "recipe_allowed: set[Operation] = {",
-            *[f"    {recipe}," for recipe in ret],
+            *[f"    {op}," for op in ret],
             "}",
         ]
 
