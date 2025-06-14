@@ -23,6 +23,7 @@ def run_converters(stage: str = "all", log_level: str = "INFO") -> None:
         "json": ["json:"],
         "enum": ["enum:"],
         "data": ["data:"],
+        "literal": ["literal:"],
         "model": ["data:", "literal:"],
     }
 
@@ -60,6 +61,13 @@ def clean_artifacts() -> None:
         if file.name != "__init__.py" and not file.name.startswith("manual_"):
             file.unlink(missing_ok=True)
 
+    # core/literals/*.py を削除（__init__.py は残す）
+    literals_dir = Path(__file__).parents[2] / "core" / "literals"
+    for file in literals_dir.glob("*.py"):
+        if file.name != "__init__.py" and not file.name.startswith("manual_"):
+            # manual_で始まるファイルは削除しない
+            file.unlink(missing_ok=True)
+
     # 以下はmodelの自動生成の実装前なのでコメントアウト
     # core/01_models/*.py を同様に削除する
     # models_dir = Path(__file__).parents[2] / "core" / "01_models"
@@ -89,6 +97,10 @@ def main() -> None:
     sub.add_parser("build-json", help="Build JSON files from Lua data")
     sub.add_parser("build-enum", help="Build Enum classes from JSON data")
     sub.add_parser("build-data", help="Build data dict from JSON data and Enum classes")
+    sub.add_parser(
+        "build-literal",
+        help="Build Literal definitions from JSON data and Enum classes",
+    )
     sub.add_parser("build-model", help="Build Pydantic models from JSON data")
     sub.add_parser("build-all", help="Build all stages (JSON, Enum, Model)")
     sub.add_parser("clean", help="Clean up intermediates")
@@ -101,6 +113,8 @@ def main() -> None:
         run_converters(stage="enum", log_level=args.log_level)
     elif args.cmd == "build-data":
         run_converters(stage="data", log_level=args.log_level)
+    elif args.cmd == "build-literal":
+        run_converters(stage="literal", log_level=args.log_level)
     elif args.cmd == "build-model":
         run_converters(stage="model", log_level=args.log_level)
     elif args.cmd == "build-all":
