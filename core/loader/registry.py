@@ -102,7 +102,7 @@ def sorted_order() -> list[BaseConverter]:
     queue = deque([n for n, deg in in_degree.items() if deg == 0])
     order: list[BaseConverter] = []
 
-    # 3) キューを使って拓扑ソート
+    # 3) キューを使ってトポロジカルソート
     while queue:
         n = queue.popleft()
         order.append(CONVERTERS[n])
