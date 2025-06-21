@@ -68,12 +68,6 @@ def clean_artifacts() -> None:
             # manual_で始まるファイルは削除しない
             file.unlink(missing_ok=True)
 
-    # 以下はmodelの自動生成の実装前なのでコメントアウト
-    # core/01_models/*.py を同様に削除する
-    # models_dir = Path(__file__).parents[2] / "core" / "01_models"
-    # for file in models_dir.glob("0*_*.py"):
-    #     file.unlink(missing_ok=True)
-
     logging.info("Cleaned up intermediate files and models.")
 
 
