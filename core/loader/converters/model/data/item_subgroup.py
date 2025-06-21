@@ -46,8 +46,8 @@ class ItemSubgroupDataConverter(BaseConverter):
         }
 
         out = [
-            "from enums.item_subgroup import ItemSubgroup",
-            "from enums.item_group import ItemGroup",
+            "from core.enums.item_subgroup import ItemSubgroup",
+            "from core.enums.item_group import ItemGroup",
             "",
             "GROUP_OF_SUBGROUP: dict[ItemSubgroup, ItemGroup] = {",
             *[f"    {subgroup}: {group}," for subgroup, group in ret.items()],

@@ -27,7 +27,7 @@ class FluidAllowedConverter(BaseConverter):
         ret = [Material(fluid["name"]) for fluid in fluids]
 
         out = [
-            "from enums.material import Material",
+            "from core.enums.material import Material",
             "",
             "fluid_allowed: set[Material] = {",
             *[f"    {fluid}," for fluid in ret],

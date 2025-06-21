@@ -27,7 +27,7 @@ class ResourceAllowedConverter(BaseConverter):
         ret = [Material(f"resource-{resource['name']}") for resource in resources]
 
         out = [
-            "from enums.material import Material",
+            "from core.enums.material import Material",
             "",
             "resource_allowed: set[Material] = {",
             *[f"    {resource}," for resource in ret],

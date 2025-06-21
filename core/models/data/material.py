@@ -1,5 +1,5 @@
-from enums.item_subgroup import ItemSubgroup
-from enums.material import Material
+from core.enums.item_subgroup import ItemSubgroup
+from core.enums.material import Material
 
 ITEM_SUBGROUP_OF_MATERIAL: dict[Material, ItemSubgroup] = {
     Material.StoneBrick: ItemSubgroup.Terrain,

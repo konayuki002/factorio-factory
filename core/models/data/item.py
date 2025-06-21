@@ -1,5 +1,6 @@
-from enums.material import Material
 from sympy import Integer
+
+from core.enums.material import Material
 
 STACK_SIZE: dict[Material, Integer] = {
     Material.StoneBrick: Integer(100),

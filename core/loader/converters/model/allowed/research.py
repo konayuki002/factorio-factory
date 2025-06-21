@@ -28,7 +28,7 @@ class ResearchAllowedConverter(BaseConverter):
         ret = [Operation(f"research-{tech['name']}") for tech in technologies]
 
         out = [
-            "from enums.operation import Operation",
+            "from core.enums.operation import Operation",
             "",
             "research_allowed: set[Operation] = {",
             *[f"    {op}," for op in ret],

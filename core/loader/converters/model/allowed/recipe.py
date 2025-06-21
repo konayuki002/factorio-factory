@@ -27,7 +27,7 @@ class RecipeAllowedConverter(BaseConverter):
         ret = [Operation(recipe["name"]) for recipe in recipes]
 
         out = [
-            "from enums.operation import Operation",
+            "from core.enums.operation import Operation",
             "",
             "recipe_allowed: set[Operation] = {",
             *[f"    {op}," for op in ret],

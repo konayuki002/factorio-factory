@@ -1,4 +1,4 @@
-from enums.material import Material
+from core.enums.material import Material
 
 item_allowed: set[Material] = {
     Material.StoneBrick,

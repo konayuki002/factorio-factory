@@ -40,7 +40,7 @@ class RecipeDataConverter(BaseConverter):
             ).limit_denominator(100)
 
         out = [
-            "from enums.operation import Operation",
+            "from core.enums.operation import Operation",
             "from sympy import Integer, Rational",
             "",
             "ENERGY_REQUIRED: dict[Operation, Rational] = {",

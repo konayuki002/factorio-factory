@@ -39,7 +39,7 @@ class ResearchDataConverter(BaseConverter):
                 time[op] = Integer(unit["time"])
 
         out = [
-            "from enums.operation import Operation",
+            "from core.enums.operation import Operation",
             "from sympy import Integer",
             "",
             "TIME: dict[Operation, Integer] = {",

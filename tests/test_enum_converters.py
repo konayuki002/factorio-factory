@@ -134,6 +134,6 @@ def test_enum_converter(
     # 異なるEnumは内部的なオブジェクトが異なるため、文字列を比較する
     actual_members = [(m.name, m.value) for m in EnumClass]
     expected_members = [(m.name, m.value) for m in ExpectedEnumClass]
-    assert (
-        actual_members == expected_members
-    ), f"Enum members mismatch: {actual_members} vs {expected_members}"
+    assert actual_members == expected_members, (
+        f"Enum members mismatch: {actual_members} vs {expected_members}"
+    )

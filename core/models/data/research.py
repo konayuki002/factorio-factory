@@ -1,5 +1,6 @@
-from enums.operation import Operation
 from sympy import Integer
+
+from core.enums.operation import Operation
 
 TIME: dict[Operation, Integer] = {
     Operation.ResearchElectricMiningDrill: Integer(10),

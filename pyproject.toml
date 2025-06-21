@@ -11,13 +11,23 @@ exclude = '''
 [tool.isort]
 profile = "black"
 skip = ["stubs/", "data/legacy", ".venv/"]
+known_first_party = ["core"]
 
 [tool.ruff]
 # チェックしたいルールをお好みで（例として E:エラー, F:フォーマット, I:インポート）
-lint.select = ["E", "F", "I"]
+lint.select = ["E", "F", "I", "TID"]
 # 自動修正を有効に
 fix = true
 
 # ルールの除外設定
-include = ["core/", "tests/", "llm/", "plugins/", "tools/"]
+include = [
+  "core/**/*.py",
+  "tests/**/*.py",
+  "llm/**/*.py",
+  "plugins/llm/**/*.py",
+  "tools/llm/**/*.py",
+]
 exclude = ["stubs/", "data/legacy", ".venv/"]
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"

@@ -1,4 +1,4 @@
-from enums.operation import Operation
+from core.enums.operation import Operation
 
 recipe_allowed: set[Operation] = {
     Operation.SpeedModule,

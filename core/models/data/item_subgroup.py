@@ -1,5 +1,5 @@
-from enums.item_group import ItemGroup
-from enums.item_subgroup import ItemSubgroup
+from core.enums.item_group import ItemGroup
+from core.enums.item_subgroup import ItemSubgroup
 
 GROUP_OF_SUBGROUP: dict[ItemSubgroup, ItemGroup] = {
     ItemSubgroup.Storage: ItemGroup.Logistics,

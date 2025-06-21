@@ -27,7 +27,7 @@ class ItemAllowedConverter(BaseConverter):
         ret = [Material(item["name"]) for item in items]
 
         out = [
-            "from enums.material import Material",
+            "from core.enums.material import Material",
             "",
             "item_allowed: set[Material] = {",
             *[f"    {item}," for item in ret],

@@ -41,7 +41,7 @@ class ResourceDataConverter(BaseConverter):
                 time[op] = Integer(resource["mining_time"])
 
         out = [
-            "from enums.operation import Operation",
+            "from core.enums.operation import Operation",
             "from sympy import Integer",
             "",
             "TIME: dict[Operation, Integer] = {",

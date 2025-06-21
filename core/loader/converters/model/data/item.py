@@ -33,7 +33,7 @@ class ItemDataConverter(BaseConverter):
         ret = {EnumMaterialClass(item["name"]): item["stack_size"] for item in items}
 
         out = [
-            "from enums.material import Material",
+            "from core.enums.material import Material",
             "from sympy import Integer",
             "",
             "STACK_SIZE: dict[Material, Integer] = {",

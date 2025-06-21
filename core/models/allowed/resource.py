@@ -1,4 +1,4 @@
-from enums.material import Material
+from core.enums.material import Material
 
 resource_allowed: set[Material] = {
     Material.ResourceIronOre,

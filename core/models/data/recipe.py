@@ -1,5 +1,6 @@
-from enums.operation import Operation
 from sympy import Integer, Rational
+
+from core.enums.operation import Operation
 
 ENERGY_REQUIRED: dict[Operation, Rational] = {
     Operation.SpeedModule: Integer(15),

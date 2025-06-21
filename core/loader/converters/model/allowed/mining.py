@@ -28,7 +28,7 @@ class MiningAllowedConverter(BaseConverter):
         ret = [Operation(f"mining-{res['name']}") for res in resources]
 
         out = [
-            "from enums.operation import Operation",
+            "from core.enums.operation import Operation",
             "",
             "mining_allowed: set[Operation] = {",
             *[f"    {op}," for op in ret],
