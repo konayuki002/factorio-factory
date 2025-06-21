@@ -1,5 +1,3 @@
 #!/bin/bash
 
-black .
-isort .
-ruff format .
+ruff check --fix .

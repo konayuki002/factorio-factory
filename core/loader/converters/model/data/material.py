@@ -1,8 +1,5 @@
 from pathlib import Path
 
-from sympy.core import Integer
-from sympy.printing import srepr
-
 from core.loader.converters.base import BaseConverter
 from core.loader.registry import register
 

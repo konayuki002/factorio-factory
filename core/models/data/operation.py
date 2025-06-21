@@ -1,4 +1,4 @@
-from sympy import Add, Expr, Integer, Mul, Pow, Rational, Symbol
+from sympy import Add, Expr, Integer, Mul, Pow, Symbol
 
 from core.enums.material import Material
 from core.enums.operation import Operation

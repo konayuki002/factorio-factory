@@ -14,8 +14,12 @@ skip = ["stubs/", "data/legacy", ".venv/"]
 known_first_party = ["core"]
 
 [tool.ruff]
+line-length = 88
+
+
 # チェックしたいルールをお好みで（例として E:エラー, F:フォーマット, I:インポート）
-lint.select = ["E", "F", "I", "TID"]
+lint.select = ["B", "E", "F", "I", "TID"]
+lint.fixable = ["B", "I", "E", "F", "TID"]
 # 自動修正を有効に
 fix = true
 
