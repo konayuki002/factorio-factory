@@ -1,0 +1,20 @@
+data:extend({
+  {
+    type = "recipe",
+    name = "sample-recipe-1",
+    category = "smelting",
+    energy_required = 3.2,
+    ingredients = {{type = "item", name = "sample-item", amount = 1}},
+    results = {{type="item", name="sample-item-2", amount=1}},
+    allow_productivity = true
+  },
+  {
+    type = "recipe",
+    name = "sample-recipe-2",
+    category = "smelting",
+    energy_required = 3.2,
+    ingredients = {{type = "item", name = "sample-item-2", amount = 1}},
+    results = {{type="item", name="sample-item", amount=1}},
+    allow_productivity = true
+  }
+})
