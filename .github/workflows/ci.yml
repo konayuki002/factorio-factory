@@ -14,10 +14,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13.3'
-      - run: pip install black isort ruff
-      - run: black . --check
-      - run: isort . --check
-      - run: ruff check .
+      - run: pip install ruff
+      - name: 'Ruff: all-in-one lint & format check'
+        run: ruff check .
   build-and-test:
     runs-on: ubuntu-latest
     steps:
