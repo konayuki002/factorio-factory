@@ -163,9 +163,9 @@ class OperationDataConverter(BaseConverter):
             category_of_recipe[op] = OperationCategory.Mining
 
         out = [
-            "from enums.material import Material",
-            "from enums.operation import Operation",
-            "from enums.operation_category import OperationCategory",
+            "from core.enums.material import Material",
+            "from core.enums.operation import Operation",
+            "from core.enums.operation_category import OperationCategory",
             "from sympy import Add, Expr, Integer, Mul, Pow, Rational, Symbol",
             "",
             "L = Symbol('L')",

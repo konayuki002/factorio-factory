@@ -1,7 +1,8 @@
-from enums.material import Material
-from enums.operation import Operation
-from enums.operation_category import OperationCategory
 from sympy import Add, Expr, Integer, Mul, Pow, Rational, Symbol
+
+from core.enums.material import Material
+from core.enums.operation import Operation
+from core.enums.operation_category import OperationCategory
 
 L = Symbol("L")
 
