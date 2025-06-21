@@ -9,7 +9,7 @@ def run_converters(stage: str = "all", log_level: str = "INFO") -> None:
     コンバーターを実行する関数。
     stage引数に応じて、Lua -> JSON変換、JSON -> Enumクラス生成を行う。
     """
-    from .registry import sorted_order
+    from core.loader.registry import sorted_order
 
     logging.basicConfig(
         level=getattr(logging, log_level, logging.INFO),

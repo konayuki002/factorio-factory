@@ -234,7 +234,7 @@ def parse_lua_file(path: Union[str, Path]) -> List[Dict[str, Any]]:
     try:
         tree = lua_ast.parse(code)
     except Exception as e:
-        raise RuntimeError(f"Lua のパースに失敗: {e!s}")
+        raise RuntimeError(f"Lua のパースに失敗: {e}") from e
 
     extractor = LuaTableExtractor()
     extractor.visit(tree)
