@@ -1,18 +1,3 @@
-[tool.black]
-line-length = 88
-exclude = '''
-(
-    /stubs/
-  | /data/legacy/
-  | /.venv/
-)
-'''
-
-[tool.isort]
-profile = "black"
-skip = ["stubs/", "data/legacy", ".venv/"]
-known_first_party = ["core"]
-
 [tool.ruff]
 line-length = 88
 
