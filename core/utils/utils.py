@@ -28,4 +28,18 @@ def repr_set_of_enum(enum_set: set[Enum]) -> str:
     """
     if not enum_set:
         return "set()"
-    return "{" + ", ".join(f"{e.__class__.__name__}.{e.name}" for e in enum_set) + "}"
+    sorted_enums = sorted(enum_set, key=lambda e: e.name)
+    return (
+        "{" + ", ".join(f"{e.__class__.__name__}.{e.name}" for e in sorted_enums) + "}"
+    )
+
+
+def repr_set_of_str(str_set: set[str]) -> str:
+    """
+    set[str] → repr
+    例: {"iron-plate", "copper-plate"} → "{'iron-plate', 'copper-plate'}"
+    """
+    if not str_set:
+        return "set()"
+    sorted_strings = sorted(str_set)
+    return "{" + ", ".join(f"'{s}'" for s in sorted_strings) + "}"

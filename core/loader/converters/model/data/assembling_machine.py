@@ -6,7 +6,7 @@ from sympy import Rational, srepr
 
 from core.loader.converters.base import BaseConverter
 from core.loader.registry import register
-from core.utils.utils import parse_power_kw, repr_set_of_enum
+from core.utils.utils import parse_power_kw, repr_set_of_enum, repr_set_of_str
 
 
 @register("data:assembling_machine")
@@ -116,7 +116,10 @@ class AssemblingMachineDataConverter(BaseConverter):
             "}",
             "",
             "ALLOWED_EFFECTS: dict[AssemblingMachine, set[str]] = {",
-            *[f"    {m}: {repr(effects)}," for m, effects in allowed_effects.items()],
+            *[
+                f"    {m}: {repr_set_of_str(effects)},"
+                for m, effects in allowed_effects.items()
+            ],
             "}",
             "",
             "MODULE_SLOTS: dict[AssemblingMachine, int] = {",
