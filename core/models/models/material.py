@@ -22,8 +22,8 @@ class Item(MaterialBase):
             raise ValueError(f"Invalid item: {v}")
         return v
 
+    @computed_field(return_type=Integer, repr=False)  # type: ignore[prop-decorator]
     @property
-    @computed_field(return_type=Integer, repr=False)
     def stack_size(self) -> Integer:
         """
         アイテムのスタックサイズを返す.

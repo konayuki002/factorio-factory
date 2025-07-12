@@ -16,8 +16,8 @@ from core.models.data.assembling_machine import (
 class AssemblingMachine(BaseModel):
     id: AssemblingMachineEnum
 
+    @computed_field(return_type=str, repr=False)  # type: ignore[prop-decorator]
     @property
-    @computed_field(return_type=str, repr=False)
     def machine_type(self) -> str:
         """
         装置のタイプを返す.
@@ -27,8 +27,8 @@ class AssemblingMachine(BaseModel):
         except KeyError as e:
             raise ValueError(f"Invalid machine type for: {self.id}") from e
 
+    @computed_field(return_type=Rational, repr=False)  # type: ignore[prop-decorator]
     @property
-    @computed_field(return_type=Rational, repr=False)
     def speed(self) -> Rational:
         """
         装置の処理速度を返す.
@@ -38,8 +38,8 @@ class AssemblingMachine(BaseModel):
         except KeyError as e:
             raise ValueError(f"Invalid speed for machine: {self.id}") from e
 
+    @computed_field(return_type=set[OperationCategory], repr=False)  # type: ignore[prop-decorator]
     @property
-    @computed_field(return_type=set[OperationCategory], repr=False)
     def categories(self) -> set[OperationCategory]:
         """
         装置が受け入れ可能な処理カテゴリを返す.
@@ -49,8 +49,8 @@ class AssemblingMachine(BaseModel):
         except KeyError as e:
             raise ValueError(f"Invalid categories for machine: {self.id}") from e
 
+    @computed_field(return_type=Rational, repr=False)  # type: ignore[prop-decorator]
     @property
-    @computed_field(return_type=Rational, repr=False)
     def energy_usage_kw(self) -> Rational:
         """
         装置のエネルギー使用量をキロワット単位で返す.
@@ -60,8 +60,8 @@ class AssemblingMachine(BaseModel):
         except KeyError as e:
             raise ValueError(f"Invalid energy usage for machine: {self.id}") from e
 
+    @computed_field(return_type=set[str], repr=False)  # type: ignore[prop-decorator]
     @property
-    @computed_field(return_type=set[str], repr=False)
     def allowed_effects(self) -> set[str]:
         """
         装置が受け入れ可能な効果のセットを返す.
@@ -71,8 +71,8 @@ class AssemblingMachine(BaseModel):
         except KeyError as e:
             raise ValueError(f"Invalid allowed effects for machine: {self.id}") from e
 
+    @computed_field(return_type=int, repr=False)  # type: ignore[prop-decorator]
     @property
-    @computed_field(return_type=int, repr=False)
     def module_slots(self) -> int:
         """
         装置に装着可能なモジュールのスロット数を返す.

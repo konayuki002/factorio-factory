@@ -18,8 +18,8 @@ from core.models.data.resource import TIME as MINING_TIME
 class OperationBase(BaseModel):
     id: OperationEnum
 
+    @computed_field(return_type=dict[MaterialEnum, Expr], repr=False)  # type: ignore[prop-decorator]
     @property
-    @computed_field(return_type=dict[MaterialEnum, Expr], repr=False)
     def ingredients(self) -> dict[MaterialEnum, Expr]:
         """
         この操作に必要な材料を返す.
@@ -29,8 +29,8 @@ class OperationBase(BaseModel):
         except KeyError as e:
             raise ValueError(f"Invalid ingredients for operation: {self.id}") from e
 
+    @computed_field(return_type=dict[MaterialEnum, Integer], repr=False)  # type: ignore[prop-decorator]
     @property
-    @computed_field(return_type=dict[MaterialEnum, Integer], repr=False)
     def results(self) -> dict[MaterialEnum, Integer]:
         """
         この操作の結果を返す.
@@ -40,8 +40,8 @@ class OperationBase(BaseModel):
         except KeyError as e:
             raise ValueError(f"Invalid results for operation: {self.id}") from e
 
+    @computed_field(return_type=CategoryEnum, repr=False)  # type: ignore[prop-decorator]
     @property
-    @computed_field(return_type=CategoryEnum, repr=False)
     def category(self) -> CategoryEnum:
         """
         この操作のカテゴリを返す.
@@ -59,8 +59,8 @@ class Mining(OperationBase):
             raise ValueError(f"Invalid item: {v}")
         return v
 
+    @computed_field(return_type=Integer, repr=False)  # type: ignore[prop-decorator]
     @property
-    @computed_field(return_type=Integer, repr=False)
     def time(self) -> Integer:
         """
         採掘にかかる時間を返す.
@@ -78,8 +78,8 @@ class Recipe(OperationBase):
             raise ValueError(f"Invalid fluid: {v}")
         return v
 
+    @computed_field(return_type=Rational, repr=False)  # type: ignore[prop-decorator]
     @property
-    @computed_field(return_type=Rational, repr=False)
     def energy_required(self) -> Rational:
         """
         レシピのエネルギー消費量を返す.
@@ -97,8 +97,8 @@ class Research(OperationBase):
             raise ValueError(f"Invalid resource: {v}")
         return v
 
+    @computed_field(return_type=Integer, repr=False)  # type: ignore[prop-decorator]
     @property
-    @computed_field(return_type=Integer, repr=False)
     def time(self) -> Integer:
         """
         研究にかかる時間を返す.
