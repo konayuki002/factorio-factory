@@ -55,14 +55,14 @@ def clean_artifacts() -> None:
             # manual_で始まるファイルは削除しない
             file.unlink(missing_ok=True)
 
-    # core/data/*.py を削除（__init__.py は残す）
-    data_dir = Path(__file__).parents[2] / "core" / "data"
+    # core/models/data/*.py を削除（__init__.py は残す）
+    data_dir = Path(__file__).parents[2] / "core" / "models" / "data"
     for file in data_dir.glob("*.py"):
         if file.name != "__init__.py" and not file.name.startswith("manual_"):
             file.unlink(missing_ok=True)
 
-    # core/allowed/*.py を削除（__init__.py は残す）
-    allowed_dir = Path(__file__).parents[2] / "core" / "allowed"
+    # core/models/allowed/*.py を削除（__init__.py は残す）
+    allowed_dir = Path(__file__).parents[2] / "core" / "models" / "allowed"
     for file in allowed_dir.glob("*.py"):
         if file.name != "__init__.py" and not file.name.startswith("manual_"):
             # manual_で始まるファイルは削除しない

@@ -11,8 +11,8 @@ class ItemSubgroup(BaseModel):
     class Config:
         frozen = True  # ハッシュ化・キャッシュしやすくする
 
+    @computed_field(return_type=ItemGroup, repr=False)  # type: ignore[prop-decorator]
     @property
-    @computed_field(return_type=ItemGroup, repr=False)
     def group(self) -> ItemGroup:
         """
         アイテムサブグループに対応するアイテムグループを返す.
