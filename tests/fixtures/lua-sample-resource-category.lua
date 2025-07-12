@@ -1,0 +1,13 @@
+data:extend(
+{
+  {
+    type = "resource-category",
+    name = "sample-resource-category",
+    order = "a"
+  },
+  {
+    type = "resource-category",
+    name = "sample-resource-category-2",
+    order = "b"
+  }
+})
