@@ -12,6 +12,15 @@ def to_enum_member(name: str) -> str:
 
 
 def parse_power_kw(value: str) -> Rational:
+    """
+    文字列の電力値をRationalに変換します。
+    例: "100kW" → Rational(100)
+    例: "1.5MW" → Rational(1500)
+    例: "0.5GW" → Rational(500000)
+
+    factorio-dataでの仕事率の単位はkW, MW, GWのいずれかのみが出現します。
+    """
+
     if value.endswith("kW"):
         return Rational(float(value[:-2])).limit_denominator(10)
     if value.endswith("MW"):
