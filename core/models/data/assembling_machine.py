@@ -1,8 +1,27 @@
 from sympy import Integer, Rational
 
 from core.enums.assembling_machine import AssemblingMachine
+from core.enums.operation_category import OperationCategory
 
-CRAFTING_SPEED: dict[AssemblingMachine, Rational] = {
+TYPES: dict[AssemblingMachine, str] = {
+    AssemblingMachine.StoneFurnace: "furnace",
+    AssemblingMachine.OffshorePump: "offshore-pump",
+    AssemblingMachine.AssemblingMachine1: "assembling-machine",
+    AssemblingMachine.AssemblingMachine2: "assembling-machine",
+    AssemblingMachine.Lab: "lab",
+    AssemblingMachine.ElectricFurnace: "furnace",
+    AssemblingMachine.SteelFurnace: "furnace",
+    AssemblingMachine.AssemblingMachine3: "assembling-machine",
+    AssemblingMachine.RocketSilo: "rocket-silo",
+    AssemblingMachine.OilRefinery: "assembling-machine",
+    AssemblingMachine.ChemicalPlant: "assembling-machine",
+    AssemblingMachine.Centrifuge: "assembling-machine",
+    AssemblingMachine.ElectricMiningDrill: "mining-drill",
+    AssemblingMachine.BurnerMiningDrill: "mining-drill",
+    AssemblingMachine.Pumpjack: "mining-drill",
+}
+
+SPEED: dict[AssemblingMachine, Rational] = {
     AssemblingMachine.StoneFurnace: Integer(1),
     AssemblingMachine.OffshorePump: Integer(0),
     AssemblingMachine.AssemblingMachine1: Rational(1, 2),
@@ -20,7 +39,39 @@ CRAFTING_SPEED: dict[AssemblingMachine, Rational] = {
     AssemblingMachine.Pumpjack: Integer(1),
 }
 
-ENERGY_USAGE_KW: dict[AssemblingMachine, Integer] = {
+CATEGORIES: dict[AssemblingMachine, set[OperationCategory]] = {
+    AssemblingMachine.StoneFurnace: {OperationCategory.Smelting},
+    AssemblingMachine.OffshorePump: set(),
+    AssemblingMachine.AssemblingMachine1: {
+        OperationCategory.Crafting,
+        OperationCategory.AdvancedCrafting,
+        OperationCategory.BasicCrafting,
+    },
+    AssemblingMachine.AssemblingMachine2: {
+        OperationCategory.Crafting,
+        OperationCategory.AdvancedCrafting,
+        OperationCategory.BasicCrafting,
+        OperationCategory.CraftingWithFluid,
+    },
+    AssemblingMachine.Lab: set(),
+    AssemblingMachine.ElectricFurnace: {OperationCategory.Smelting},
+    AssemblingMachine.SteelFurnace: {OperationCategory.Smelting},
+    AssemblingMachine.AssemblingMachine3: {
+        OperationCategory.Crafting,
+        OperationCategory.AdvancedCrafting,
+        OperationCategory.BasicCrafting,
+        OperationCategory.CraftingWithFluid,
+    },
+    AssemblingMachine.RocketSilo: {OperationCategory.RocketBuilding},
+    AssemblingMachine.OilRefinery: {OperationCategory.OilProcessing},
+    AssemblingMachine.ChemicalPlant: {OperationCategory.Chemistry},
+    AssemblingMachine.Centrifuge: {OperationCategory.Centrifuging},
+    AssemblingMachine.ElectricMiningDrill: {OperationCategory.Mining},
+    AssemblingMachine.BurnerMiningDrill: {OperationCategory.Mining},
+    AssemblingMachine.Pumpjack: {OperationCategory.Mining},
+}
+
+ENERGY_USAGE_KW: dict[AssemblingMachine, Rational] = {
     AssemblingMachine.StoneFurnace: Integer(90),
     AssemblingMachine.OffshorePump: Integer(60),
     AssemblingMachine.AssemblingMachine1: Integer(75),
@@ -38,20 +89,79 @@ ENERGY_USAGE_KW: dict[AssemblingMachine, Integer] = {
     AssemblingMachine.Pumpjack: Integer(90),
 }
 
-MODULE_SLOTS: dict[AssemblingMachine, Integer] = {
-    AssemblingMachine.StoneFurnace: Integer(0),
-    AssemblingMachine.OffshorePump: Integer(0),
-    AssemblingMachine.AssemblingMachine1: Integer(0),
-    AssemblingMachine.AssemblingMachine2: Integer(2),
-    AssemblingMachine.Lab: Integer(2),
-    AssemblingMachine.ElectricFurnace: Integer(2),
-    AssemblingMachine.SteelFurnace: Integer(0),
-    AssemblingMachine.AssemblingMachine3: Integer(4),
-    AssemblingMachine.RocketSilo: Integer(4),
-    AssemblingMachine.OilRefinery: Integer(3),
-    AssemblingMachine.ChemicalPlant: Integer(3),
-    AssemblingMachine.Centrifuge: Integer(2),
-    AssemblingMachine.ElectricMiningDrill: Integer(3),
-    AssemblingMachine.BurnerMiningDrill: Integer(0),
-    AssemblingMachine.Pumpjack: Integer(2),
+ALLOWED_EFFECTS: dict[AssemblingMachine, set[str]] = {
+    AssemblingMachine.StoneFurnace: {"speed", "pollution", "consumption"},
+    AssemblingMachine.OffshorePump: set(),
+    AssemblingMachine.AssemblingMachine1: {"speed", "pollution", "consumption"},
+    AssemblingMachine.AssemblingMachine2: {
+        "productivity",
+        "quality",
+        "consumption",
+        "pollution",
+        "speed",
+    },
+    AssemblingMachine.Lab: set(),
+    AssemblingMachine.ElectricFurnace: {
+        "productivity",
+        "quality",
+        "consumption",
+        "pollution",
+        "speed",
+    },
+    AssemblingMachine.SteelFurnace: {"speed", "pollution", "consumption"},
+    AssemblingMachine.AssemblingMachine3: {
+        "productivity",
+        "quality",
+        "consumption",
+        "pollution",
+        "speed",
+    },
+    AssemblingMachine.RocketSilo: {"speed", "productivity", "pollution", "consumption"},
+    AssemblingMachine.OilRefinery: {
+        "speed",
+        "productivity",
+        "pollution",
+        "consumption",
+    },
+    AssemblingMachine.ChemicalPlant: {
+        "productivity",
+        "quality",
+        "consumption",
+        "pollution",
+        "speed",
+    },
+    AssemblingMachine.Centrifuge: {
+        "productivity",
+        "quality",
+        "consumption",
+        "pollution",
+        "speed",
+    },
+    AssemblingMachine.ElectricMiningDrill: {
+        "productivity",
+        "quality",
+        "consumption",
+        "pollution",
+        "speed",
+    },
+    AssemblingMachine.BurnerMiningDrill: set(),
+    AssemblingMachine.Pumpjack: {"speed", "productivity", "pollution", "consumption"},
+}
+
+MODULE_SLOTS: dict[AssemblingMachine, int] = {
+    AssemblingMachine.StoneFurnace: 0,
+    AssemblingMachine.OffshorePump: 0,
+    AssemblingMachine.AssemblingMachine1: 0,
+    AssemblingMachine.AssemblingMachine2: 2,
+    AssemblingMachine.Lab: 2,
+    AssemblingMachine.ElectricFurnace: 2,
+    AssemblingMachine.SteelFurnace: 0,
+    AssemblingMachine.AssemblingMachine3: 4,
+    AssemblingMachine.RocketSilo: 4,
+    AssemblingMachine.OilRefinery: 3,
+    AssemblingMachine.ChemicalPlant: 3,
+    AssemblingMachine.Centrifuge: 2,
+    AssemblingMachine.ElectricMiningDrill: 3,
+    AssemblingMachine.BurnerMiningDrill: 0,
+    AssemblingMachine.Pumpjack: 2,
 }

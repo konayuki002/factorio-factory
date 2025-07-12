@@ -1,9 +1,12 @@
+from enum import Enum
 from pathlib import Path
+from typing import cast
 
-from sympy import Integer, Rational, srepr
+from sympy import Rational, srepr
 
 from core.loader.converters.base import BaseConverter
 from core.loader.registry import register
+from core.utils.utils import parse_power_kw, repr_set_of_enum
 
 
 @register("data:assembling_machine")
@@ -16,17 +19,9 @@ class AssemblingMachineDataConverter(BaseConverter):
     data_path = "assembling_machine.py"
     json_filenames = ["entities.json", "mining_drill.json"]
 
-    def _parse_power_kw(self, value: str) -> int:
-        if value.endswith("kW"):
-            return int(float(value[:-2]))
-        if value.endswith("MW"):
-            return int(float(value[:-2]) * 1000)
-        if value.endswith("W"):
-            return int(float(value[:-1]) / 1000)
-        raise ValueError(f"Unknown power unit in {value}")
-
     def load(self) -> None:
         from core.enums.assembling_machine import AssemblingMachine
+        from core.enums.operation_category import OperationCategory
 
         entities = self.load_json(
             f"{self.intermediate_dir}/{self.json_entities_filename}"
@@ -35,7 +30,12 @@ class AssemblingMachineDataConverter(BaseConverter):
             f"{self.intermediate_dir}/{self.json_mining_drill_filename}"
         )
 
-        records: dict[str, tuple[float, int, int]] = {}
+        types: dict[AssemblingMachine, str] = {}
+        speeds: dict[AssemblingMachine, Rational] = {}
+        categories: dict[AssemblingMachine, set[OperationCategory]] = {}
+        energy_usages_kw: dict[AssemblingMachine, Rational] = {}
+        allowed_effects: dict[AssemblingMachine, set[str]] = {}
+        module_slots: dict[AssemblingMachine, int] = {}
         for e in entities:
             if e.get("type") in {
                 "assembling-machine",
@@ -47,42 +47,79 @@ class AssemblingMachineDataConverter(BaseConverter):
                 "rocket-silo",
                 "centrifuge",
             }:
-                name = e["name"]
-                speed = float(e.get("crafting_speed", 0))
-                energy = e.get("energy_usage", "0kW")
-                slots = e.get("module_slots", 0) or 0
-                records[name] = (speed, self._parse_power_kw(energy), int(slots))
+                enum = AssemblingMachine(e["name"])
+                types[enum] = e.get("type", "")
+                speeds[enum] = Rational(
+                    float(e.get("crafting_speed", 0))
+                ).limit_denominator(4)
+                categories[enum] = {
+                    OperationCategory(category)
+                    for category in e.get("crafting_categories", [])
+                }
+                energy_usages_kw[enum] = parse_power_kw(e.get("energy_usage", "0kW"))
+                allowed_effects[enum] = set(e.get("allowed_effects", []))
+                module_slots[enum] = e.get("module_slots", 0) or 0
 
         for d in drills:
-            name = d["name"]
-            speed = float(d.get("mining_speed", 0))
-            energy = d.get("energy_usage", "0kW")
-            slots = d.get("module_slots", 0) or 0
-            records[name] = (speed, self._parse_power_kw(energy), int(slots))
-
-        crafting_speed: dict[AssemblingMachine, Rational] = {}
-        energy_usage: dict[AssemblingMachine, Integer] = {}
-        module_slots: dict[AssemblingMachine, Integer] = {}
-
-        for name, (speed, energy_kw, slots) in records.items():
-            enum = AssemblingMachine(name)
-            crafting_speed[enum] = Rational(speed).limit_denominator(100)
-            energy_usage[enum] = Integer(energy_kw)
-            module_slots[enum] = Integer(slots)
+            enum = AssemblingMachine(d["name"])
+            types[enum] = "mining-drill"
+            speeds[enum] = Rational(float(d.get("mining_speed", 0))).limit_denominator(
+                4
+            )
+            categories[enum] = {OperationCategory.Mining}
+            energy_usages_kw[enum] = parse_power_kw(d.get("energy_usage", "0kW"))
+            if enum == AssemblingMachine.Pumpjack:
+                # Pumpjack has no allowed effects
+                allowed_effects[enum] = {
+                    "consumption",
+                    "speed",
+                    "productivity",
+                    "pollution",
+                }
+            else:
+                allowed_effects[enum] = set(
+                    d.get(
+                        "allowed_effects",
+                        [
+                            "consumption",
+                            "speed",
+                            "productivity",
+                            "pollution",
+                            "quality",
+                        ],
+                    )
+                )
+            module_slots[enum] = d.get("module_slots", 0) or 0
 
         out = [
             "from sympy import Integer, Rational",
             "from core.enums.assembling_machine import AssemblingMachine",
+            "from core.enums.operation_category import OperationCategory",
             "",
-            "CRAFTING_SPEED: dict[AssemblingMachine, Rational] = {",
-            *[f"    {m}: {srepr(speed)}," for m, speed in crafting_speed.items()],
+            "TYPES: dict[AssemblingMachine, str] = {",
+            *[f'    {m}: "{t}",' for m, t in types.items()],
             "}",
             "",
-            "ENERGY_USAGE_KW: dict[AssemblingMachine, Integer] = {",
-            *[f"    {m}: {srepr(power)}," for m, power in energy_usage.items()],
+            "SPEED: dict[AssemblingMachine, Rational] = {",
+            *[f"    {m}: {srepr(speed)}," for m, speed in speeds.items()],
             "}",
             "",
-            "MODULE_SLOTS: dict[AssemblingMachine, Integer] = {",
+            "CATEGORIES: dict[AssemblingMachine, set[OperationCategory]] = {",
+            *[
+                f"    {m}: {repr_set_of_enum(cast(set[Enum], c))},"
+                for m, c in categories.items()
+            ],
+            "}",
+            "",
+            "ENERGY_USAGE_KW: dict[AssemblingMachine, Rational] = {",
+            *[f"    {m}: {srepr(e)}," for m, e in energy_usages_kw.items()],
+            "}",
+            "",
+            "ALLOWED_EFFECTS: dict[AssemblingMachine, set[str]] = {",
+            *[f"    {m}: {repr(effects)}," for m, effects in allowed_effects.items()],
+            "}",
+            "",
+            "MODULE_SLOTS: dict[AssemblingMachine, int] = {",
             *[f"    {m}: {srepr(slots)}," for m, slots in module_slots.items()],
             "}",
         ]
