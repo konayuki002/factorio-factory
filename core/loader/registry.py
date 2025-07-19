@@ -38,10 +38,22 @@ def register(name: str) -> Callable[[type], type]:
 
 
 # -- 次に, 動的インポートの処理 --
+
+# コンバーター自動検出から除外するファイル
+EXCLUDED_FILES = {
+    "__init__.py",  # Pythonパッケージファイル
+    "base.py",  # ベースクラス定義
+}
+
+
 def dynamic_import_one_by_one(module_name: str) -> None:
     """
     指定されたモジュール以下のモジュールを動的にインポートする。
     モジュール名は 'core.loader.converters.json' のような形式で指定。
+
+    除外ルール:
+    - __init__.py, base.py等の基盤ファイル
+    - _で始まるプライベートファイル
     """
     package = importlib.import_module(module_name)
     package_path = pathlib.Path(package.__path__[0])
@@ -49,8 +61,8 @@ def dynamic_import_one_by_one(module_name: str) -> None:
     for file in package_path.iterdir():
         if (
             file.suffix == ".py"
-            and file.name != "__init__.py"
-            and file.name != "base.py"
+            and file.name not in EXCLUDED_FILES
+            and not file.name.startswith("_")
         ):
             submod = f"{module_name}.{file.stem}"
             importlib.import_module(submod)
