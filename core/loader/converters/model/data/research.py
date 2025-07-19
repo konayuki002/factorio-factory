@@ -43,7 +43,7 @@ class ResearchDataConverter(BaseConverter):
             "from sympy import Integer",
             "",
             "TIME: dict[Operation, Integer] = {",
-            *[f"    {op}: {srepr(energy)}," for op, energy in time.items()],
+            *[f"    {op}: {srepr(energy)}," for op, energy in sorted(time.items(), key=lambda x: str(x[0]))],
             "}",
         ]
         (Path(self.data_dir) / self.data_path).write_text("\n".join(out))

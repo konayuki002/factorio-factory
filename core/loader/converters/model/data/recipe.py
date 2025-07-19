@@ -44,7 +44,7 @@ class RecipeDataConverter(BaseConverter):
             "from sympy import Integer, Rational",
             "",
             "ENERGY_REQUIRED: dict[Operation, Rational] = {",
-            *[f"    {op}: {srepr(energy)}," for op, energy in energy_required.items()],
+            *[f"    {op}: {srepr(energy)}," for op, energy in sorted(energy_required.items(), key=lambda x: str(x[0]))],
             "}",
         ]
         (Path(self.data_dir) / self.data_path).write_text("\n".join(out))

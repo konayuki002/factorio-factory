@@ -97,33 +97,33 @@ class AssemblingMachineDataConverter(BaseConverter):
             "from core.enums.operation_category import OperationCategory",
             "",
             "TYPES: dict[AssemblingMachine, str] = {",
-            *[f'    {m}: "{t}",' for m, t in types.items()],
+            *[f'    {m}: "{t}",' for m, t in sorted(types.items(), key=lambda x: str(x[0]))],
             "}",
             "",
             "SPEED: dict[AssemblingMachine, Rational] = {",
-            *[f"    {m}: {srepr(speed)}," for m, speed in speeds.items()],
+            *[f"    {m}: {srepr(speed)}," for m, speed in sorted(speeds.items(), key=lambda x: str(x[0]))],
             "}",
             "",
             "CATEGORIES: dict[AssemblingMachine, set[OperationCategory]] = {",
             *[
                 f"    {m}: {repr_set_of_enum(cast(set[Enum], c))},"
-                for m, c in categories.items()
+                for m, c in sorted(categories.items(), key=lambda x: str(x[0]))
             ],
             "}",
             "",
             "ENERGY_USAGE_KW: dict[AssemblingMachine, Rational] = {",
-            *[f"    {m}: {srepr(e)}," for m, e in energy_usages_kw.items()],
+            *[f"    {m}: {srepr(e)}," for m, e in sorted(energy_usages_kw.items(), key=lambda x: str(x[0]))],
             "}",
             "",
             "ALLOWED_EFFECTS: dict[AssemblingMachine, set[str]] = {",
             *[
                 f"    {m}: {repr_set_of_str(effects)},"
-                for m, effects in allowed_effects.items()
+                for m, effects in sorted(allowed_effects.items(), key=lambda x: str(x[0]))
             ],
             "}",
             "",
             "MODULE_SLOTS: dict[AssemblingMachine, int] = {",
-            *[f"    {m}: {srepr(slots)}," for m, slots in module_slots.items()],
+            *[f"    {m}: {srepr(slots)}," for m, slots in sorted(module_slots.items(), key=lambda x: str(x[0]))],
             "}",
         ]
         (Path(self.data_dir) / self.data_path).write_text("\n".join(out))
