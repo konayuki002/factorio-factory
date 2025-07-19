@@ -1,6 +1,25 @@
 # factorio-factory
 
-**WIP**
+Factorioのゲームデータを解析・変換し、工場設計や最適化に活用するためのPythonライブラリです。
+
+## 🎯 プロジェクト概要
+
+このプロジェクトは、Factorioの複雑なデータ構造を扱いやすい形式に変換し、工場設計のアルゴリズムやツール開発を支援します。
+
+### ✨ 主な特徴
+
+- **Lua実行ベースのデータ抽出**: 静的解析ではなくFactorioのLuaエンジンを実行して正確なデータを取得
+- **Space Age対応**: 最新の拡張コンテンツに完全対応
+- **MOD対応**: 複雑な依存関係を持つMODにも対応
+- **型安全性**: Pydanticモデルとenum活用による厳密な型チェック
+- **拡張可能性**: モジュラー設計による柔軟な拡張
+
+### 🚀 最近の更新
+
+**2025年7月**: Lua実行ベースへの移行完了
+- 従来の静的Lua解析から動的Lua実行ベースに完全移行
+- 224種類のプロトタイプタイプの完全サポート
+- Space Age拡張およびMODの複雑な依存関係への対応
 
 ## Directory Structure
 
@@ -11,7 +30,7 @@ factorio_factory/
 │   │   ├── models/                 # モデルの構造定義
 │   │   ├── allowed/                # 包含関係の所属の定義
 │   │   └── data/                   # モデルのデータ辞書の定義
-│   ├── enum/                       # 識別子定義
+│   ├── enums/                      # 識別子定義 (自動生成)
 │   ├── 02_logic/                   # 計算ロジック [未実装]
 │   │   ├── 01_recipe_graph.py
 │   │   ├── 02_throughput.py
@@ -22,7 +41,8 @@ factorio_factory/
 │   ├── loader/
 │   │   ├── converters/             # 個別の変換ロジック
 │   │   │   ├── base.py             # 変換のベースクラス
-│   │   │   ├── json/               # LuaからJSONへの変換
+│   │   │   ├── lua_prototypes.py   # 🆕 Lua実行によるプロトタイプ抽出
+│   │   │   ├── json/               # プロトタイプからJSONへの変換
 │   │   │   ├── enum/               # JSONからEnumのPythonコードへの変換
 │   │   │   └── model/              # JSONからPydanticモデル用のPythonコードへの変換
 │   │   │       ├── allowed/

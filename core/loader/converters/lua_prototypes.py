@@ -62,7 +62,8 @@ class LuaPrototypeExecutor(BaseConverter):
         )
 
         # カスタムrequire関数
-        lua.execute(f"""
+        lua.execute(
+            f"""
 local original_require = require
 
 require = function(module_name)
@@ -111,10 +112,12 @@ require = function(module_name)
     
     return original_require(module_name)
 end
-""")
+"""
+        )
 
         # defines定義（core/data.lua読み込み前に必要）
-        lua.execute("""
+        lua.execute(
+            """
 defines = {
     direction = {
         north = 0, northnortheast = 1, northeast = 2, eastnortheast = 3,
@@ -139,10 +142,12 @@ defines = {
         character_armor = 15, character_vehicle = 16, character_trash = 17
     }
 }
-""")
+"""
+        )
 
         # data構造定義
-        lua.execute("""
+        lua.execute(
+            """
 data = {
     raw = {},
     extend = function(self, prototypes)
@@ -156,13 +161,15 @@ data = {
         end
     end
 }
-""")
+"""
+        )
 
         return lua
 
     def _mock_util_functions(self, lua: lupa.LuaRuntime) -> None:
         """util関数をモック化"""
-        lua.execute("""
+        lua.execute(
+            """
 if util then
     util.sprite_load = function(path, options)
         return {
@@ -175,7 +182,8 @@ if util then
     util.by_pixel = util.by_pixel or function(value) return value end
     util.empty_sprite = util.empty_sprite or function() return {} end
 end
-""")
+"""
+        )
 
     def _extract_and_save_prototypes(self, lua: lupa.LuaRuntime) -> None:
         """data.rawからプロトタイプを抽出してJSONファイルとして保存"""
