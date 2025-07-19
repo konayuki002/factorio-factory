@@ -4,11 +4,7 @@ Lua実行ベースのコンバータシステムのテストスクリプト
 """
 
 import logging
-import sys
 from pathlib import Path
-
-# プロジェクトルートをPythonパスに追加
-sys.path.insert(0, str(Path(__file__).parent))
 
 from core.loader.registry import load_all
 
