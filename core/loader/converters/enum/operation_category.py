@@ -21,6 +21,7 @@ class OperationCategoryEnumConverter(BaseConverter):
         all_names = self.merge_unique(
             names, OPERATION_CATEGORY_MANUAL, "OperationCategory"
         )
+        all_names.sort()
         self.gen_enum(
             "OperationCategory",
             all_names,
