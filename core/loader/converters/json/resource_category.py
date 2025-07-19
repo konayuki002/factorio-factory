@@ -33,7 +33,7 @@ class ResourceCategoryJsonConverter(BaseConverter):
             categories = []
             category_prototypes = all_prototypes.get("resource-category", {})
 
-            for category_name, category_data in category_prototypes.items():
+            for _category_name, category_data in category_prototypes.items():
                 categories.append(category_data)
 
             # 3) JSON出力

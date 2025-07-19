@@ -34,7 +34,7 @@ class ItemGroupJsonConverter(BaseConverter):
             groups = []
             group_prototypes = all_prototypes.get("item-group", {})
 
-            for group_name, group_data in group_prototypes.items():
+            for _group_name, group_data in group_prototypes.items():
                 if group_data.get("type") == "item-group":
                     groups.append(group_data)
 
@@ -42,7 +42,7 @@ class ItemGroupJsonConverter(BaseConverter):
             subgroups = []
             subgroup_prototypes = all_prototypes.get("item-subgroup", {})
 
-            for subgroup_name, subgroup_data in subgroup_prototypes.items():
+            for _subgroup_name, subgroup_data in subgroup_prototypes.items():
                 if subgroup_data.get("type") == "item-subgroup":
                     subgroups.append(subgroup_data)
 

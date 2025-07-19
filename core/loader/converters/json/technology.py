@@ -33,7 +33,7 @@ class TechnologyJsonConverter(BaseConverter):
             technologies = []
             technology_prototypes = all_prototypes.get("technology", {})
 
-            for tech_name, tech_data in technology_prototypes.items():
+            for _tech_name, tech_data in technology_prototypes.items():
                 # typeがtechnologyであることを確認（念のため）
                 if tech_data.get("type") == "technology":
                     technologies.append(tech_data)

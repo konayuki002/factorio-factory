@@ -33,7 +33,7 @@ class RecipeCategoryJsonConverter(BaseConverter):
             categories = []
             category_prototypes = all_prototypes.get("recipe-category", {})
 
-            for category_name, category_data in category_prototypes.items():
+            for _category_name, category_data in category_prototypes.items():
                 if category_data.get("type") == "recipe-category":
                     categories.append(category_data)
 

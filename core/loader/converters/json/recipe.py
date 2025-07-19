@@ -34,7 +34,7 @@ class RecipeJsonConverter(BaseConverter):
             recipes = []
             recipe_prototypes = all_prototypes.get("recipe", {})
 
-            for recipe_name, recipe_data in recipe_prototypes.items():
+            for _recipe_name, recipe_data in recipe_prototypes.items():
                 # parametersサブグループは除外（元の処理と同様）
                 if recipe_data.get("subgroup") == "parameters":
                     continue

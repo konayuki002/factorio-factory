@@ -42,7 +42,7 @@ class ItemJsonConverter(BaseConverter):
         items = []
         for prototype_type in self.capable_subgroups:
             type_prototypes = all_prototypes.get(prototype_type, {})
-            for item_name, item_data in type_prototypes.items():
+            for _item_name, item_data in type_prototypes.items():
                 # 隠しアイテムをスキップ（hidden: trueのアイテム）
                 if item_data.get("hidden", False):
                     continue

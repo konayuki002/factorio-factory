@@ -53,7 +53,9 @@ class EntitiesJsonConverter(BaseConverter):
 
             for entity_type in entity_types:
                 if entity_type in all_prototypes:
-                    for entity_name, entity_data in all_prototypes[entity_type].items():
+                    for _entity_name, entity_data in all_prototypes[
+                        entity_type
+                    ].items():
                         entities.append(entity_data)
 
             # 3) JSON出力

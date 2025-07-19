@@ -33,7 +33,7 @@ class MiningDrillJsonConverter(BaseConverter):
             drills = []
             mining_drill_prototypes = all_prototypes.get("mining-drill", {})
 
-            for drill_name, drill_data in mining_drill_prototypes.items():
+            for _drill_name, drill_data in mining_drill_prototypes.items():
                 # typeがmining-drillであることを確認（念のため）
                 if drill_data.get("type") == "mining-drill":
                     drills.append(drill_data)

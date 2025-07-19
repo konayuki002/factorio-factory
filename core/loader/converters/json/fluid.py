@@ -33,7 +33,7 @@ class FluidJsonConverter(BaseConverter):
             fluids = []
             fluid_prototypes = all_prototypes.get("fluid", {})
 
-            for fluid_name, fluid_data in fluid_prototypes.items():
+            for _fluid_name, fluid_data in fluid_prototypes.items():
                 # parametersサブグループは除外（元の処理と同様）
                 if fluid_data.get("subgroup") == "parameters":
                     continue
