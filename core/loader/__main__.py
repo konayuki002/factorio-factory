@@ -20,7 +20,7 @@ def run_converters(stage: str = "all", log_level: str = "INFO") -> None:
 
     # 指定されたステージに応じてコンバーターを実行
     stage_prefixes = {
-        "json": ["json:"],
+        "json": ["json:", "lua:"],  # lua:prototypesもJSONステージに含める
         "enum": ["enum:"],
         "data": ["data:"],
         "allowed": ["allowed:"],

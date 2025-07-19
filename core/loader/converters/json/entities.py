@@ -1,22 +1,69 @@
+import json
+import logging
+from pathlib import Path
+
 from core.loader.converters.base import BaseConverter
 from core.loader.registry import register
-from core.utils.lua_parser import parse_lua_file
+
+logger = logging.getLogger(__name__)
 
 
 @register("json:entities")
 class EntitiesJsonConverter(BaseConverter):
     """
-    entities.lua -> entities.json
-    data:extend({...})の中身を全て抽出する基本形
+    lua:prototypesの結果からentities.jsonを生成
+    assembling-machine, mining-drillなどのエンティティタイプを抽出
     """
 
-    dependencies = []
-    lua_filename = "entities.lua"
+    dependencies = ["lua:prototypes"]  # Lua実行コンバータに依存
     json_entities_path = "entities.json"
 
     def load(self) -> None:
-        lua_file = f"{self.raw_dir}/{self.lua_filename}"
-        data = parse_lua_file(lua_file)
-        # まずは全て抽出
-        json_path = f"{self.intermediate_dir}/{self.json_entities_path}"
-        self.dump_json(data, json_path)
+        try:
+            # 1) lua:prototypesの結果を読み込み
+            prototypes_file = Path(self.intermediate_dir) / "prototypes.json"
+            if not prototypes_file.exists():
+                logger.error(f"Prototypes file not found: {prototypes_file}")
+                return
+
+            with open(prototypes_file, "r", encoding="utf-8") as f:
+                all_prototypes = json.load(f)
+
+            # 2) エンティティ系のプロトタイプを抽出
+            entities = []
+
+            # エンティティ系のタイプを定義（assembling-machine, mining-drill等）
+            entity_types = [
+                "assembling-machine",
+                "mining-drill",
+                "furnace",
+                "lab",
+                "transport-belt",
+                "inserter",
+                "pipe",
+                "electric-pole",
+                "container",
+                "logistic-container",
+                "storage-tank",
+                "boiler",
+                "generator",
+                "solar-panel",
+                "accumulator",
+            ]
+
+            for entity_type in entity_types:
+                if entity_type in all_prototypes:
+                    for _entity_name, entity_data in all_prototypes[
+                        entity_type
+                    ].items():
+                        entities.append(entity_data)
+
+            # 3) JSON出力
+            json_path = Path(self.intermediate_dir) / self.json_entities_path
+            self.dump_json(entities, str(json_path))
+
+            logger.info(f"Extracted {len(entities)} entities from prototypes")
+
+        except Exception as e:
+            logger.error(f"Failed to process entities: {e}")
+            raise

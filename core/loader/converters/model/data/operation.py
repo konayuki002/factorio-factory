@@ -56,15 +56,29 @@ class OperationDataConverter(BaseConverter):
         ) -> tuple[dict[Material, Integer], dict[Material, Integer], OperationCategory]:
             ing_dict: dict[Material, Integer] = {}
             for ing in recipe.get("ingredients", []):
-                mat = Material(ing["name"])
-                amt = Integer(ing.get("amount", 1))
-                ing_dict[mat] = amt
+                try:
+                    mat = Material(ing["name"])
+                    amt = Integer(ing.get("amount", 1))
+                    ing_dict[mat] = amt
+                except ValueError:
+                    # Material enumに存在しないアイテムをスキップ
+                    print(
+                        f"警告: Material enumに存在しない材料をスキップ: {ing['name']} (レシピ: {recipe.get('name', 'unknown')})"
+                    )
+                    continue
 
             res_dict: dict[Material, Integer] = {}
             for res in recipe.get("results", []):
-                mat = Material(res["name"])
-                amt = Integer(res.get("amount", 1))
-                res_dict[mat] = amt
+                try:
+                    mat = Material(res["name"])
+                    amt = Integer(res.get("amount", 1))
+                    res_dict[mat] = amt
+                except ValueError:
+                    # Material enumに存在しないアイテムをスキップ
+                    print(
+                        f"警告: Material enumに存在しないアイテムをスキップ: {res['name']} (レシピ: {recipe.get('name', 'unknown')})"
+                    )
+                    continue
 
             if recipe_category := recipe.get("category", None):
                 operation_category = OperationCategory(recipe_category)
@@ -162,6 +176,11 @@ class OperationDataConverter(BaseConverter):
             results[op] = res_dict
             category_of_recipe[op] = OperationCategory.Mining
 
+        # Sort items by key for consistent output
+        sorted_ingredients = sorted(ingredients.items(), key=lambda x: str(x[0]))
+        sorted_results = sorted(results.items(), key=lambda x: str(x[0]))
+        sorted_categories = sorted(category_of_recipe.items(), key=lambda x: str(x[0]))
+
         out = [
             "from core.enums.material import Material",
             "from core.enums.operation import Operation",
@@ -173,19 +192,19 @@ class OperationDataConverter(BaseConverter):
             "INGREDIENTS: dict[Operation, dict[Material, Integer | Expr]] = {",
             *[
                 f"    {op}: {{{', '.join(f'{mat}: {srepr(amt).replace("Symbol('L')", "L")}' for mat, amt in ings.items())}}},"
-                for op, ings in ingredients.items()
+                for op, ings in sorted_ingredients
             ],
             "}",
             "",
             "RESULTS: dict[Operation, dict[Material, Integer]] = {",
             *[
                 f"    {op}: {{{', '.join(f'{mat}: {srepr(amt)}' for mat, amt in ress.items())}}},"
-                for op, ress in results.items()
+                for op, ress in sorted_results
             ],
             "}",
             "",
             "CATEGORY_OF_RECIPE: dict[Operation, OperationCategory] = {",
-            *[f"    {op}: {cat}," for op, cat in category_of_recipe.items()],
+            *[f"    {op}: {cat}," for op, cat in sorted_categories],
             "}",
         ]
         (Path(self.data_dir) / self.data_path).write_text("\n".join(out))

@@ -8,6 +8,7 @@ identify==2.6.12
 iniconfig==2.1.0
 lark==1.2.2
 luaparser @ git+https://github.com/boolangery/py-lua-parser.git@615322f0d3f7a7a736955327bcf03a90595cebdd
+lupa==2.5
 markdown-it-py==3.0.0
 mdurl==0.1.2
 mpmath==1.3.0

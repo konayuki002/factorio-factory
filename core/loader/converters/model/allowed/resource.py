@@ -26,6 +26,9 @@ class ResourceAllowedConverter(BaseConverter):
         # 2) Enumをimportして直接利用
         ret = [Material(f"resource-{resource['name']}") for resource in resources]
 
+        # Sort items alphabetically for consistent output
+        ret.sort(key=str)
+
         out = [
             "from core.enums.material import Material",
             "",

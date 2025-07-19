@@ -32,6 +32,9 @@ class ItemDataConverter(BaseConverter):
         # 3) Data 辞書を生成して保存
         ret = {EnumMaterialClass(item["name"]): item["stack_size"] for item in items}
 
+        # Sort items by key for consistent output
+        sorted_items = sorted(ret.items(), key=lambda x: str(x[0]))
+
         out = [
             "from core.enums.material import Material",
             "from sympy import Integer",
@@ -39,7 +42,7 @@ class ItemDataConverter(BaseConverter):
             "STACK_SIZE: dict[Material, Integer] = {",
             *[
                 f"    {material}: {srepr(Integer(stack_size))},"
-                for material, stack_size in ret.items()
+                for material, stack_size in sorted_items
             ],
             "}",
         ]

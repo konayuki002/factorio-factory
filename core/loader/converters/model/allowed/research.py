@@ -27,6 +27,9 @@ class ResearchAllowedConverter(BaseConverter):
         # Operation Enumの値は research-<name> なので注意
         ret = [Operation(f"research-{tech['name']}") for tech in technologies]
 
+        # Sort items alphabetically for consistent output
+        ret.sort(key=str)
+
         out = [
             "from core.enums.operation import Operation",
             "",

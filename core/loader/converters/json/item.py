@@ -1,18 +1,22 @@
+import json
+import logging
+from pathlib import Path
+
 from core.loader.converters.base import BaseConverter
 from core.loader.registry import register
-from core.utils.lua_parser import parse_lua_file
+
+logger = logging.getLogger(__name__)
 
 
 @register("json:item")
 class ItemJsonConverter(BaseConverter):
     """
-    アイテムに関するLua -> JSONファイルの変換.
-    具体的には、以下のファイルを処理します:
-    raw/item.lua -> intermediate/item.json
+    アイテムに関するLua実行結果 -> JSONファイルの変換.
+    lua:prototypesコンバータが生成したprototypes.jsonから
+    itemタイプのプロトタイプを抽出してitem.jsonを生成
     """
 
-    dependencies = []
-    lua_filename = "item.lua"
+    dependencies = ["lua:prototypes"]  # Lua実行コンバータに依存
     json_items_path = "item.json"
 
     capable_subgroups = [
@@ -29,19 +33,24 @@ class ItemJsonConverter(BaseConverter):
     ]
 
     def load(self) -> None:
-        # 1) Lua -> dict
-        lua_file = f"{self.raw_dir}/{self.lua_filename}"
-        data = parse_lua_file(lua_file)
+        # prototypes.jsonからデータを読み込み
+        prototypes_path = Path(self.intermediate_dir) / "prototypes.json"
+        with open(prototypes_path, encoding="utf-8") as f:
+            all_prototypes = json.load(f)
 
-        # 2) 必要なら前処理
+        # capable_subgroupsに該当するアイテムタイプのプロトタイプを抽出
         items = []
-        for entry in data:
-            if entry.get("subgroup") == "parameters":
-                continue
+        for prototype_type in self.capable_subgroups:
+            type_prototypes = all_prototypes.get(prototype_type, {})
+            for _item_name, item_data in type_prototypes.items():
+                # 隠しアイテムをスキップ（hidden: trueのアイテム）
+                if item_data.get("hidden", False):
+                    continue
+                # subgroupキーが存在しない場合や"parameters"の場合はスキップ
+                if item_data.get("subgroup") == "parameters":
+                    continue
+                items.append(item_data)
 
-            if entry.get("type") in self.capable_subgroups:
-                items.append(entry)
-
-        # 3) dict -> JSON
-        json_items_path = f"{self.intermediate_dir}/{self.json_items_path}"
-        self.dump_json(items, json_items_path)
+        # JSON出力
+        json_items_path = Path(self.intermediate_dir) / self.json_items_path
+        self.dump_json(items, str(json_items_path))

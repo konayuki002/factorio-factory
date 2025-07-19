@@ -50,7 +50,10 @@ class ItemSubgroupDataConverter(BaseConverter):
             "from core.enums.item_group import ItemGroup",
             "",
             "GROUP_OF_SUBGROUP: dict[ItemSubgroup, ItemGroup] = {",
-            *[f"    {subgroup}: {group}," for subgroup, group in ret.items()],
+            *[
+                f"    {subgroup}: {group},"
+                for subgroup, group in sorted(ret.items(), key=lambda x: str(x[0]))
+            ],
             "}",
         ]
 

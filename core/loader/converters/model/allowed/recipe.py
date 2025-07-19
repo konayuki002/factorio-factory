@@ -26,6 +26,9 @@ class RecipeAllowedConverter(BaseConverter):
         # 2) Enum をimportして直接利用
         ret = [Operation(recipe["name"]) for recipe in recipes]
 
+        # Sort items alphabetically for consistent output
+        ret.sort(key=str)
+
         out = [
             "from core.enums.operation import Operation",
             "",

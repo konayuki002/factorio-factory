@@ -28,6 +28,8 @@ class ItemGroupEnumConverter(BaseConverter):
             [m.lower() for m in ITEM_GROUP_MANUAL],
             "ItemGroup",
         )
+        # Sort members alphabetically for consistent output
+        enum_group_members.sort()
         self.gen_enum(
             "ItemGroup", enum_group_members, f"{self.enum_dir}/{self.enum_group_path}"
         )

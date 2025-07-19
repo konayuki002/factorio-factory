@@ -39,6 +39,8 @@ class OperationEnumConverter(BaseConverter):
                 if value not in seen:
                     all_members.append(value)
                     seen.add(value)
+        # Sort members alphabetically for consistent output
+        all_members.sort()
         self.gen_enum(
             "Operation", all_members, f"{self.enum_dir}/{self.enum_operation_path}"
         )
