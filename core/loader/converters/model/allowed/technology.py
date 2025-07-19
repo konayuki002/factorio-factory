@@ -28,6 +28,9 @@ class TechnologyAllowedConverter(BaseConverter):
             Material(f"technology-{technology['name']}") for technology in technologies
         ]
 
+        # Sort items alphabetically for consistent output
+        ret.sort(key=str)
+
         out = [
             "from core.enums.material import Material",
             "",

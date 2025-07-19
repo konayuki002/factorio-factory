@@ -1,10 +1,10 @@
 from core.enums.material import Material
 
 resource_allowed: set[Material] = {
-    Material.ResourceIronOre,
-    Material.ResourceStone,
+    Material.ResourceCoal,
     Material.ResourceCopperOre,
     Material.ResourceCrudeOil,
-    Material.ResourceCoal,
+    Material.ResourceIronOre,
+    Material.ResourceStone,
     Material.ResourceUraniumOre,
 }
