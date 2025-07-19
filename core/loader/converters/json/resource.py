@@ -1,31 +1,47 @@
+import json
+import logging
+from pathlib import Path
+
 from core.loader.converters.base import BaseConverter
 from core.loader.registry import register
-from core.utils.lua_parser import parse_lua_file
+
+logger = logging.getLogger(__name__)
 
 
 @register("json:resource")
 class ResourceJsonConverter(BaseConverter):
     """
-    資源に関するLua -> JSONファイルの変換.
-    具体的には、以下のファイルを処理します:
-    raw/resource.lua -> intermediate/resource.json
+    lua:prototypesの結果からresources.jsonを生成
+    resourceタイプのプロトタイプを抽出
     """
 
-    dependencies = []
-    lua_filename = "resources.lua"
+    dependencies = ["lua:prototypes"]  # Lua実行コンバータに依存
     json_items_path = "resources.json"
 
     def load(self) -> None:
-        # 1) Lua -> dict
-        lua_file = f"{self.raw_dir}/{self.lua_filename}"
-        data = parse_lua_file(lua_file)
+        try:
+            # 1) lua:prototypesの結果を読み込み
+            prototypes_file = Path(self.intermediate_dir) / "prototypes.json"
+            if not prototypes_file.exists():
+                logger.error(f"Prototypes file not found: {prototypes_file}")
+                return
 
-        # 2) 必要なら前処理
-        items = []
-        # テーブルの0番目はparameterなので1番目から処理
-        for entry in data:
-            items.append(entry)
+            with open(prototypes_file, "r", encoding="utf-8") as f:
+                all_prototypes = json.load(f)
 
-        # 3) dict -> JSON
-        json_items_path = f"{self.intermediate_dir}/{self.json_items_path}"
-        self.dump_json(items, json_items_path)
+            # 2) resourceタイプのプロトタイプを抽出
+            resources = []
+            resource_prototypes = all_prototypes.get("resource", {})
+
+            for resource_name, resource_data in resource_prototypes.items():
+                resources.append(resource_data)
+
+            # 3) JSON出力
+            json_path = Path(self.intermediate_dir) / self.json_items_path
+            self.dump_json(resources, str(json_path))
+
+            logger.info(f"Extracted {len(resources)} resources from prototypes")
+
+        except Exception as e:
+            logger.error(f"Failed to process resources: {e}")
+            raise

@@ -2,16 +2,16 @@ from enum import Enum
 
 
 class ItemGroup(Enum):
-    Logistics = "logistics"
-    Production = "production"
-    IntermediateProducts = "intermediate-products"
-    Combat = "combat"
-    Fluids = "fluids"
-    Signals = "signals"
-    Enemies = "enemies"
-    Environment = "environment"
-    Tiles = "tiles"
-    Effects = "effects"
-    Other = "other"
-    UnminedResource = "unmined-resource"
-    Technology = "technology"
+    Effects = 'effects'
+    IntermediateProducts = 'intermediate-products'
+    Environment = 'environment'
+    Signals = 'signals'
+    Logistics = 'logistics'
+    Combat = 'combat'
+    Production = 'production'
+    Fluids = 'fluids'
+    Other = 'other'
+    Tiles = 'tiles'
+    Enemies = 'enemies'
+    UnminedResource = 'unmined-resource'
+    Technology = 'technology'

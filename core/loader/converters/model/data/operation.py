@@ -56,15 +56,25 @@ class OperationDataConverter(BaseConverter):
         ) -> tuple[dict[Material, Integer], dict[Material, Integer], OperationCategory]:
             ing_dict: dict[Material, Integer] = {}
             for ing in recipe.get("ingredients", []):
-                mat = Material(ing["name"])
-                amt = Integer(ing.get("amount", 1))
-                ing_dict[mat] = amt
+                try:
+                    mat = Material(ing["name"])
+                    amt = Integer(ing.get("amount", 1))
+                    ing_dict[mat] = amt
+                except ValueError as e:
+                    # Material enumに存在しないアイテムをスキップ
+                    print(f"警告: Material enumに存在しない材料をスキップ: {ing['name']} (レシピ: {recipe.get('name', 'unknown')})")
+                    continue
 
             res_dict: dict[Material, Integer] = {}
             for res in recipe.get("results", []):
-                mat = Material(res["name"])
-                amt = Integer(res.get("amount", 1))
-                res_dict[mat] = amt
+                try:
+                    mat = Material(res["name"])
+                    amt = Integer(res.get("amount", 1))
+                    res_dict[mat] = amt
+                except ValueError as e:
+                    # Material enumに存在しないアイテムをスキップ
+                    print(f"警告: Material enumに存在しないアイテムをスキップ: {res['name']} (レシピ: {recipe.get('name', 'unknown')})")
+                    continue
 
             if recipe_category := recipe.get("category", None):
                 operation_category = OperationCategory(recipe_category)

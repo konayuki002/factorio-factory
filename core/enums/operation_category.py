@@ -2,17 +2,18 @@ from enum import Enum
 
 
 class OperationCategory(Enum):
-    Crafting = "crafting"
-    AdvancedCrafting = "advanced-crafting"
-    Smelting = "smelting"
-    Chemistry = "chemistry"
-    CraftingWithFluid = "crafting-with-fluid"
-    OilProcessing = "oil-processing"
-    RocketBuilding = "rocket-building"
-    Centrifuging = "centrifuging"
-    BasicCrafting = "basic-crafting"
-    Recycling = "recycling"
-    RecyclingOrHandCrafting = "recycling-or-hand-crafting"
-    Mining = "mining"
-    Launch = "launch"
-    Research = "research"
+    RocketBuilding = 'rocket-building'
+    RecyclingOrHandCrafting = 'recycling-or-hand-crafting'
+    Smelting = 'smelting'
+    Parameters = 'parameters'
+    Recycling = 'recycling'
+    OilProcessing = 'oil-processing'
+    AdvancedCrafting = 'advanced-crafting'
+    Crafting = 'crafting'
+    CraftingWithFluid = 'crafting-with-fluid'
+    BasicCrafting = 'basic-crafting'
+    Centrifuging = 'centrifuging'
+    Chemistry = 'chemistry'
+    Mining = 'mining'
+    Launch = 'launch'
+    Research = 'research'

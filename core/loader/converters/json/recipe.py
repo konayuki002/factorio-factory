@@ -1,33 +1,54 @@
+import json
+import logging
+from pathlib import Path
+
 from core.loader.converters.base import BaseConverter
 from core.loader.registry import register
-from core.utils.lua_parser import parse_lua_file
+
+logger = logging.getLogger(__name__)
 
 
 @register("json:recipe")
 class RecipeJsonConverter(BaseConverter):
     """
-    レシピに関するLua -> JSONファイルの変換.
-    具体的には、以下のファイルを処理します:
-    raw/recipe.lua -> intermediate/recipe.json
+    レシピに関するLua実行結果 -> JSONファイルの変換.
+    lua:prototypesコンバータが生成したprototypes.jsonから
+    recipeタイプのプロトタイプを抽出してrecipe.jsonを生成
     """
 
-    dependencies = []
-    lua_filename = "recipe.lua"
+    dependencies = ["lua:prototypes"]  # Lua実行コンバータに依存
     json_recipe_path = "recipe.json"
 
     def load(self) -> None:
-        # 1) Lua -> dict
-        lua_file = f"{self.raw_dir}/{self.lua_filename}"
-        data = parse_lua_file(lua_file)
+        try:
+            # 1) lua:prototypesの結果を読み込み
+            prototypes_file = Path(self.intermediate_dir) / "prototypes.json"
+            if not prototypes_file.exists():
+                logger.error(f"Prototypes file not found: {prototypes_file}")
+                return
 
-        # 2) 必要なら前処理
-        recipes = []
-        for entry in data:
-            if entry.get("subgroup", None) == "parameters":
-                continue
-            if entry.get("type") == "recipe":
-                recipes.append(entry)
+            with open(prototypes_file, "r", encoding="utf-8") as f:
+                all_prototypes = json.load(f)
 
-        # 3) dict -> JSON
-        json_path = f"{self.intermediate_dir}/{self.json_recipe_path}"
-        self.dump_json(recipes, json_path)
+            # 2) recipeタイプのプロトタイプを抽出・フィルタリング
+            recipes = []
+            recipe_prototypes = all_prototypes.get("recipe", {})
+
+            for recipe_name, recipe_data in recipe_prototypes.items():
+                # parametersサブグループは除外（元の処理と同様）
+                if recipe_data.get("subgroup") == "parameters":
+                    continue
+
+                # typeがrecipeであることを確認（念のため）
+                if recipe_data.get("type") == "recipe":
+                    recipes.append(recipe_data)
+
+            # 3) JSON出力
+            json_path = Path(self.intermediate_dir) / self.json_recipe_path
+            self.dump_json(recipes, str(json_path))
+
+            logger.info(f"Extracted {len(recipes)} recipes from prototypes")
+
+        except Exception as e:
+            logger.error(f"Failed to process recipes: {e}")
+            raise

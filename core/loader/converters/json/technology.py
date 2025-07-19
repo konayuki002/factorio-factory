@@ -1,31 +1,49 @@
+import json
+import logging
+from pathlib import Path
+
 from core.loader.converters.base import BaseConverter
 from core.loader.registry import register
-from core.utils.lua_parser import parse_lua_file
+
+logger = logging.getLogger(__name__)
 
 
 @register("json:technology")
 class TechnologyJsonConverter(BaseConverter):
     """
-    テクノロジーに関するLua -> JSONファイルの変換.
-    具体的には、以下のファイルを処理します:
-    raw/technology.lua -> intermediate/technology.json
+    lua:prototypesの結果からtechnology.jsonを生成
+    technologyタイプのプロトタイプを抽出
     """
 
-    dependencies = []
-    lua_filename = "technology.lua"
+    dependencies = ["lua:prototypes"]  # Lua実行コンバータに依存
     json_technology_path = "technology.json"
 
     def load(self) -> None:
-        # 1) Lua -> dict
-        lua_file = f"{self.raw_dir}/{self.lua_filename}"
-        data = parse_lua_file(lua_file)
+        try:
+            # 1) lua:prototypesの結果を読み込み
+            prototypes_file = Path(self.intermediate_dir) / "prototypes.json"
+            if not prototypes_file.exists():
+                logger.error(f"Prototypes file not found: {prototypes_file}")
+                return
 
-        # 2) 必要なら前処理
-        technologies = []
-        for entry in data:
-            if entry.get("type") == "technology":
-                technologies.append(entry)
+            with open(prototypes_file, "r", encoding="utf-8") as f:
+                all_prototypes = json.load(f)
 
-        # 3) dict -> JSON
-        json_path = f"{self.intermediate_dir}/{self.json_technology_path}"
-        self.dump_json(technologies, json_path)
+            # 2) technologyタイプのプロトタイプを抽出
+            technologies = []
+            technology_prototypes = all_prototypes.get("technology", {})
+
+            for tech_name, tech_data in technology_prototypes.items():
+                # typeがtechnologyであることを確認（念のため）
+                if tech_data.get("type") == "technology":
+                    technologies.append(tech_data)
+
+            # 3) JSON出力
+            json_path = Path(self.intermediate_dir) / self.json_technology_path
+            self.dump_json(technologies, str(json_path))
+
+            logger.info(f"Extracted {len(technologies)} technologies from prototypes")
+
+        except Exception as e:
+            logger.error(f"Failed to process technologies: {e}")
+            raise

@@ -47,10 +47,18 @@ def dynamic_import_one_by_one(module_name: str) -> None:
     package_path = pathlib.Path(package.__path__[0])
 
     for file in package_path.iterdir():
-        if file.suffix == ".py" and file.name != "__init__.py":
+        if (
+            file.suffix == ".py"
+            and file.name != "__init__.py"
+            and file.name != "base.py"
+        ):
             submod = f"{module_name}.{file.stem}"
             importlib.import_module(submod)
 
+
+# core.loader.converters直下のコンバータ（lua_prototypes.py等）も読み取る
+main_converters_module_name = "core.loader.converters"
+dynamic_import_one_by_one(main_converters_module_name)
 
 # Lua -> JSON変換パッケージのディレクトリを動的に読み取る
 json_converters_module_name = "core.loader.converters.json"
