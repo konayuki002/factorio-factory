@@ -1,0 +1,20 @@
+data:extend({
+  {
+    type = "mining-drill",
+    name = "sample-mining-drill-1",
+    resource_categories = {"basic-solid"},
+    energy_usage = "90kW",
+    collision_box = {{-1.35, -1.35}, {1.35, 1.35}},
+    selection_box = {{-1.5, -1.5}, {1.5, 1.5}},
+    mining_speed = 0.5
+  },
+  {
+    type = "mining-drill",
+    name = "sample-mining-drill-2",
+    resource_categories = {"basic-solid"},
+    energy_usage = "150kW",
+    collision_box = {{-0.7, -0.7}, {0.7, 0.7}},
+    selection_box = {{-1, -1}, {1, 1}},
+    mining_speed = 0.25
+  }
+})

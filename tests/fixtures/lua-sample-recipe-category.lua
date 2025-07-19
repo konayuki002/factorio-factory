@@ -1,0 +1,4 @@
+data:extend({
+  { type = "recipe-category", name = "sample-recipe-category-1" },
+  { type = "recipe-category", name = "sample-recipe-category-2" },
+})

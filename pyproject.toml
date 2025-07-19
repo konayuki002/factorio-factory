@@ -1,0 +1,21 @@
+[tool.ruff]
+line-length = 88
+
+lint.select = ["B", "E", "F", "I", "TID"]
+lint.ignore = ["E501"]
+lint.fixable = ["B", "I", "E", "F", "TID"]
+# 自動修正を有効に
+fix = true
+
+# ルールの除外設定
+include = [
+  "core/**/*.py",
+  "tests/**/*.py",
+  "llm/**/*.py",
+  "plugins/llm/**/*.py",
+  "tools/llm/**/*.py",
+]
+exclude = ["stubs/", "data/legacy", ".venv/"]
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
