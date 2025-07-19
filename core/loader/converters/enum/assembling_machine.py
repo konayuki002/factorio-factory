@@ -50,6 +50,8 @@ class AssemblingMachineEnumConverter(BaseConverter):
         all_names = self.merge_unique(
             entity_names, drill_names + manual, "AssemblingMachine"
         )
+        # Sort members alphabetically for consistent output
+        all_names.sort()
         self.gen_enum(
             "AssemblingMachine",
             all_names,

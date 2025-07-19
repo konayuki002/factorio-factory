@@ -44,6 +44,8 @@ class MaterialEnumConverter(BaseConverter):
                 if value not in seen:
                     all_members.append(value)
                     seen.add(value)
+        # Sort members alphabetically for consistent output
+        all_members.sort()
         self.gen_enum(
             "Material", all_members, f"{self.enum_dir}/{self.enum_material_path}"
         )

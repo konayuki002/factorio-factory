@@ -6,6 +6,6 @@ class ItemSubgroup(Enum):
     Subgroup12 = "subgroup1-2"
     Subgroup21 = "subgroup2-1"
     Subgroup22 = "subgroup2-2"
-    UnminedResourceBasicSolid = "unmined-resource-basic-solid"
-    UnminedResourceBasicFluid = "unmined-resource-basic-fluid"
     Technology = "technology"
+    UnminedResourceBasicFluid = "unmined-resource-basic-fluid"
+    UnminedResourceBasicSolid = "unmined-resource-basic-solid"

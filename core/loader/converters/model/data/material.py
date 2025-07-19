@@ -70,12 +70,15 @@ class MaterialDataConverter(BaseConverter):
         }
         ret = {**ret_item, **ret_fluid, **ret_resources, **ret_technology}
 
+        # Sort items by key for consistent output
+        sorted_items = sorted(ret.items(), key=lambda x: str(x[0]))
+
         out = [
             "from core.enums.item_subgroup import ItemSubgroup",
             "from core.enums.material import Material",
             "",
             "ITEM_SUBGROUP_OF_MATERIAL: dict[Material, ItemSubgroup] = {",
-            *[f"    {material}: {subgroup}," for material, subgroup in ret.items()],
+            *[f"    {material}: {subgroup}," for material, subgroup in sorted_items],
             "}",
         ]
 

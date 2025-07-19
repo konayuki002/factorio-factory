@@ -22,6 +22,8 @@ class ItemSubgroupEnumConverter(BaseConverter):
             [m.lower() for m in ITEM_SUBGROUP_MANUAL],
             "ItemSubgroup",
         )
+        # Sort members alphabetically for consistent output
+        enum_subgroup_members.sort()
         self.gen_enum(
             "ItemSubgroup",
             enum_subgroup_members,
